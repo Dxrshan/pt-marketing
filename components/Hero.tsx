@@ -29,7 +29,7 @@ function DashboardMockup() {
           </div>
         ))}
 
-        <div style={{ marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,0.06)', padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 8, marginTop: 20 }}>
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 8, marginTop: 20 }}>
           <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'linear-gradient(135deg, #2563EB, #06B6D4)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, fontWeight: 700, color: 'white' }}>D</div>
           <div>
             <div style={{ fontSize: 9, fontWeight: 600, color: '#e2e8f0' }}>Darshan M.</div>
