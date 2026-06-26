@@ -130,7 +130,7 @@ export default function PricingSection() {
 
           <div style={{ marginTop: 12, padding: '16px 20px', background: 'rgba(37,99,235,0.08)', border: '1px solid rgba(37,99,235,0.2)', borderRadius: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              <span style={{ fontSize: 15, fontWeight: 700, color: 'white' }}>PT Manager — everything above</span>
+              <span style={{ fontSize: 15, fontWeight: 700, color: 'white' }}>DNI Studio — everything above</span>
               <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', marginTop: 2 }}>+ Live session logger + Client wellness portal (nowhere else)</div>
             </div>
             <div style={{ textAlign: 'right' }}>
@@ -261,7 +261,7 @@ export default function PricingSection() {
             <div style={{ fontSize: 28, marginBottom: 10 }}>🛡️</div>
             <div style={{ fontSize: 16, fontWeight: 700, color: 'white', marginBottom: 8 }}>30-Day Money-Back Guarantee</div>
             <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>
-              If PT Manager doesn&apos;t save you at least 5 hours a week in your first 30 days, we&apos;ll refund every penny. No questions asked. No awkward email chains.
+              If DNI Studio doesn&apos;t save you at least 5 hours a week in your first 30 days, we&apos;ll refund every penny. No questions asked. No awkward email chains.
             </p>
           </motion.div>
 

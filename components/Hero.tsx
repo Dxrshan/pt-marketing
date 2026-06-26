@@ -11,7 +11,7 @@ function DashboardMockup() {
           <div style={{ width: 22, height: 22, borderRadius: 5, background: 'linear-gradient(135deg, #2563EB, #06B6D4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="white" /></svg>
           </div>
-          <span style={{ fontSize: 11, fontWeight: 700, background: 'linear-gradient(135deg, #60a5fa, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>PT Manager</span>
+          <span style={{ fontSize: 11, fontWeight: 700, background: 'linear-gradient(135deg, #60a5fa, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>DNI Studio</span>
         </div>
 
         {[
@@ -222,7 +222,7 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.35 }}
               style={{ fontSize: 18, color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, marginBottom: 36, maxWidth: 500 }}
             >
-              PT Manager gives personal trainers and studios one professional platform to manage clients, log sessions in real time, track payments, and grow — without the chaos.
+              DNI Studio gives personal trainers and studios one professional platform to manage clients, log sessions in real time, track payments, and grow — without the chaos.
             </motion.p>
 
             {/* Email capture */}

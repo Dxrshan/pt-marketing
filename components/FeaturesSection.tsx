@@ -160,7 +160,7 @@ const FEATURES = [
   {
     badge: 'Live Session Logger',
     headline: 'Log every set in real time. Your clients deserve more than a clipboard.',
-    body: 'Track weight, reps, and rest times mid-session. PT Manager automatically spots personal bests, shows progress charts per exercise, and gives your clients an elite experience — from your phone or tablet.',
+    body: 'Track weight, reps, and rest times mid-session. DNI Studio automatically spots personal bests, shows progress charts per exercise, and gives your clients an elite experience — from your phone or tablet.',
     bullets: ['Real-time PB detection & celebration', 'Built-in rest timer', 'Per-exercise progress history', 'Works on any device'],
     mockup: <LiveSessionMockup />,
     reverse: false,

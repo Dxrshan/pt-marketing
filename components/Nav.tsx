@@ -61,7 +61,7 @@ export default function Nav() {
                 background: 'linear-gradient(135deg, #ffffff, #93c5fd)',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
               }}>
-                PT Manager
+                DNI Studio
               </span>
             </a>
 

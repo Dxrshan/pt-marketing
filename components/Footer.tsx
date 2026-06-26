@@ -22,7 +22,7 @@ export default function Footer() {
                   <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="white" />
                 </svg>
               </div>
-              <span style={{ fontWeight: 700, fontSize: 17, color: 'white', letterSpacing: '-0.3px' }}>PT Manager</span>
+              <span style={{ fontWeight: 700, fontSize: 17, color: 'white', letterSpacing: '-0.3px' }}>DNI Studio</span>
             </div>
             <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.35)', lineHeight: 1.7, maxWidth: 280 }}>
               The all-in-one platform built for personal trainers and studios who are serious about their business.

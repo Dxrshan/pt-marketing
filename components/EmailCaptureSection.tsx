@@ -50,7 +50,7 @@ export default function EmailCaptureSection() {
           </h2>
 
           <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, marginBottom: 40 }}>
-            Get early access, lock in founding member pricing forever, and help shape the future of PT Manager.
+            Get early access, lock in founding member pricing forever, and help shape the future of DNI Studio.
           </p>
         </motion.div>
 
