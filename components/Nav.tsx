@@ -11,11 +11,30 @@ const NAV_LINKS = [
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('')
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    const ids = NAV_LINKS.map(l => l.href.replace('#', ''))
+    const observers: IntersectionObserver[] = []
+
+    ids.forEach(id => {
+      const el = document.getElementById(id)
+      if (!el) return
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActiveSection(id) },
+        { rootMargin: '-20% 0px -60% 0px', threshold: 0 }
+      )
+      obs.observe(el)
+      observers.push(obs)
+    })
+
+    return () => observers.forEach(o => o.disconnect())
   }, [])
 
   const scrollTo = (href: string) => {
@@ -67,23 +86,41 @@ export default function Nav() {
 
             {/* Desktop nav links */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 4 }} className="hidden-mobile">
-              {NAV_LINKS.map(link => (
-                <button
-                  key={link.label}
-                  onClick={() => scrollTo(link.href)}
-                  style={{
-                    background: 'none', border: 'none', cursor: 'pointer',
-                    color: 'rgba(255,255,255,0.6)', fontSize: 14, fontWeight: 500,
-                    padding: '8px 16px', borderRadius: 8,
-                    transition: 'all 0.2s ease',
-                    fontFamily: 'inherit',
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.color = 'white', e.currentTarget.style.background = 'rgba(255,255,255,0.05)')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)', e.currentTarget.style.background = 'none')}
-                >
-                  {link.label}
-                </button>
-              ))}
+              {NAV_LINKS.map(link => {
+                const isActive = activeSection === link.href.replace('#', '')
+                return (
+                  <button
+                    key={link.label}
+                    onClick={() => scrollTo(link.href)}
+                    style={{
+                      background: isActive ? 'rgba(91,123,255,0.12)' : 'none',
+                      border: 'none', cursor: 'pointer',
+                      color: isActive ? '#7B96FF' : 'rgba(255,255,255,0.55)',
+                      fontSize: 14, fontWeight: isActive ? 600 : 500,
+                      padding: '8px 16px', borderRadius: 8,
+                      transition: 'all 0.25s ease',
+                      fontFamily: 'inherit',
+                      position: 'relative',
+                    }}
+                    onMouseEnter={e => {
+                      if (!isActive) { e.currentTarget.style.color = 'white'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }
+                    }}
+                    onMouseLeave={e => {
+                      if (!isActive) { e.currentTarget.style.color = 'rgba(255,255,255,0.55)'; e.currentTarget.style.background = 'none' }
+                    }}
+                  >
+                    {link.label}
+                    {isActive && (
+                      <span style={{
+                        position: 'absolute', bottom: 4, left: '50%', transform: 'translateX(-50%)',
+                        width: 16, height: 2, borderRadius: 2,
+                        background: 'linear-gradient(90deg, #5B7BFF, #22D3EE)',
+                        display: 'block',
+                      }} />
+                    )}
+                  </button>
+                )
+              })}
               <a
                 href="/offer"
                 style={{
@@ -166,21 +203,25 @@ export default function Nav() {
               padding: '20px 24px 24px',
             }}
           >
-            {NAV_LINKS.map(link => (
-              <button
-                key={link.label}
-                onClick={() => scrollTo(link.href)}
-                style={{
-                  display: 'block', width: '100%', textAlign: 'left',
-                  background: 'none', border: 'none', cursor: 'pointer',
-                  color: 'rgba(255,255,255,0.7)', fontSize: 16, fontWeight: 500,
-                  padding: '14px 0', fontFamily: 'inherit',
-                  borderBottom: '1px solid rgba(255,255,255,0.06)',
-                }}
-              >
-                {link.label}
-              </button>
-            ))}
+            {NAV_LINKS.map(link => {
+              const isActive = activeSection === link.href.replace('#', '')
+              return (
+                <button
+                  key={link.label}
+                  onClick={() => scrollTo(link.href)}
+                  style={{
+                    display: 'block', width: '100%', textAlign: 'left',
+                    background: 'none', border: 'none', cursor: 'pointer',
+                    color: isActive ? '#7B96FF' : 'rgba(255,255,255,0.7)',
+                    fontSize: 16, fontWeight: isActive ? 600 : 500,
+                    padding: '14px 0', fontFamily: 'inherit',
+                    borderBottom: '1px solid rgba(255,255,255,0.06)',
+                  }}
+                >
+                  {isActive ? '→ ' : ''}{link.label}
+                </button>
+              )
+            })}
             <a
               href="/offer"
               style={{
