@@ -1,57 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { MongoClient } from 'mongodb'
 import { Resend } from 'resend'
 
-const uri    = process.env.MONGODB_URI    || ''
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json()
-    const { email, name, type, source } = body
+    const { email, source } = await req.json()
 
     if (!email || !email.includes('@')) {
       return NextResponse.json({ error: 'Valid email required' }, { status: 400 })
     }
 
-    const cleanEmail = email.toLowerCase().trim()
-
-    // ── Save to MongoDB ───────────────────────────────────────────
-    if (uri) {
-      const client = new MongoClient(uri)
-      await client.connect()
-      const db = client.db('ptmanager')
-      await db.collection('waitlist').updateOne(
-        { email: cleanEmail },
-        {
-          $set:         { email: cleanEmail, name: name || '', type: type || 'solo', source: source || 'unknown', updatedAt: new Date() },
-          $setOnInsert: { createdAt: new Date() },
-        },
-        { upsert: true }
-      )
-      await client.close()
-    }
-
-    // ── Notify Darshan ────────────────────────────────────────────
-    if (resend) {
-      await resend.emails.send({
-        from:    'DNI Studio <onboarding@resend.dev>',
-        to:      'darshan.mashru@dnianalytics.co.uk',
-        subject: `New early access signup: ${cleanEmail}`,
-        html: `
-          <div style="font-family:sans-serif;max-width:480px;padding:24px;">
-            <h2 style="margin:0 0 8px;">New early access signup 🎉</h2>
-            <p style="color:#555;margin:0 0 16px;">Someone just signed up for early access on dnianalytics.com.</p>
-            <table style="border-collapse:collapse;width:100%">
-              <tr><td style="padding:8px 0;color:#999;font-size:13px;">Email</td><td style="padding:8px 0;font-weight:600">${cleanEmail}</td></tr>
-              ${name ? `<tr><td style="padding:8px 0;color:#999;font-size:13px;">Name</td><td style="padding:8px 0;font-weight:600">${name}</td></tr>` : ''}
-              <tr><td style="padding:8px 0;color:#999;font-size:13px;">Source</td><td style="padding:8px 0;font-weight:600">${source || 'unknown'}</td></tr>
-              <tr><td style="padding:8px 0;color:#999;font-size:13px;">Time</td><td style="padding:8px 0;font-weight:600">${new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' })}</td></tr>
-            </table>
-          </div>
-        `,
-      })
-    }
+    await resend.emails.send({
+      from:    'DNI Studio <onboarding@resend.dev>',
+      to:      'darshan.mashru@dnianalytics.co.uk',
+      subject: `New early access signup: ${email.toLowerCase().trim()}`,
+      html: `
+        <div style="font-family:sans-serif;max-width:480px;padding:24px;background:#f9f9f9;border-radius:8px;">
+          <h2 style="margin:0 0 8px;color:#111;">New early access signup 🎉</h2>
+          <p style="color:#555;margin:0 0 20px;">Someone just signed up on dnianalytics.com</p>
+          <table style="border-collapse:collapse;width:100%;background:white;border-radius:6px;padding:16px;">
+            <tr><td style="padding:10px 16px;color:#999;font-size:13px;border-bottom:1px solid #f0f0f0">Email</td><td style="padding:10px 16px;font-weight:700;color:#111;border-bottom:1px solid #f0f0f0">${email.toLowerCase().trim()}</td></tr>
+            <tr><td style="padding:10px 16px;color:#999;font-size:13px;">Source</td><td style="padding:10px 16px;font-weight:600;color:#111;">${source || 'homepage'}</td></tr>
+          </table>
+          <p style="margin:16px 0 0;font-size:12px;color:#aaa;">${new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' })}</p>
+        </div>
+      `,
+    })
 
     return NextResponse.json({ success: true })
   } catch (err) {
