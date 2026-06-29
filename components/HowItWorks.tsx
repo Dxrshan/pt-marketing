@@ -7,21 +7,21 @@ const STEPS = [
     title: 'Set up your studio in minutes',
     desc: 'Add your clients, set up your services, and customise your profile. We walk you through it — no manual, no YouTube tutorials.',
     icon: '⚡',
-    color: '#2563EB',
+    color: '#5B7BFF',
   },
   {
     number: '02',
     title: 'Run your business from one place',
     desc: 'Log sessions, send workout plans, track payments, manage leads. Everything you did across 5 apps — now in one clean dashboard.',
     icon: '🎯',
-    color: '#06B6D4',
+    color: '#22D3EE',
   },
   {
     number: '03',
     title: 'Watch your clients get results',
     desc: 'Clients log daily wellness, track their own workouts, and see their progress. You get real-time data. They get accountability. Everyone wins.',
     icon: '📈',
-    color: '#7c3aed',
+    color: '#A78BFA',
   },
 ]
 
@@ -47,7 +47,7 @@ export default function HowItWorks() {
           {/* Connector line */}
           <div style={{
             position: 'absolute', top: 36, left: '17%', right: '17%', height: 1,
-            background: 'linear-gradient(90deg, transparent, rgba(37,99,235,0.3), rgba(6,182,212,0.3), transparent)',
+            background: 'linear-gradient(90deg, transparent, rgba(91,123,255,0.3), rgba(34,211,238,0.3), transparent)',
           }} className="connector-line" />
 
           {STEPS.map((step, i) => (

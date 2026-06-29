@@ -2,70 +2,36 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 
-const VALUE_STACK = [
-  { tool: 'Client management & progress tracking', competitor: 'TrueCoach', price: '£35/mo' },
-  { tool: 'Session scheduling & attendance', competitor: 'Acuity', price: '£12/mo' },
-  { tool: 'Lead & CRM pipeline', competitor: 'Pipedrive', price: '£25/mo' },
-  { tool: 'Invoicing & payment tracking', competitor: 'FreshBooks', price: '£15/mo' },
-  { tool: 'Client wellness & nutrition tracking', competitor: 'MyFitnessPal Pro', price: '£10/mo' },
-  { tool: 'Business analytics & reporting', competitor: 'Tableau', price: '£15/mo' },
-]
+const BILLING = {
+  monthly:   { price: 69, label: 'Billed monthly',            saving: null },
+  quarterly: { price: 59, label: 'Billed £177 every 3 months', saving: 'Save 14%' },
+  annual:    { price: 49, label: 'Billed £588 once a year',    saving: 'Save 29%' },
+} as const
 
-const PLANS = [
-  {
-    name: 'Solo',
-    tagline: 'Perfect for the self-employed PT',
-    price: 39,
-    yearlyPrice: 390,
-    period: 'mo',
-    highlight: false,
-    features: [
-      '1 trainer account',
-      'Unlimited clients',
-      'Live session logger',
-      'Client portal (all clients)',
-      'Workout plan builder',
-      'Payment tracking',
-      'Lead pipeline',
-      'Progress & body metrics',
-      'Business dashboard',
-      'Email support',
-    ],
-    cta: 'Start Free Trial',
-    ctaNote: '30 days free · No card needed',
-  },
-  {
-    name: 'Studio',
-    tagline: 'For gym owners & multi-trainer studios',
-    price: 79,
-    yearlyPrice: 790,
-    period: 'mo',
-    highlight: true,
-    features: [
-      'Up to 5 trainers',
-      'Everything in Solo',
-      'Team management & permissions',
-      'Shared client pool',
-      'Manager-level analytics',
-      'Staff performance reporting',
-      'Priority support',
-      'Onboarding call with Darshan',
-    ],
-    cta: 'Start Free Trial',
-    ctaNote: 'Most popular for studios',
-    badge: 'Most Popular',
-  },
+type Term = keyof typeof BILLING
+
+const INCLUDED = [
+  'Unlimited clients & sessions',
+  'Live session logger with PB tracking',
+  'Client portal for every client',
+  'Daily wellness & progress tracking',
+  'AI assistant (staff + client)',
+  'Lead pipeline & CRM',
+  'Payments, invoicing & receipts',
+  'Smart dashboard & action items',
+  'Team roles & permissions',
+  'Priority onboarding support',
 ]
 
 export default function PricingSection() {
-  const [yearly, setYearly] = useState(false)
+  const [term, setTerm] = useState<Term>('quarterly')
+  const plan = BILLING[term]
 
   return (
-    <section id="pricing" style={{ padding: '120px 0', position: 'relative', overflow: 'hidden' }}>
-      {/* Background glow */}
-      <div className="glow-orb glow-blue" style={{ width: 600, height: 600, top: '10%', left: '50%', transform: 'translateX(-50%)', opacity: 0.3 }} />
+    <section id="pricing" style={{ padding: '140px 0', position: 'relative', overflow: 'hidden' }}>
+      <div className="glow-orb glow-blue" style={{ width: 500, height: 500, top: '20%', left: '50%', transform: 'translateX(-50%)', opacity: 0.2 }} />
 
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 1 }}>
+      <div style={{ maxWidth: 680, margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 1 }}>
 
         {/* Header */}
         <motion.div
@@ -73,219 +39,141 @@ export default function PricingSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.7 }}
-          style={{ textAlign: 'center', marginBottom: 72 }}
+          style={{ textAlign: 'center', marginBottom: 56 }}
         >
-          <div className="badge badge-blue" style={{ marginBottom: 20, display: 'inline-flex' }}>The Offer</div>
-          <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 900, letterSpacing: '-1.5px', lineHeight: 1.1, marginBottom: 20 }}>
-            One investment.{' '}
-            <span className="gradient-text">Infinite return.</span>
+          <div className="badge badge-blue" style={{ marginBottom: 20, display: 'inline-flex' }}>Founding Access</div>
+          <h2 style={{ fontSize: 'clamp(30px, 4vw, 50px)', fontWeight: 900, letterSpacing: '-1.5px', lineHeight: 1.1, marginBottom: 16 }}>
+            One price.{' '}
+            <span className="gradient-text">Everything included.</span>
           </h2>
-          <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.45)', maxWidth: 560, margin: '0 auto 32px' }}>
-            Let&apos;s be honest about what this replaces — and what that costs.
+          <p style={{ fontSize: 17, color: 'var(--text-muted)', maxWidth: 420, margin: '0 auto' }}>
+            No tiers. No per-seat fees. No surprises. Lock in your founding rate and it never goes up.
           </p>
         </motion.div>
 
-        {/* Value stack */}
+        {/* Billing toggle */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          style={{
-            background: 'rgba(255,255,255,0.02)',
-            border: '1px solid rgba(255,255,255,0.07)',
-            borderRadius: 20,
-            padding: '36px 40px',
-            marginBottom: 48,
-          }}
-          className="value-stack"
+          transition={{ duration: 0.5 }}
+          style={{ display: 'flex', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, padding: 4, marginBottom: 32 }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-            <h3 style={{ fontSize: 18, fontWeight: 700, color: 'white' }}>What you&apos;d pay if you bought these separately:</h3>
-            <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)' }}>Monthly equivalent</div>
-          </div>
-
-          {VALUE_STACK.map((item, i) => (
-            <div
-              key={item.tool}
+          {(Object.keys(BILLING) as Term[]).map(t => (
+            <button
+              key={t}
+              onClick={() => setTerm(t)}
               style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                padding: '12px 0',
-                borderBottom: i < VALUE_STACK.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
-                gap: 12,
+                flex: 1, padding: '10px 8px', borderRadius: 9, border: 'none', cursor: 'pointer',
+                fontFamily: 'inherit', fontSize: 13, fontWeight: term === t ? 700 : 500,
+                background: term === t ? '#5B7BFF' : 'transparent',
+                color: term === t ? 'white' : 'var(--text-muted)',
+                transition: 'all 0.2s ease',
               }}
             >
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)', fontWeight: 500 }}>{item.tool}</div>
-                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.25)', marginTop: 2 }}>via {item.competitor}</div>
-              </div>
-              <div style={{ fontSize: 15, fontWeight: 700, color: '#dc2626', textDecoration: 'line-through', opacity: 0.7 }}>{item.price}</div>
-            </div>
+              {t.charAt(0).toUpperCase() + t.slice(1)}
+              {BILLING[t].saving && (
+                <span style={{ display: 'block', fontSize: 10, marginTop: 1, color: term === t ? 'rgba(255,255,255,0.7)' : '#22D3EE', fontWeight: 600 }}>
+                  {BILLING[t].saving}
+                </span>
+              )}
+            </button>
           ))}
+        </motion.div>
 
-          <div style={{ marginTop: 20, padding: '16px 20px', background: 'rgba(220,38,38,0.07)', borderRadius: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: 15, fontWeight: 600, color: 'rgba(255,255,255,0.6)' }}>Total if bought separately</span>
-            <span style={{ fontSize: 24, fontWeight: 900, color: '#dc2626', textDecoration: 'line-through' }}>£112/mo</span>
-          </div>
+        {/* Price card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          style={{
+            background: 'var(--card)', borderRadius: 20,
+            border: '1px solid rgba(91,123,255,0.35)',
+            boxShadow: '0 0 60px rgba(91,123,255,0.10), 0 2px 0 rgba(255,255,255,0.05) inset',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Top gradient bar */}
+          <div style={{ height: 3, background: 'linear-gradient(90deg, #5B7BFF, #22D3EE)' }} />
 
-          <div style={{ marginTop: 12, padding: '16px 20px', background: 'rgba(37,99,235,0.08)', border: '1px solid rgba(37,99,235,0.2)', borderRadius: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <span style={{ fontSize: 15, fontWeight: 700, color: 'white' }}>DNI Studio — everything above</span>
-              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', marginTop: 2 }}>+ Live session logger + Client wellness portal (nowhere else)</div>
+          <div style={{ padding: '36px 40px' }}>
+            {/* Price */}
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8, marginBottom: 6 }}>
+              <span style={{ fontSize: 64, fontWeight: 900, color: 'white', lineHeight: 1, letterSpacing: '-3px' }}>
+                £{plan.price}
+              </span>
+              <span style={{ fontSize: 16, color: 'var(--text-muted)', paddingBottom: 10 }}>/month</span>
             </div>
-            <div style={{ textAlign: 'right' }}>
-              <span style={{ fontSize: 28, fontWeight: 900, color: '#60a5fa' }}>£39<span style={{ fontSize: 14, fontWeight: 500 }}>/mo</span></span>
-              <div style={{ fontSize: 11, color: '#4ade80', marginTop: 2 }}>You save £73/mo</div>
+            <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 6 }}>{plan.label}</p>
+            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', marginBottom: 32 }}>
+              Your rate is locked in for life — even when we raise prices.
+            </p>
+
+            {/* CTA */}
+            <a
+              href="/offer"
+              className="btn-primary"
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '15px', borderRadius: 12, fontSize: 16, fontWeight: 700, textDecoration: 'none', marginBottom: 10, position: 'relative', zIndex: 1 }}
+            >
+              Claim founding price →
+            </a>
+            <p style={{ fontSize: 12, color: 'var(--text-subtle)', textAlign: 'center', marginBottom: 36 }}>
+              See full offer, T&amp;Cs, and sign — <a href="/offer" style={{ color: 'var(--accent-light)', textDecoration: 'none' }}>view the offer page</a>
+            </p>
+
+            {/* Included list */}
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 28 }}>
+              <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: 16 }}>Everything included</p>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 24px' }}>
+                {INCLUDED.map(item => (
+                  <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13.5, color: 'rgba(255,255,255,0.68)' }}>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
+                      <circle cx="7" cy="7" r="6" fill="rgba(91,123,255,0.18)" stroke="rgba(91,123,255,0.35)" strokeWidth="1"/>
+                      <path d="M4 7l2 2 4-4" stroke="#7B96FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    {item}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </motion.div>
 
-        {/* Billing toggle */}
-        <div style={{ textAlign: 'center', marginBottom: 40 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 100, padding: '6px 6px 6px 18px' }}>
-            <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>Monthly</span>
-            <button
-              onClick={() => setYearly(y => !y)}
-              style={{
-                width: 44, height: 24, borderRadius: 100, border: 'none', cursor: 'pointer',
-                background: yearly ? '#2563EB' : 'rgba(255,255,255,0.1)',
-                position: 'relative', transition: 'background 0.3s ease',
-              }}
-            >
-              <div style={{
-                position: 'absolute', top: 3, left: yearly ? 23 : 3,
-                width: 18, height: 18, borderRadius: '50%', background: 'white',
-                transition: 'left 0.3s ease',
-              }} />
-            </button>
-            <span style={{ fontSize: 13, color: yearly ? 'white' : 'rgba(255,255,255,0.5)' }}>
-              Annual
-              <span style={{ marginLeft: 6, fontSize: 11, background: 'rgba(22,163,74,0.15)', color: '#4ade80', padding: '2px 8px', borderRadius: 100, border: '1px solid rgba(22,163,74,0.25)' }}>
-                2 months free
-              </span>
-            </span>
-          </div>
-        </div>
-
-        {/* Plan cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 48 }} className="plan-grid">
-          {PLANS.map((plan, i) => (
-            <motion.div
-              key={plan.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className={plan.highlight ? 'pricing-featured' : ''}
-              style={{
-                borderRadius: 20,
-                padding: '32px 36px',
-                background: plan.highlight ? 'rgba(37,99,235,0.06)' : 'rgba(255,255,255,0.02)',
-                border: plan.highlight ? undefined : '1px solid rgba(255,255,255,0.07)',
-                position: 'relative',
-                overflow: 'hidden',
-              }}
-            >
-              {plan.badge && (
-                <div style={{
-                  position: 'absolute', top: 20, right: 20,
-                  background: 'linear-gradient(135deg, #2563EB, #06B6D4)',
-                  color: 'white', fontSize: 11, fontWeight: 700,
-                  padding: '4px 12px', borderRadius: 100,
-                }}>
-                  {plan.badge}
-                </div>
-              )}
-
-              <div style={{ marginBottom: 24 }}>
-                <div style={{ fontSize: 22, fontWeight: 800, color: 'white', marginBottom: 4 }}>{plan.name}</div>
-                <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)' }}>{plan.tagline}</div>
-              </div>
-
-              <div style={{ marginBottom: 28 }}>
-                <div style={{ display: 'flex', alignItems: 'flex-end', gap: 6 }}>
-                  <span style={{ fontSize: 52, fontWeight: 900, color: 'white', lineHeight: 1, letterSpacing: '-2px' }}>
-                    £{yearly ? Math.floor(plan.yearlyPrice / 12) : plan.price}
-                  </span>
-                  <span style={{ fontSize: 16, color: 'rgba(255,255,255,0.4)', paddingBottom: 8 }}>/mo</span>
-                </div>
-                {yearly && (
-                  <div style={{ fontSize: 12, color: '#4ade80', marginTop: 4 }}>
-                    £{plan.yearlyPrice}/yr — 2 months free
-                  </div>
-                )}
-              </div>
-
-              <a
-                href="https://pt-manager.onrender.com/register"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={plan.highlight ? 'btn-primary' : 'btn-ghost'}
-                style={{
-                  display: 'block', textAlign: 'center', textDecoration: 'none',
-                  padding: '14px', borderRadius: 12, fontSize: 15, fontWeight: 700,
-                  marginBottom: 6, position: 'relative', zIndex: 1,
-                }}
-              >
-                {plan.cta}
-              </a>
-              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', textAlign: 'center', marginBottom: 28 }}>
-                {plan.ctaNote}
-              </div>
-
-              <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 24, display: 'flex', flexDirection: 'column', gap: 11 }}>
-                {plan.features.map(f => (
-                  <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, color: 'rgba(255,255,255,0.65)' }}>
-                    <div style={{ width: 16, height: 16, borderRadius: '50%', background: 'rgba(37,99,235,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <svg width="8" height="8" viewBox="0 0 12 12" fill="none">
-                        <path d="M2 6l3 3 5-5" stroke="#60a5fa" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </div>
-                    {f}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Guarantee + Urgency */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }} className="guarantee-grid">
+        {/* Guarantee + urgency */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginTop: 20 }} className="guarantee-grid">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            style={{ background: 'rgba(22,163,74,0.05)', border: '1px solid rgba(22,163,74,0.15)', borderRadius: 16, padding: '24px 28px' }}
+            style={{ background: 'rgba(22,163,74,0.05)', border: '1px solid rgba(22,163,74,0.14)', borderRadius: 14, padding: '20px 22px' }}
           >
-            <div style={{ fontSize: 28, marginBottom: 10 }}>🛡️</div>
-            <div style={{ fontSize: 16, fontWeight: 700, color: 'white', marginBottom: 8 }}>30-Day Money-Back Guarantee</div>
-            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>
-              If DNI Studio doesn&apos;t save you at least 5 hours a week in your first 30 days, we&apos;ll refund every penny. No questions asked. No awkward email chains.
+            <div style={{ fontSize: 24, marginBottom: 8 }}>🛡️</div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: 'white', marginBottom: 6 }}>30-Day Money-Back</div>
+            <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.65 }}>
+              Doesn&apos;t save you 5 hours a week? Full refund. No questions.
             </p>
           </motion.div>
-
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            style={{ background: 'rgba(251,191,36,0.04)', border: '1px solid rgba(251,191,36,0.15)', borderRadius: 16, padding: '24px 28px' }}
+            style={{ background: 'rgba(251,191,36,0.04)', border: '1px solid rgba(251,191,36,0.13)', borderRadius: 14, padding: '20px 22px' }}
           >
-            <div style={{ fontSize: 28, marginBottom: 10 }}>⚡</div>
-            <div style={{ fontSize: 16, fontWeight: 700, color: 'white', marginBottom: 8 }}>Founding Member Price — Locked In Forever</div>
-            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>
-              Join now and your price is locked in for life — even when we raise rates. This founding price is only available for the first 50 trainers. Once we hit that, it goes up to £69/mo.
+            <div style={{ fontSize: 24, marginBottom: 8 }}>⚡</div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: 'white', marginBottom: 6 }}>Price Locked Forever</div>
+            <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.65 }}>
+              Founding price is only available for the first 50 studios. After that, it goes up.
             </p>
           </motion.div>
         </div>
       </div>
 
       <style>{`
-        @media (max-width: 760px) {
-          .plan-grid { grid-template-columns: 1fr !important; }
+        @media (max-width: 600px) {
           .guarantee-grid { grid-template-columns: 1fr !important; }
-          .value-stack { padding: 24px 20px !important; }
         }
       `}</style>
     </section>
