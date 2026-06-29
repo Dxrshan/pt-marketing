@@ -41,14 +41,15 @@ export default function Footer() {
               { label: 'Features', href: '#features' },
               { label: 'How It Works', href: '#how-it-works' },
               { label: 'Pricing', href: '#pricing' },
+              { label: 'View Offer', href: '/offer', external: false },
               { label: 'Login', href: 'https://pt-manager.onrender.com', external: true },
               { label: 'Register', href: 'https://pt-manager.onrender.com/register', external: true },
             ].map(link => (
-              link.external ? (
-                <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer"
-                  style={{ display: 'block', fontSize: 14, color: 'rgba(255,255,255,0.45)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = 'white')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}
+              link.external || link.href.startsWith('/') ? (
+                <a key={link.label} href={link.href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener noreferrer' : undefined}
+                  style={{ display: 'block', fontSize: 14, color: link.href === '/offer' ? 'rgba(201,168,106,0.7)' : 'rgba(255,255,255,0.45)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = link.href === '/offer' ? '#c9a86a' : 'white')}
+                  onMouseLeave={e => (e.currentTarget.style.color = link.href === '/offer' ? 'rgba(201,168,106,0.7)' : 'rgba(255,255,255,0.45)')}
                 >
                   {link.label}
                 </a>
