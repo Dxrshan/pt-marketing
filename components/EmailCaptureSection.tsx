@@ -77,7 +77,7 @@ export default function EmailCaptureSection() {
                   onClick={() => setType(t)}
                   style={{
                     flex: 1, padding: '10px', borderRadius: 9, border: 'none',
-                    background: type === t ? 'rgba(37,99,235,0.5)' : 'transparent',
+                    background: type === t ? 'rgba(91,123,255,0.5)' : 'transparent',
                     color: type === t ? 'white' : 'rgba(255,255,255,0.4)',
                     fontSize: 13, fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s',
                     fontFamily: 'inherit',
@@ -143,9 +143,9 @@ export default function EmailCaptureSection() {
               Welcome to the founding members list. We&apos;ll be in touch soon with your early access link and everything you need to get started.
             </p>
             <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.3)', marginTop: 16 }}>
-              In the meantime, the app is live at{' '}
-              <a href="https://pt-manager.onrender.com" target="_blank" rel="noopener noreferrer" style={{ color: '#60a5fa' }}>
-                pt-manager.onrender.com
+              The app is live now →{' '}
+              <a href="https://pt-manager.onrender.com" target="_blank" rel="noopener noreferrer" style={{ color: '#7B96FF', textDecoration: 'none' }}>
+                Try DNI Studio
               </a>
             </p>
           </motion.div>

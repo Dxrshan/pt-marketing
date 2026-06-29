@@ -28,7 +28,7 @@ export default function Footer() {
               The all-in-one platform built for personal trainers and studios who are serious about their business.
             </p>
             <div style={{ marginTop: 20, fontSize: 12, color: 'rgba(255,255,255,0.2)' }}>
-              A product by <span style={{ color: 'rgba(255,255,255,0.4)' }}>DNI Analytics Ltd</span>
+              A product by <span style={{ color: 'rgba(255,255,255,0.4)' }}>DNI Analytics Ltd</span> · Registered in England &amp; Wales
             </div>
           </div>
 
@@ -70,29 +70,21 @@ export default function Footer() {
             <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: 16 }}>
               Company
             </div>
-            {[
-              { label: 'DNI Analytics Ltd', href: '#' },
-              { label: 'Contact Us', href: 'mailto:darshan.mashru2@gmail.com' },
-              { label: 'Early Access', href: '#waitlist' },
-            ].map(link => (
-              link.href.startsWith('#') && !link.href.startsWith('#w') ? (
-                <button key={link.label} onClick={() => scrollTo(link.href)}
-                  style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, color: 'rgba(255,255,255,0.45)', marginBottom: 10, padding: 0, fontFamily: 'inherit', transition: 'color 0.2s' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = 'white')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}
-                >
-                  {link.label}
-                </button>
-              ) : (
-                <a key={link.label} href={link.href}
-                  style={{ display: 'block', fontSize: 14, color: 'rgba(255,255,255,0.45)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = 'white')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}
-                >
-                  {link.label}
-                </a>
-              )
-            ))}
+            <span style={{ display: 'block', fontSize: 14, color: 'rgba(255,255,255,0.45)', marginBottom: 10 }}>DNI Analytics Ltd</span>
+            <a href="mailto:darshan.mashru@dnianalytics.co.uk"
+              style={{ display: 'block', fontSize: 14, color: 'rgba(255,255,255,0.45)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'white')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}
+            >
+              Contact Us
+            </a>
+            <button onClick={() => scrollTo('#waitlist')}
+              style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, color: 'rgba(255,255,255,0.45)', marginBottom: 10, padding: 0, fontFamily: 'inherit', transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'white')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}
+            >
+              Early Access
+            </button>
           </div>
         </div>
 
@@ -103,14 +95,18 @@ export default function Footer() {
             © 2026 DNI Analytics Ltd. All rights reserved. Registered in England & Wales.
           </p>
           <div style={{ display: 'flex', gap: 20 }}>
-            {['Privacy Policy', 'Terms of Service'].map(item => (
-              <a key={item} href="#" style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', textDecoration: 'none' }}
-                onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.5)')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
-              >
-                {item}
-              </a>
-            ))}
+            <a href="/offer#terms" style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', textDecoration: 'none', transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.5)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
+            >
+              Terms of Service
+            </a>
+            <a href="mailto:darshan.mashru@dnianalytics.co.uk" style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', textDecoration: 'none', transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.5)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
+            >
+              Privacy Enquiries
+            </a>
           </div>
         </div>
       </div>

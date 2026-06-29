@@ -346,7 +346,7 @@ export default function OfferPage() {
 
       <div className="section-divider no-print">Terms &amp; Conditions</div>
 
-      <div className="terms-page">
+      <div className="terms-page" id="terms">
         <div className="terms-card">
           <div className="terms-title">Terms &amp; Conditions of Service</div>
           <div className="terms-intro">These terms govern the provision of the DNI Studio software platform ("the Service") by DNI Analytics ("we", "us", "our") to the studio named above ("the Customer", "you"). By signing the offer sheet or by accessing or using the Service, you agree to be bound by these terms.</div>
