@@ -42,8 +42,8 @@ export default function Footer() {
               { label: 'How It Works', href: '#how-it-works' },
               { label: 'Pricing', href: '#pricing' },
               { label: 'View Offer', href: '/offer', external: false },
-              { label: 'Login', href: 'https://pt-manager.onrender.com', external: true },
-              { label: 'Register', href: 'https://pt-manager.onrender.com/register', external: true },
+              { label: 'Login', href: 'https://app.dnianalytics.com', external: true },
+              { label: 'Register', href: 'https://app.dnianalytics.com/register', external: true },
             ].map(link => (
               link.external || link.href.startsWith('/') ? (
                 <a key={link.label} href={link.href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener noreferrer' : undefined}

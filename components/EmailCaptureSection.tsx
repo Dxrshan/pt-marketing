@@ -144,7 +144,7 @@ export default function EmailCaptureSection() {
             </p>
             <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.3)', marginTop: 16 }}>
               In the meantime, the app is live at{' '}
-              <a href="https://pt-manager.onrender.com" target="_blank" rel="noopener noreferrer" style={{ color: '#60a5fa' }}>
+              <a href="https://app.dnianalytics.com" target="_blank" rel="noopener noreferrer" style={{ color: '#60a5fa' }}>
                 pt-manager.onrender.com
               </a>
             </p>

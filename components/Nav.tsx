@@ -140,7 +140,7 @@ export default function Nav() {
             {/* CTAs */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <a
-                href="https://pt-manager.onrender.com"
+                href="https://app.dnianalytics.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-ghost hidden-mobile"
@@ -234,7 +234,7 @@ export default function Nav() {
               View Offer
             </a>
             <a
-              href="https://pt-manager.onrender.com"
+              href="https://app.dnianalytics.com"
               target="_blank"
               rel="noopener noreferrer"
               style={{
