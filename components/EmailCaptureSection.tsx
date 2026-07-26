@@ -144,7 +144,7 @@ export default function EmailCaptureSection() {
             </p>
             <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.3)', marginTop: 16 }}>
               The app is live now →{' '}
-              <a href="https://pt-manager.onrender.com" target="_blank" rel="noopener noreferrer" style={{ color: '#7B96FF', textDecoration: 'none' }}>
+              <a href="https://app.dnianalytics.com" style={{ color: '#7B96FF', textDecoration: 'none' }}>
                 Try DNI Studio
               </a>
             </p>
