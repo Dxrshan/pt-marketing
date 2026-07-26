@@ -141,8 +141,6 @@ export default function Nav() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <a
                 href="https://pt-manager.onrender.com"
-                target="_blank"
-                rel="noopener noreferrer"
                 className="btn-ghost hidden-mobile"
                 style={{
                   padding: '8px 18px', borderRadius: 8,
@@ -235,8 +233,6 @@ export default function Nav() {
             </a>
             <a
               href="https://pt-manager.onrender.com"
-              target="_blank"
-              rel="noopener noreferrer"
               style={{
                 display: 'block', marginTop: 16,
                 color: 'rgba(255,255,255,0.6)', fontSize: 16,
