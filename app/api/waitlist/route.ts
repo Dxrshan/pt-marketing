@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
     await resend.emails.send({
       from:    'DNI Studio <onboarding@resend.dev>',
-      to:      'darshan.mashru@dnianalytics.co.uk',
+      to:      'darshan.mashru@dnianalytics.com',
       subject: `New early access signup: ${email.toLowerCase().trim()}`,
       html: `
         <div style="font-family:sans-serif;max-width:480px;padding:24px;background:#f9f9f9;border-radius:8px;">

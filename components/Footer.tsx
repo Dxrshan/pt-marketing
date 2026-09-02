@@ -71,7 +71,7 @@ export default function Footer() {
               Company
             </div>
             <span style={{ display: 'block', fontSize: 14, color: 'rgba(255,255,255,0.45)', marginBottom: 10 }}>DNI Analytics Ltd</span>
-            <a href="mailto:darshan.mashru@dnianalytics.co.uk"
+            <a href="mailto:darshan.mashru@dnianalytics.com"
               style={{ display: 'block', fontSize: 14, color: 'rgba(255,255,255,0.45)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget.style.color = 'white')}
               onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}
@@ -101,7 +101,7 @@ export default function Footer() {
             >
               Terms of Service
             </a>
-            <a href="mailto:darshan.mashru@dnianalytics.co.uk" style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', textDecoration: 'none', transition: 'color 0.2s' }}
+            <a href="mailto:darshan.mashru@dnianalytics.com" style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', textDecoration: 'none', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.5)')}
               onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
             >
