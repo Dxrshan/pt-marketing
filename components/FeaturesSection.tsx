@@ -85,7 +85,7 @@ const FEATURES = [
     badge: 'Live Session Logger',
     headline: 'Log every set in real time. Your clients deserve more than a clipboard.',
     body: 'Track weight, reps, and rest times mid-session. Automatically spots personal bests, shows progress charts per exercise, and gives your clients an elite experience from your phone or tablet.',
-    bullets: ['Auto-detects personal bests instantly', 'Built-in rest timer with audio cues', 'Per-exercise strength progression charts', 'Works on any device, mid-session'],
+    bullets: ['Auto-detects personal bests instantly', 'Built-in rest timer with audio cues', 'Per-exercise strength progression charts', 'Video guides & auto-timers for every exercise'],
     mockup: <LiveSessionMockup />,
     reverse: false,
     accentColor: '#5B7BFF',
@@ -102,11 +102,11 @@ const FEATURES = [
 ]
 
 const FEATURE_GRID = [
-  { icon: '👥', title: 'Client Portal', desc: 'Every client gets their own dashboard — workouts, wellness, progress, and upcoming sessions.' },
+  { icon: '👥', title: 'Client Portal', desc: 'Every client gets their own app — workouts, nutrition logging, a daily wellness journal, and their own AI coach.' },
   { icon: '💰', title: 'Payments & Invoicing', desc: 'Log payments, auto-flag overdue accounts, and generate professional receipts instantly.' },
   { icon: '🎯', title: 'Lead Pipeline', desc: 'Track every enquiry from first message to paid client. Nothing falls through.' },
   { icon: '📊', title: 'Smart Dashboard', desc: 'Action items surface automatically — who needs attention before they ghost you.' },
-  { icon: '📈', title: 'Progress Tracking', desc: 'Body metrics, strength curves, and daily wellness logs — all in one place.' },
+  { icon: '📈', title: 'Progress Tracking', desc: 'Body metrics, strength curves, and a training calendar showing every session at a glance.' },
   { icon: '🔔', title: 'Smart Alerts', desc: 'Automatic flags for at-risk clients, low packages, missed sessions, and milestones.' },
   { icon: '👤', title: 'Team Permissions', desc: 'Trainer, manager, admin, front desk — each with exactly the right level of access.' },
   { icon: '📅', title: 'Session Scheduling', desc: 'Full calendar with conflict detection, bulk session generation, and no-show tracking.' },
