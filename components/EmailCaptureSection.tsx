@@ -17,7 +17,7 @@ export default function EmailCaptureSection() {
       await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name, type, source: 'cta' }),
+        body: JSON.stringify({ email, name, type, source: 'website' }),
       })
       setSubmitted(true)
     } catch {
