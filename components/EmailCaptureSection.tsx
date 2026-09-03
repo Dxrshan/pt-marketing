@@ -91,6 +91,8 @@ export default function EmailCaptureSection() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 16 }}>
               <input
                 type="text"
+                name="given-name"
+                autoComplete="given-name"
                 placeholder="Your first name"
                 value={name}
                 onChange={e => setName(e.target.value)}
@@ -99,6 +101,8 @@ export default function EmailCaptureSection() {
               />
               <input
                 type="email"
+                name="email"
+                autoComplete="email"
                 placeholder="your@email.com"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
