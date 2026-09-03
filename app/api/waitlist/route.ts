@@ -2,10 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
-// Resend's shared sending domain — works without any setup. Swap to a
-// darshan.mashru@dnianalytics.com "from" once that domain is verified inside
-// Resend's dashboard (sending from an unverified domain fails outright).
-const FROM = 'DNI Studio <onboarding@resend.dev>'
+// dnianalytics.com is verified in Resend, so send from it directly — the
+// shared onboarding@resend.dev sender only delivers to the Resend account's
+// own signup email, which silently blocked every notify email to
+// darshan.mashru@dnianalytics.com until now.
+const FROM = 'DNI Studio <hello@dnianalytics.com>'
 
 export async function POST(req: NextRequest) {
   try {
