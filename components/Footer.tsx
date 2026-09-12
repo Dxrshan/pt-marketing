@@ -78,6 +78,13 @@ export default function Footer() {
             >
               Contact Us
             </a>
+            <a href="/legal/privacy-policy"
+              style={{ display: 'block', fontSize: 14, color: 'rgba(255,255,255,0.45)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'white')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}
+            >
+              Privacy Policy
+            </a>
             <button onClick={() => scrollTo('#waitlist')}
               style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, color: 'rgba(255,255,255,0.45)', marginBottom: 10, padding: 0, fontFamily: 'inherit', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget.style.color = 'white')}
@@ -94,19 +101,20 @@ export default function Footer() {
           <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)' }}>
             © 2026 DNI Analytics Ltd. All rights reserved. Registered in England & Wales.
           </p>
-          <div style={{ display: 'flex', gap: 20 }}>
-            <a href="/offer#terms" style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', textDecoration: 'none', transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.5)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
-            >
-              Terms of Service
-            </a>
-            <a href="mailto:darshan.mashru@dnianalytics.com" style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', textDecoration: 'none', transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.5)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
-            >
-              Privacy Enquiries
-            </a>
+          <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+            {[
+              { label: 'Privacy Policy',   href: '/legal/privacy-policy' },
+              { label: 'Terms of Service', href: '/legal/terms-of-service' },
+              { label: 'Cookie Policy',    href: '/legal/cookie-policy' },
+              { label: 'Promo Terms',      href: '/offer#terms' },
+            ].map(link => (
+              <a key={link.href} href={link.href} style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', textDecoration: 'none', transition: 'color 0.2s' }}
+                onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.5)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
+              >
+                {link.label}
+              </a>
+            ))}
           </div>
         </div>
       </div>
