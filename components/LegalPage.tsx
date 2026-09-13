@@ -5,6 +5,7 @@ const DOCS = [
   { label: 'Privacy Policy',   href: '/legal/privacy-policy' },
   { label: 'Terms of Service', href: '/legal/terms-of-service' },
   { label: 'Cookie Policy',    href: '/legal/cookie-policy' },
+  { label: 'DPA',              href: '/legal/dpa' },
 ]
 
 export default function LegalPage({

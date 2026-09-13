@@ -106,6 +106,7 @@ export default function Footer() {
               { label: 'Privacy Policy',   href: '/legal/privacy-policy' },
               { label: 'Terms of Service', href: '/legal/terms-of-service' },
               { label: 'Cookie Policy',    href: '/legal/cookie-policy' },
+              { label: 'DPA',              href: '/legal/dpa' },
               { label: 'Promo Terms',      href: '/offer#terms' },
             ].map(link => (
               <a key={link.href} href={link.href} style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', textDecoration: 'none', transition: 'color 0.2s' }}
