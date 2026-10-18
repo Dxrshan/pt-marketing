@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 // dnianalytics.com is verified in Resend, so send from it directly — the
 // shared onboarding@resend.dev sender only delivers to the Resend account's
 // own signup email, which silently blocked every notify email to
@@ -45,6 +44,11 @@ export async function POST(req: NextRequest) {
     if (!email || !email.includes('@')) {
       return NextResponse.json({ error: 'Valid email required' }, { status: 400 })
     }
+
+    // Created per request, not at module load: the Resend constructor throws
+    // without a key, and Next evaluates this module at build time, so a build
+    // without RESEND_API_KEY (e.g. Vercel previews) would fail outright.
+    const resend = new Resend(process.env.RESEND_API_KEY)
 
     const cleanEmail = email.toLowerCase().trim()
     const firstName = (name || '').trim()
