@@ -2,19 +2,19 @@ export default function DpaContent() {
   return (
     <>
       <div className="legal-callout">
-        <p><strong>What this is:</strong> when a studio uses DNI Studio to manage its clients, the studio is the <strong>data controller</strong> and we are its <strong>processor</strong>. Article 28 UK GDPR requires that relationship to be governed by a written contract. This is that contract.</p>
+        <p><strong>What this is:</strong> when a studio uses DNI Studios to manage its clients, the studio is the <strong>data controller</strong> and we are its <strong>processor</strong>. Article 28 UK GDPR requires that relationship to be governed by a written contract. This is that contract.</p>
         <p><strong>You may not need to sign anything.</strong> These terms already apply automatically to every customer through section 7 of our <a href="/legal/terms-of-service">Terms of Service</a>. This page exists for studios whose own compliance process wants the processor terms as a separate, signable document.</p>
       </div>
 
       <h2>1. Parties</h2>
       <ul>
-        <li><strong>Processor:</strong> DNI Analytics Ltd, registered in England and Wales (&quot;we&quot;, &quot;us&quot;)</li>
-        <li><strong>Controller:</strong> the studio or business subscribing to DNI Studio (&quot;you&quot;)</li>
+        <li><strong>Processor:</strong> DNI Ltd, trading as DNI Analytics, a company registered in England and Wales under company number 15630271, registered office 78a Deacon Road, London NW2 5QJ (&quot;we&quot;, &quot;us&quot;)</li>
+        <li><strong>Controller:</strong> the studio or business subscribing to DNI Studios (&quot;you&quot;)</li>
       </ul>
       <p>This agreement takes effect on the date you begin using the Service and continues for as long as we process personal data on your behalf.</p>
 
       <h2>2. Subject matter and duration</h2>
-      <p>We process personal data solely to provide the DNI Studio platform to you — hosting it, keeping it available, supporting it, and doing what you instruct through it. Processing continues for the life of your subscription and for no more than 90 days after it ends.</p>
+      <p>We process personal data solely to provide the DNI Studios platform to you — hosting it, keeping it available, supporting it, and doing what you instruct through it. Processing continues for the life of your subscription and for no more than 90 days after it ends.</p>
 
       <h2>3. Nature and purpose of processing</h2>
       <ul>

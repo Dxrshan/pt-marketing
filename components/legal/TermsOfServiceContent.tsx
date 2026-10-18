@@ -2,11 +2,11 @@ export default function TermsOfServiceContent() {
   return (
     <>
       <div className="legal-callout">
-        <p><strong>Please read section 9 carefully.</strong> DNI Studio is software for running a training business. It is <strong>not</strong> a source of medical, health, nutritional or fitness advice, and we are not responsible for training decisions made by you or your trainer.</p>
+        <p><strong>Please read section 9 carefully.</strong> DNI Studios is software for running a training business. It is <strong>not</strong> a source of medical, health, nutritional or fitness advice, and we are not responsible for training decisions made by you or your trainer.</p>
       </div>
 
       <h2>1. These terms</h2>
-      <p>These terms form a binding agreement between you and <strong>DNI Analytics Ltd</strong>, a company registered in England and Wales (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;), covering your use of DNI Studio at app.dnianalytics.com and our website at dnianalytics.com (the &quot;Service&quot;).</p>
+      <p>These terms form a binding agreement between you and <strong>DNI Ltd</strong>, trading as DNI Analytics, a company registered in England and Wales under company number 15630271, with its registered office at 78a Deacon Road, London NW2 5QJ (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;), covering your use of DNI Studios at app.dnianalytics.com and our website at dnianalytics.com (the &quot;Service&quot;).</p>
       <p>By creating an account, or by using the Service, you accept these terms. If you do not accept them, do not use the Service.</p>
 
       <h2>2. Who these terms apply to</h2>
@@ -73,7 +73,7 @@ export default function TermsOfServiceContent() {
 
       <h2>9. No medical or professional advice</h2>
       <div className="legal-callout">
-        <p><strong>DNI Studio is a business management and record-keeping tool. It is not a medical device, and it does not provide medical, health, nutritional, psychological or fitness advice.</strong></p>
+        <p><strong>DNI Studios is a business management and record-keeping tool. It is not a medical device, and it does not provide medical, health, nutritional, psychological or fitness advice.</strong></p>
       </div>
       <p>You acknowledge and agree that:</p>
       <ul>
@@ -128,7 +128,8 @@ export default function TermsOfServiceContent() {
       </ul>
 
       <h2>16. Contact</h2>
-      <p>DNI Analytics Ltd, registered in England and Wales.<br />
+      <p>DNI Ltd (trading as DNI Analytics), registered in England and Wales, company number 15630271.<br />
+      Registered office: 78a Deacon Road, London NW2 5QJ.<br />
       Email: <a href="mailto:darshan.mashru@dnianalytics.com">darshan.mashru@dnianalytics.com</a></p>
     </>
   )

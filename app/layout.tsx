@@ -2,15 +2,15 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'DNI Studio — The Command Centre for Elite Personal Trainers',
+  title: 'DNI Studios — The Command Centre for Elite Personal Trainers',
   description: 'Manage clients, log sessions in real time, track payments, and grow your training business — all in one professional platform built for PTs.',
   keywords: 'personal trainer software, PT management app, fitness business software, client management personal trainer',
   icons: {
     icon: '/favicon.svg',
   },
   openGraph: {
-    title: 'DNI Studio — Built for Elite Personal Trainers',
-    description: 'Stop juggling WhatsApp, spreadsheets, and sticky notes. DNI Studio is the all-in-one platform for serious PTs.',
+    title: 'DNI Studios — Built for Elite Personal Trainers',
+    description: 'Stop juggling WhatsApp, spreadsheets, and sticky notes. DNI Studios is the all-in-one platform for serious PTs.',
     type: 'website',
   },
 }

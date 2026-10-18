@@ -50,7 +50,7 @@ export default function EmailCaptureSection() {
           </h2>
 
           <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, marginBottom: 40 }}>
-            Get early access, lock in founding member pricing forever, and help shape the future of DNI Studio.
+            Get early access, lock in founding member pricing forever, and help shape the future of DNI Studios.
           </p>
         </motion.div>
 
@@ -149,7 +149,7 @@ export default function EmailCaptureSection() {
             <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.3)', marginTop: 16 }}>
               The app is live now →{' '}
               <a href="https://app.dnianalytics.com" style={{ color: '#7B96FF', textDecoration: 'none' }}>
-                Try DNI Studio
+                Try DNI Studios
               </a>
             </p>
           </motion.div>

@@ -3,13 +3,13 @@ import LegalPage from '@/components/LegalPage'
 import TermsOfServiceContent from '@/components/legal/TermsOfServiceContent'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — DNI Studio',
-  description: 'The Terms of Service for DNI Studio, a product of DNI Analytics Ltd.',
+  title: 'Terms of Service — DNI Studios',
+  description: 'The Terms of Service for DNI Studios, a product of DNI Ltd (trading as DNI Analytics).',
 }
 
 export default function Page() {
   return (
-    <LegalPage title="Terms of Service" updated="12 September 2026" current="/legal/terms-of-service">
+    <LegalPage title="Terms of Service" updated="18 October 2026" current="/legal/terms-of-service">
       <TermsOfServiceContent />
     </LegalPage>
   )

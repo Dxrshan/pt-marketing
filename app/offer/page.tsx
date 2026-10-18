@@ -338,7 +338,7 @@ export default function OfferPage() {
             </div>
             <div className="sign-box">
               <div className="sign-line"></div>
-              <div className="sign-label">DNI Studio — Authorised</div>
+              <div className="sign-label">DNI Studios — Authorised</div>
             </div>
           </div>
         </div>
@@ -349,7 +349,7 @@ export default function OfferPage() {
       <div className="terms-page" id="terms">
         <div className="terms-card">
           <div className="terms-title">Terms &amp; Conditions of Service</div>
-          <div className="terms-intro">These terms govern the provision of the DNI Studio software platform ("the Service") by DNI Analytics ("we", "us", "our") to the studio named above ("the Customer", "you"). By signing the offer sheet or by accessing or using the Service, you agree to be bound by these terms.</div>
+          <div className="terms-intro">These terms govern the provision of the DNI Studios software platform ("the Service") by DNI Ltd, trading as DNI Analytics, a company registered in England and Wales under company number 15630271, registered office 78a Deacon Road, London NW2 5QJ ("we", "us", "our") to the studio named above ("the Customer", "you"). By signing the offer sheet or by accessing or using the Service, you agree to be bound by these terms.</div>
 
           {[
             { num: '1.', title: 'Subscription & Payment', paras: [
@@ -372,7 +372,7 @@ export default function OfferPage() {
               'You agree to use the Service only for lawful purposes connected with the operation of a fitness training business, and not to attempt to reverse-engineer, resell, or sublicense the Service without prior written consent.',
             ]},
             { num: '6.', title: 'Intellectual Property', paras: [
-              'All software, design, and branding associated with the Service remain the exclusive property of DNI Analytics. Nothing in this agreement transfers any intellectual property rights to the Customer.',
+              'All software, design, and branding associated with the Service remain the exclusive property of DNI Ltd. Nothing in this agreement transfers any intellectual property rights to the Customer.',
             ]},
             { num: '7.', title: 'Limitation of Liability', paras: [
               'The Service is provided on an "as is" basis. To the fullest extent permitted by law, our total liability arising from or in connection with this agreement is limited to the total fees paid by you in the 3 months preceding the claim.',

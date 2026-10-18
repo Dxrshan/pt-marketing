@@ -2,11 +2,11 @@ export default function PrivacyPolicyContent() {
   return (
     <>
       <div className="legal-callout">
-        <p><strong>In short:</strong> DNI Studio is software sold to personal training studios. When a studio uses it to manage its clients, <strong>the studio decides what happens to that client data — we only hold and process it on the studio&apos;s instructions.</strong> This policy explains what we collect, why, who we share it with, and the rights you have.</p>
+        <p><strong>In short:</strong> DNI Studios is software sold to personal training studios. When a studio uses it to manage its clients, <strong>the studio decides what happens to that client data — we only hold and process it on the studio&apos;s instructions.</strong> This policy explains what we collect, why, who we share it with, and the rights you have.</p>
       </div>
 
       <h2>1. Who we are</h2>
-      <p>DNI Studio is operated by <strong>DNI Analytics Ltd</strong>, a company registered in England and Wales (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;). We can be contacted at <a href="mailto:darshan.mashru@dnianalytics.com">darshan.mashru@dnianalytics.com</a>.</p>
+      <p>DNI Studios is operated by <strong>DNI Ltd</strong>, trading as DNI Analytics, a company registered in England and Wales under company number 15630271, with its registered office at 78a Deacon Road, London NW2 5QJ (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;). We can be contacted at <a href="mailto:darshan.mashru@dnianalytics.com">darshan.mashru@dnianalytics.com</a>.</p>
       <p>This policy covers our website at dnianalytics.com and our application at app.dnianalytics.com (together, the &quot;Service&quot;).</p>
 
       <h2>2. Two different roles we play</h2>
@@ -168,7 +168,8 @@ export default function PrivacyPolicyContent() {
       <p>We may update this policy as the Service develops or the law changes. The &quot;last updated&quot; date at the top always reflects the current version. If a change materially affects your rights we will notify account holders by email or in-app notice before it takes effect.</p>
 
       <h2>14. Contact</h2>
-      <p>DNI Analytics Ltd, registered in England and Wales.<br />
+      <p>DNI Ltd (trading as DNI Analytics), registered in England and Wales, company number 15630271.<br />
+      Registered office: 78a Deacon Road, London NW2 5QJ.<br />
       Email: <a href="mailto:darshan.mashru@dnianalytics.com">darshan.mashru@dnianalytics.com</a></p>
     </>
   )

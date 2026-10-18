@@ -3,13 +3,13 @@ import LegalPage from '@/components/LegalPage'
 import DpaContent from '@/components/legal/DpaContent'
 
 export const metadata: Metadata = {
-  title: 'Data Processing Agreement — DNI Studio',
-  description: 'The Article 28 UK GDPR data processing agreement between DNI Analytics Ltd and studios using DNI Studio.',
+  title: 'Data Processing Agreement — DNI Studios',
+  description: 'The Article 28 UK GDPR data processing agreement between DNI Ltd (trading as DNI Analytics) and studios using DNI Studios.',
 }
 
 export default function Page() {
   return (
-    <LegalPage title="Data Processing Agreement" updated="13 September 2026" current="/legal/dpa">
+    <LegalPage title="Data Processing Agreement" updated="18 October 2026" current="/legal/dpa">
       <DpaContent />
     </LegalPage>
   )

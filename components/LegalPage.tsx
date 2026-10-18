@@ -30,7 +30,7 @@ export default function LegalPage({
                 <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="white" />
               </svg>
             </div>
-            <span style={{ fontWeight: 700, fontSize: 17, color: 'var(--text)', letterSpacing: '-0.3px' }}>DNI Studio</span>
+            <span style={{ fontWeight: 700, fontSize: 17, color: 'var(--text)', letterSpacing: '-0.3px' }}>DNI Studios</span>
           </Link>
           <Link href="/" style={{ fontSize: 14, color: 'var(--text-muted)', textDecoration: 'none' }}>← Back to site</Link>
         </div>
@@ -39,7 +39,7 @@ export default function LegalPage({
       <div style={{ maxWidth: 820, margin: '0 auto', padding: '52px 24px 72px' }}>
         <h1 style={{ fontSize: 38, fontWeight: 800, color: 'var(--text)', letterSpacing: '-1px', margin: 0 }}>{title}</h1>
         <p style={{ fontSize: 14, color: 'var(--text-subtle)', margin: '10px 0 0' }}>
-          Last updated {updated} · DNI Analytics Ltd, registered in England &amp; Wales
+          Last updated {updated} · DNI Ltd (trading as DNI Analytics), registered in England &amp; Wales, company number 15630271
         </p>
 
         <nav style={{ display: 'flex', flexWrap: 'wrap', gap: 10, margin: '28px 0 44px' }}>

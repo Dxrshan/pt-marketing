@@ -6,7 +6,7 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 // shared onboarding@resend.dev sender only delivers to the Resend account's
 // own signup email, which silently blocked every notify email to
 // darshan.mashru@dnianalytics.com until now.
-const FROM = 'DNI Studio <hello@dnianalytics.com>'
+const FROM = 'DNI Studios <hello@dnianalytics.com>'
 
 // Table-based layout (not flex/grid) — the only structure that survives
 // Outlook desktop's Word rendering engine as well as Gmail/Apple Mail.
@@ -20,7 +20,7 @@ const emailShell = (bodyHtml: string) => `
         <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">
           <tr>
             <td style="width:30px;height:30px;border-radius:9px;background:#5b7bff;background:linear-gradient(135deg,#5b7bff,#8b5cf6);text-align:center;vertical-align:middle;font-size:15px;line-height:30px;">⚡</td>
-            <td style="padding-left:10px;font-size:17px;font-weight:800;color:#ffffff;letter-spacing:-0.3px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">DNI Studio</td>
+            <td style="padding-left:10px;font-size:17px;font-weight:800;color:#ffffff;letter-spacing:-0.3px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">DNI Studios</td>
           </tr>
         </table>
       </td>
@@ -32,7 +32,7 @@ const emailShell = (bodyHtml: string) => `
     </tr>
     <tr>
       <td style="padding-top:24px;text-align:center;">
-        <p style="margin:0;font-size:12.5px;color:#5f5f75;">DNI Analytics Ltd · UK-based · <a href="https://dnianalytics.com" style="color:#7c8cff;text-decoration:none;">dnianalytics.com</a></p>
+        <p style="margin:0;font-size:12.5px;color:#5f5f75;">DNI Ltd, trading as DNI Analytics · Company No. 15630271 · <a href="https://dnianalytics.com" style="color:#7c8cff;text-decoration:none;">dnianalytics.com</a></p>
       </td>
     </tr>
   </table>
@@ -96,19 +96,19 @@ export async function POST(req: NextRequest) {
             <div style="font-size:24px;font-weight:800;color:#ffffff;letter-spacing:-0.5px;">You're in${firstName ? `, ${firstName}` : ''}!</div>
           </td></tr>
           <tr><td style="padding:14px 32px 0;text-align:center;">
-            <p style="margin:0 0 12px;font-size:15px;line-height:1.7;color:#a3a3b8;">Thanks for joining the <span style="color:#c7d2fe;font-weight:700;">DNI Studio</span> founding members list.</p>
+            <p style="margin:0 0 12px;font-size:15px;line-height:1.7;color:#a3a3b8;">Thanks for joining the <span style="color:#c7d2fe;font-weight:700;">DNI Studios</span> founding members list.</p>
             <p style="margin:0;font-size:15px;line-height:1.7;color:#a3a3b8;">Your founding member pricing is locked in — we'll be in touch soon with your early access details.</p>
           </td></tr>
           <tr><td style="padding:28px 32px 8px;text-align:center;">
             <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">
               <tr><td style="border-radius:12px;background:#5b7bff;background:linear-gradient(135deg,#5b7bff,#8b5cf6);">
-                <a href="https://app.dnianalytics.com" style="display:inline-block;padding:14px 32px;font-size:15px;font-weight:700;color:#ffffff;text-decoration:none;">Try DNI Studio →</a>
+                <a href="https://app.dnianalytics.com" style="display:inline-block;padding:14px 32px;font-size:15px;font-weight:700;color:#ffffff;text-decoration:none;">Try DNI Studios →</a>
               </td></tr>
             </table>
           </td></tr>
           <tr><td style="padding:16px 32px 36px;text-align:center;">
             <p style="margin:0 0 20px;font-size:12.5px;color:#5f5f75;">The app's already live — no need to wait.</p>
-            <p style="margin:0;font-size:13px;color:#8b8ba3;">— Darshan, founder of DNI Studio</p>
+            <p style="margin:0;font-size:13px;color:#8b8ba3;">— Darshan, founder of DNI Studios</p>
           </td></tr>
         </table>
       `),
