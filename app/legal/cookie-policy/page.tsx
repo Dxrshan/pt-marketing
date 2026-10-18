@@ -3,13 +3,13 @@ import LegalPage from '@/components/LegalPage'
 import CookiePolicyContent from '@/components/legal/CookiePolicyContent'
 
 export const metadata: Metadata = {
-  title: 'Cookie Policy — DNI Studio',
-  description: 'The Cookie Policy for DNI Studio, a product of DNI Analytics Ltd.',
+  title: 'Cookie Policy — DNI Studios',
+  description: 'The Cookie Policy for DNI Studios, a product of DNI Ltd (trading as DNI Analytics).',
 }
 
 export default function Page() {
   return (
-    <LegalPage title="Cookie Policy" updated="12 September 2026" current="/legal/cookie-policy">
+    <LegalPage title="Cookie Policy" updated="18 October 2026" current="/legal/cookie-policy">
       <CookiePolicyContent />
     </LegalPage>
   )

@@ -22,13 +22,13 @@ export default function Footer() {
                   <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="white" />
                 </svg>
               </div>
-              <span style={{ fontWeight: 700, fontSize: 17, color: 'white', letterSpacing: '-0.3px' }}>DNI Studio</span>
+              <span style={{ fontWeight: 700, fontSize: 17, color: 'white', letterSpacing: '-0.3px' }}>DNI Studios</span>
             </div>
             <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.35)', lineHeight: 1.7, maxWidth: 280 }}>
               The all-in-one platform built for personal trainers and studios who are serious about their business.
             </p>
             <div style={{ marginTop: 20, fontSize: 12, color: 'rgba(255,255,255,0.2)' }}>
-              A product by <span style={{ color: 'rgba(255,255,255,0.4)' }}>DNI Analytics Ltd</span> · Registered in England &amp; Wales
+              A product of DNI Analytics, a trading name of <span style={{ color: 'rgba(255,255,255,0.4)' }}>DNI Ltd</span> · Company No. 15630271
             </div>
           </div>
 
@@ -70,7 +70,7 @@ export default function Footer() {
             <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: 16 }}>
               Company
             </div>
-            <span style={{ display: 'block', fontSize: 14, color: 'rgba(255,255,255,0.45)', marginBottom: 10 }}>DNI Analytics Ltd</span>
+            <span style={{ display: 'block', fontSize: 14, color: 'rgba(255,255,255,0.45)', marginBottom: 10 }}>DNI Ltd</span>
             <a href="mailto:darshan.mashru@dnianalytics.com"
               style={{ display: 'block', fontSize: 14, color: 'rgba(255,255,255,0.45)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget.style.color = 'white')}
@@ -99,7 +99,7 @@ export default function Footer() {
 
         <div style={{ marginTop: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
           <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)' }}>
-            © 2026 DNI Analytics Ltd. All rights reserved. Registered in England & Wales.
+            © 2026 DNI Ltd, trading as DNI Analytics. All rights reserved. Registered in England & Wales, company number 15630271. Registered office: 78a Deacon Road, London NW2 5QJ.
           </p>
           <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
             {[

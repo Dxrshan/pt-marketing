@@ -2,15 +2,15 @@ export default function CookiePolicyContent() {
   return (
     <>
       <div className="legal-callout">
-        <p><strong>In short:</strong> DNI Studio uses very few cookies. We set <strong>none</strong> for advertising and we do <strong>not</strong> sell your data. What we do store falls into two groups: things the app needs to work, and analytics that tell us which features are used.</p>
+        <p><strong>In short:</strong> DNI Studios uses very few cookies. We set <strong>none</strong> for advertising and we do <strong>not</strong> sell your data. What we do store falls into two groups: things the app needs to work, and analytics that tell us which features are used.</p>
       </div>
 
       <h2>1. What this covers</h2>
-      <p>This policy explains the cookies and similar technologies used on dnianalytics.com and app.dnianalytics.com, operated by <strong>DNI Analytics Ltd</strong>, registered in England and Wales. Read it alongside our <a href="/legal/privacy-policy">Privacy Policy</a>.</p>
+      <p>This policy explains the cookies and similar technologies used on dnianalytics.com and app.dnianalytics.com, operated by <strong>DNI Ltd</strong> (trading as DNI Analytics), a company registered in England and Wales under company number 15630271. Read it alongside our <a href="/legal/privacy-policy">Privacy Policy</a>.</p>
 
       <h2>2. Cookies and browser storage</h2>
       <p>A <strong>cookie</strong> is a small text file a website saves on your device and sends back on later visits. <strong>Local storage</strong> works similarly but stays on your device and is not transmitted automatically with each request.</p>
-      <p>Worth knowing: <strong>the DNI Studio app keeps you signed in using local storage, not cookies.</strong> Third-party analytics is the only thing that sets cookies on our domains.</p>
+      <p>Worth knowing: <strong>the DNI Studios app keeps you signed in using local storage, not cookies.</strong> Third-party analytics is the only thing that sets cookies on our domains.</p>
 
       <h2>3. Strictly necessary</h2>
       <p>These make the Service function. They cannot be switched off, and under PECR they do not require consent because without them the Service you asked for cannot be delivered.</p>
@@ -79,7 +79,8 @@ export default function CookiePolicyContent() {
       <p>We will update this policy if the technologies we use change. The &quot;last updated&quot; date at the top always shows the current version.</p>
 
       <h2>10. Contact</h2>
-      <p>DNI Analytics Ltd, registered in England and Wales.<br />
+      <p>DNI Ltd (trading as DNI Analytics), registered in England and Wales, company number 15630271.<br />
+      Registered office: 78a Deacon Road, London NW2 5QJ.<br />
       Email: <a href="mailto:darshan.mashru@dnianalytics.com">darshan.mashru@dnianalytics.com</a></p>
     </>
   )

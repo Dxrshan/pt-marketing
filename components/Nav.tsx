@@ -80,7 +80,7 @@ export default function Nav() {
                 background: 'linear-gradient(135deg, #ffffff, #93c5fd)',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
               }}>
-                DNI Studio
+                DNI Studios
               </span>
             </a>
 
