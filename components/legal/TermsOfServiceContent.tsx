@@ -34,7 +34,7 @@ export default function TermsOfServiceContent() {
         <li>Fees, billing frequency and any promotional rate are those shown when you subscribe.</li>
         <li>Fees are stated <strong>exclusive of VAT</strong>, which is added where applicable.</li>
         <li>Subscriptions <strong>renew automatically</strong> at the end of each term unless cancelled before the renewal date.</li>
-        <li>You may cancel at any time, effective at the end of your current paid term. <strong>Part-used periods are not refunded</strong> except where the law requires it.</li>
+        <li>You may cancel at any time, effective at the end of your current paid term. <strong>Part-used periods are not refunded</strong>, except under a money-back guarantee offered when you subscribed or where the law requires it.</li>
         <li>We may change our prices on <strong>30 days&apos; written notice</strong>. A price change takes effect at your next renewal, and you may cancel before then if you do not accept it.</li>
         <li>If a payment fails we may suspend access until it is resolved. Data is retained during suspension in accordance with section 12.</li>
       </ul>
