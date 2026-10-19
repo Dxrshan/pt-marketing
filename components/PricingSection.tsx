@@ -152,7 +152,7 @@ export default function PricingSection() {
             <div style={{ fontSize: 24, marginBottom: 8 }}>🛡️</div>
             <div style={{ fontSize: 14, fontWeight: 700, color: 'white', marginBottom: 6 }}>30-Day Money-Back</div>
             <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.65 }}>
-              Doesn&apos;t save you 5 hours a week? Full refund. No questions.
+              Not the right fit within 30 days? Full refund. No questions.
             </p>
           </motion.div>
           <motion.div
