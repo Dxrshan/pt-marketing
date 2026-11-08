@@ -1,5 +1,9 @@
 import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 import './globals.css'
+
+// Self-hosted at build time: no render-blocking request chain to Google Fonts.
+const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' })
 
 export const metadata: Metadata = {
   title: 'DNI Studios — The Command Centre for Elite Personal Trainers',
@@ -17,11 +21,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-      </head>
+    <html lang="en" className={`scroll-smooth ${inter.variable}`}>
       <body className="antialiased">
         {children}
       </body>
