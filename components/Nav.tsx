@@ -55,9 +55,10 @@ export default function Nav() {
           left: 0,
           right: 0,
           zIndex: 100,
-          transition: 'all 0.4s ease',
+          transition: 'background 0.4s ease, border-color 0.4s ease',
           background: scrolled ? 'rgba(3, 3, 3, 0.85)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(20px)' : 'none',
+          backdropFilter: scrolled ? 'blur(12px)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
           borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent',
         }}
       >
@@ -165,11 +166,13 @@ export default function Nav() {
               {/* Mobile hamburger */}
               <button
                 onClick={() => setMobileOpen(o => !o)}
+                aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={mobileOpen}
                 style={{
                   background: 'none', border: '1px solid rgba(255,255,255,0.1)',
                   color: 'white', cursor: 'pointer',
                   padding: '8px 10px', borderRadius: 8,
-                  display: 'none',
+                  display: 'none', touchAction: 'manipulation',
                 }}
                 className="show-mobile"
               >
@@ -189,14 +192,13 @@ export default function Nav() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.15 }}
             style={{
               position: 'fixed', top: 68, left: 0, right: 0, zIndex: 99,
-              background: 'rgba(10, 10, 10, 0.97)',
-              backdropFilter: 'blur(20px)',
+              background: 'rgb(10, 10, 10)',
               borderBottom: '1px solid rgba(255,255,255,0.08)',
               padding: '20px 24px 24px',
             }}
