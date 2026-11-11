@@ -353,12 +353,13 @@ export default function OfferPage() {
 
           {[
             { num: '1.', title: 'Subscription & Payment', paras: [
-              'The Service is provided on a monthly subscription basis at the price stated above. Your price is fixed for as long as your subscription remains continuously active, in accordance with the Founding Customer Guarantee.',
-              'Payment is due monthly in advance by the method agreed at sign-up. Where payment is not received within 7 days of the due date, we may suspend access to the Service until payment is made.',
+              'The Service is provided on a subscription basis, billed monthly, quarterly or annually as selected above, at the price stated. Your price is fixed for as long as your subscription remains continuously active, in accordance with the Founding Customer Guarantee.',
+              'Payment is due in advance for each billing period by the method agreed at sign-up. Where payment is not received within 7 days of the due date, we may suspend access to the Service until payment is made.',
             ]},
             { num: '2.', title: 'Term & Cancellation', paras: [
               'This is a rolling agreement with no fixed minimum term beyond the billing cycle selected. You may cancel at any time by providing 14 days\' written notice. Cancellation takes effect at the end of the then-current billing period.',
-              'No refunds are issued for partial billing periods. Founding price status is lost if a subscription lapses for more than 30 consecutive days and is later reinstated.',
+              '30-day money-back guarantee: if you cancel within 30 days of your first payment, we refund that payment in full. Outside that window, no refunds are issued for partial billing periods.',
+              'Founding price status is lost if a subscription lapses for more than 30 consecutive days and is later reinstated.',
             ]},
             { num: '3.', title: 'Data & Privacy', paras: [
               'You retain ownership of all client and business data entered into the Service. We process this data solely to provide the Service and will not sell or share it with third parties for marketing purposes.',
