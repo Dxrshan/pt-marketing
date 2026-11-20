@@ -414,3 +414,6 @@ html.lenis, html.lenis body { height: auto; }
   .cine-story { height: 240vh; }
 }
 @media (max-width: 760px), (max-height: 760px) { .scroll-hint { display: none !important; } }
+
+.footer-link { font-size: 14.5px; color: rgba(255,255,255,0.55); text-decoration: none; transition: color .2s ease; }
+.footer-link:hover { color: #fff; }

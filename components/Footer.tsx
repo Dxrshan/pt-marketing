@@ -1,117 +1,68 @@
 'use client'
 import BrandLogo from './BrandLogo'
 export default function Footer() {
-  const scrollTo = (href: string) => {
-    const el = document.querySelector(href)
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
+
+  // Go to the sign-up form: scroll if it's on this page, otherwise open it on the home page.
+  const toSignup = (e: React.MouseEvent) => {
+    const el = document.getElementById('waitlist')
+    if (!el) return
+    e.preventDefault()
+    el.scrollIntoView({ behavior: 'smooth' })
   }
+
+  const COLS: { title: string; links: { label: string; href: string; onClick?: (e: React.MouseEvent) => void; external?: boolean }[] }[] = [
+    { title: 'Product', links: [
+      { label: 'Features', href: '/features' },
+      { label: 'How it works', href: '/features#how-it-works' },
+      { label: 'Pricing', href: '/pricing' },
+      { label: 'Log in', href: 'https://app.dnianalytics.com', external: true },
+    ] },
+    { title: 'Company', links: [
+      { label: 'Get early access', href: '/#waitlist', onClick: toSignup },
+      { label: 'Contact us', href: 'mailto:darshan.mashru@dnianalytics.com' },
+    ] },
+    { title: 'Legal', links: [
+      { label: 'Privacy policy', href: '/legal/privacy-policy' },
+      { label: 'Terms of service', href: '/legal/terms-of-service' },
+      { label: 'Cookie policy', href: '/legal/cookie-policy' },
+      { label: 'Data processing (DPA)', href: '/legal/dpa' },
+    ] },
+  ]
 
   return (
     <footer style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '80px 24px 0', background: '#050607', overflow: 'hidden' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 60, marginBottom: 48 }} className="footer-grid">
-
-          {/* Brand */}
+        <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr 1fr', gap: 48 }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>
-              <BrandLogo height={42} />
-            </div>
-            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.35)', lineHeight: 1.7, maxWidth: 280 }}>
-              The all-in-one platform built for personal trainers and studios who are serious about their business.
+            <BrandLogo height={40} />
+            <p style={{ fontSize: 14.5, color: 'rgba(255,255,255,0.45)', lineHeight: 1.7, maxWidth: 300, marginTop: 20 }}>
+              Studio software for personal trainers who are serious about their business.
             </p>
-            <div style={{ marginTop: 20, fontSize: 12, color: 'rgba(255,255,255,0.2)' }}>
-              A product of DNI Analytics, a trading name of <span style={{ color: 'rgba(255,255,255,0.4)' }}>DNI Ltd</span> · Company No. 15630271
-            </div>
           </div>
 
-          {/* Product */}
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: 16 }}>
-              Product
-            </div>
-            {[
-              { label: 'Features', href: '/features' },
-              { label: 'How It Works', href: '/features#how-it-works' },
-              { label: 'Pricing', href: '/pricing' },
-              { label: 'View Offer', href: '/offer', external: false },
-              { label: 'Login', href: 'https://app.dnianalytics.com', external: true },
-              { label: 'Register', href: 'https://app.dnianalytics.com/register', external: true },
-            ].map(link => (
-              link.external || link.href.startsWith('/') ? (
-                <a key={link.label} href={link.href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener noreferrer' : undefined}
-                  style={{ display: 'block', fontSize: 14, color: link.href === '/offer' ? 'rgba(232,234,238,0.75)' : 'rgba(255,255,255,0.45)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = link.href === '/offer' ? '#e8eaee' : 'white')}
-                  onMouseLeave={e => (e.currentTarget.style.color = link.href === '/offer' ? 'rgba(232,234,238,0.75)' : 'rgba(255,255,255,0.45)')}
-                >
-                  {link.label}
-                </a>
-              ) : (
-                <button key={link.label} onClick={() => scrollTo(link.href)}
-                  style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, color: 'rgba(255,255,255,0.45)', textDecoration: 'none', marginBottom: 10, padding: 0, fontFamily: 'inherit', transition: 'color 0.2s' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = 'white')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}
-                >
-                  {link.label}
-                </button>
-              )
-            ))}
-          </div>
-
-          {/* Company */}
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: 16 }}>
-              Company
-            </div>
-            <span style={{ display: 'block', fontSize: 14, color: 'rgba(255,255,255,0.45)', marginBottom: 10 }}>DNI Ltd</span>
-            <a href="mailto:darshan.mashru@dnianalytics.com"
-              style={{ display: 'block', fontSize: 14, color: 'rgba(255,255,255,0.45)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'white')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}
-            >
-              Contact Us
-            </a>
-            <a href="/legal/privacy-policy"
-              style={{ display: 'block', fontSize: 14, color: 'rgba(255,255,255,0.45)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'white')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}
-            >
-              Privacy Policy
-            </a>
-            <button onClick={() => scrollTo('#waitlist')}
-              style={{ display: 'block', background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, color: 'rgba(255,255,255,0.45)', marginBottom: 10, padding: 0, fontFamily: 'inherit', transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'white')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}
-            >
-              Early Access
-            </button>
-          </div>
+          {COLS.map(col => (
+            <nav key={col.title} aria-label={col.title}>
+              <div className="mono" style={{ fontSize: 11.5, fontWeight: 500, color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: '.18em', marginBottom: 18 }}>
+                {col.title}
+              </div>
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {col.links.map(link => (
+                  <li key={link.label}>
+                    <a className="footer-link" href={link.href} onClick={link.onClick}
+                      {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                      {link.label}{link.external && <span aria-hidden="true" style={{ marginLeft: 6, opacity: 0.6 }}>↗</span>}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
         </div>
 
-        <hr className="gradient-hr" />
-
-        <div style={{ marginTop: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)' }}>
-            © 2026 DNI Ltd, trading as DNI Analytics. All rights reserved. Registered in England & Wales, company number 15630271. Registered office: 78a Deacon Road, London NW2 5QJ.
-          </p>
-          <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
-            {[
-              { label: 'Privacy Policy',   href: '/legal/privacy-policy' },
-              { label: 'Terms of Service', href: '/legal/terms-of-service' },
-              { label: 'Cookie Policy',    href: '/legal/cookie-policy' },
-              { label: 'DPA',              href: '/legal/dpa' },
-              { label: 'Promo Terms',      href: '/offer#terms' },
-            ].map(link => (
-              <a key={link.href} href={link.href} style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', textDecoration: 'none', transition: 'color 0.2s' }}
-                onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.5)')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
+        <div style={{ marginTop: 56, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.06)', fontSize: 12.5, color: 'rgba(255,255,255,0.3)' }}>
+          © {new Date().getFullYear()} DNI Ltd, trading as DNI Analytics · Registered in England &amp; Wales, company no. 15630271
         </div>
       </div>
-
       <div aria-hidden="true" style={{ marginTop: 56, textAlign: 'center', lineHeight: 0.8, overflow: 'hidden' }}>
         <span className="footer-giant" style={{ display: 'inline-block', fontSize: 'clamp(48px, 15vw, 260px)', fontWeight: 800, letterSpacing: '-0.06em', whiteSpace: 'nowrap',
           background: 'linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.0) 85%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
@@ -121,7 +72,8 @@ export default function Footer() {
 
       <style>{`
         @media (max-width: 760px) {
-          .footer-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 36px 24px !important; }
+          .footer-grid > div:first-child { grid-column: 1 / -1; }
         }
       `}</style>
     </footer>
