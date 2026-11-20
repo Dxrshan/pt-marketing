@@ -3,8 +3,9 @@ import LegalPage from '@/components/LegalPage'
 import DpaContent from '@/components/legal/DpaContent'
 
 export const metadata: Metadata = {
-  title: 'Data Processing Agreement — DNI Studios',
-  description: 'The Article 28 UK GDPR data processing agreement between DNI Ltd (trading as DNI Analytics) and studios using DNI Studios.',
+  title: 'Data Processing Agreement',
+  description: 'The data processing agreement between DNI Ltd and studios using DNI Studios.',
+  alternates: { canonical: '/legal/dpa' },
 }
 
 export default function Page() {

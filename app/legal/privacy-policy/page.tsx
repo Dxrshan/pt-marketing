@@ -3,8 +3,9 @@ import LegalPage from '@/components/LegalPage'
 import PrivacyPolicyContent from '@/components/legal/PrivacyPolicyContent'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — DNI Studios',
-  description: 'The Privacy Policy for DNI Studios, a product of DNI Ltd (trading as DNI Analytics).',
+  title: 'Privacy Policy',
+  description: 'How DNI Studios (DNI Ltd) collects, uses and protects personal data.',
+  alternates: { canonical: '/legal/privacy-policy' },
 }
 
 export default function Page() {

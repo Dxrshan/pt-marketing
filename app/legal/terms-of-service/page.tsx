@@ -3,8 +3,9 @@ import LegalPage from '@/components/LegalPage'
 import TermsOfServiceContent from '@/components/legal/TermsOfServiceContent'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — DNI Studios',
-  description: 'The Terms of Service for DNI Studios, a product of DNI Ltd (trading as DNI Analytics).',
+  title: 'Terms of Service',
+  description: 'The terms that govern use of the DNI Studios platform, provided by DNI Ltd.',
+  alternates: { canonical: '/legal/terms-of-service' },
 }
 
 export default function Page() {

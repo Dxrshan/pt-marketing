@@ -5,34 +5,99 @@ import './globals.css'
 // Self-hosted at build time: no render-blocking request chain to Google Fonts.
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' })
 
+const SITE = 'https://www.dnianalytics.com'
+const TITLE = 'DNI Studios — Personal Trainer & PT Studio Management Software'
+const DESCRIPTION =
+  'Run your PT studio from one place: clients, bookings, workouts, payments and leads. Built in the UK for personal trainers. Founding rates from £49/month.'
+
 export const metadata: Metadata = {
-  title: 'DNI Studios — The Command Centre for Elite Personal Trainers',
-  description: 'Manage clients, log sessions in real time, track payments, and grow your training business — all in one professional platform built for PTs.',
-  keywords: 'personal trainer software, PT management app, fitness business software, client management personal trainer',
-  metadataBase: new URL('https://www.dnianalytics.com'),
+  metadataBase: new URL(SITE),
+  title: { default: TITLE, template: '%s | DNI Studios' },
+  description: DESCRIPTION,
+  applicationName: 'DNI Studios',
+  keywords: [
+    'personal trainer software', 'PT studio management', 'personal training app', 'gym management software UK',
+    'client management for personal trainers', 'PT booking software', 'fitness studio software',
+  ],
+  alternates: { canonical: '/' },
   icons: {
     icon: [
       { url: '/favicon.ico?v=3', sizes: 'any' },
       { url: '/icon-32.png?v=3', type: 'image/png', sizes: '32x32' },
+      { url: '/icon-192.png?v=4', type: 'image/png', sizes: '192x192' },
+      { url: '/icon-512.png?v=4', type: 'image/png', sizes: '512x512' },
     ],
-    apple: '/apple-touch-icon.png',
+    apple: '/apple-touch-icon.png?v=4',
   },
+  manifest: '/manifest.webmanifest',
   openGraph: {
-    title: 'DNI Studios — Built for Elite Personal Trainers',
-    description: 'Stop juggling WhatsApp, spreadsheets, and sticky notes. DNI Studios is the all-in-one platform for serious PTs.',
     type: 'website',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'DNI Studios' }],
+    url: SITE,
+    siteName: 'DNI Studios',
+    locale: 'en_GB',
+    title: 'DNI Studios — Run your PT studio from one place',
+    description: DESCRIPTION,
+    images: [{ url: '/og-image.png?v=4', width: 1200, height: 630, alt: 'DNI Studios: run your PT studio from one place' }],
   },
   twitter: {
     card: 'summary_large_image',
-    images: ['/og-image.png'],
+    title: 'DNI Studios — Run your PT studio from one place',
+    description: DESCRIPTION,
+    images: ['/og-image.png?v=4'],
   },
+  robots: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
+  other: { 'theme-color': '#111318' },
+}
+
+// Structured data: tells Google the site's name (shown instead of the domain),
+// who runs it, its logo, and what the product is.
+const JSON_LD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE}/#website`,
+      url: SITE,
+      name: 'DNI Studios',
+      alternateName: ['DNI Studio', 'DNI Studios PT Software'],
+      publisher: { '@id': `${SITE}/#organization` },
+      inLanguage: 'en-GB',
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${SITE}/#organization`,
+      name: 'DNI Studios',
+      legalName: 'DNI Ltd',
+      url: SITE,
+      logo: { '@type': 'ImageObject', url: `${SITE}/icon-512.png`, width: 512, height: 512 },
+      image: `${SITE}/og-image.png`,
+      description: 'DNI Studios is studio management software for personal trainers, made by DNI Ltd (trading as DNI Analytics).',
+    },
+    {
+      '@type': 'SoftwareApplication',
+      name: 'DNI Studios',
+      url: SITE,
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: 'Web, iOS, Android',
+      description: DESCRIPTION,
+      publisher: { '@id': `${SITE}/#organization` },
+      offers: {
+        '@type': 'AggregateOffer',
+        priceCurrency: 'GBP',
+        lowPrice: '49',
+        highPrice: '69',
+        offerCount: 3,
+        url: `${SITE}/offer`,
+      },
+    },
+  ],
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`scroll-smooth ${inter.variable}`}>
       <body className="antialiased">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
         {children}
       </body>
     </html>
