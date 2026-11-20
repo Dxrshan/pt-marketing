@@ -3,9 +3,9 @@ import type { CSSProperties } from 'react'
 // The DNI Studios logo as an image, with a soft metallic sheen that sweeps
 // across it now and then (styles in globals.css → .brand-logo).
 const SOURCES = {
-  horizontal: { src: '/logo-horizontal.webp', w: 1529, h: 300 },
-  stacked:    { src: '/logo-stacked.webp',    w: 973,  h: 817 },
-  mark:       { src: '/logo-mark-clear.webp', w: 412,  h: 300 },
+  horizontal: { src: '/logo-horizontal.webp?v=3', w: 1402, h: 300 },
+  stacked:    { src: '/logo-stacked.webp?v=3',    w: 825,  h: 810 },
+  mark:       { src: '/logo-mark-clear.webp?v=3', w: 412,  h: 300 },
 } as const
 
 type Props = {
