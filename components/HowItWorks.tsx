@@ -1,95 +1,65 @@
 'use client'
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { SectionHead, Icon } from './fx'
 
 const STEPS = [
-  {
-    number: '01',
-    title: 'Set up your studio in minutes',
-    desc: 'Add your clients, set up your services, and customise your profile. We walk you through it — no manual, no YouTube tutorials.',
-    icon: '⚡',
-    color: '#5B7BFF',
-  },
-  {
-    number: '02',
-    title: 'Run your business from one place',
-    desc: 'Log sessions, send workout plans, track payments, manage leads. Everything you did across 5 apps — now in one clean dashboard.',
-    icon: '🎯',
-    color: '#22D3EE',
-  },
-  {
-    number: '03',
-    title: 'Watch your clients get results',
-    desc: 'Clients log daily wellness, track their own workouts, and see their progress. You get real-time data. They get accountability. Everyone wins.',
-    icon: '📈',
-    color: '#A78BFA',
-  },
+  { number: '01', icon: 'bolt',   title: 'Set up in minutes',          desc: 'Add your clients, services and branding. We migrate your data and walk you through it, so there is no manual to read.' },
+  { number: '02', icon: 'layers', title: 'Run everything in one place', desc: 'Sessions, plans, payments and leads that used to live in five apps now sit in one clean dashboard.' },
+  { number: '03', icon: 'trend',  title: 'Watch clients get results',   desc: 'Clients log workouts and wellness in their own app. You see real data, they get accountability, and they stay longer.' },
 ]
 
 export default function HowItWorks() {
+  const ref = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 75%', 'end 55%'] })
+  const line = useTransform(scrollYProgress, [0, 1], [0, 1])
+
   return (
-    <section id="how-it-works" style={{ padding: '100px 24px', position: 'relative', background: 'rgba(255,255,255,0.01)' }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.7 }}
-          style={{ textAlign: 'center', marginBottom: 72 }}
-        >
-          <div className="badge badge-blue" style={{ marginBottom: 20, display: 'inline-flex' }}>How It Works</div>
-          <h2 style={{ fontSize: 'clamp(30px, 4vw, 48px)', fontWeight: 900, letterSpacing: '-1.5px', lineHeight: 1.1 }}>
-            Up and running in{' '}
-            <span className="gradient-text">under 10 minutes.</span>
-          </h2>
-        </motion.div>
+    <section id="how-it-works" style={{ padding: '120px 24px 140px', position: 'relative' }}>
+      <div style={{ maxWidth: 1180, margin: '0 auto' }}>
+        <SectionHead eyebrow="How it works" title="Up and running in" accent="under 10 minutes." />
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24, position: 'relative' }} className="steps-grid">
-          {/* Connector line */}
-          <div style={{
-            position: 'absolute', top: 36, left: '17%', right: '17%', height: 1,
-            background: 'linear-gradient(90deg, transparent, rgba(91,123,255,0.3), rgba(34,211,238,0.3), transparent)',
-          }} className="connector-line" />
+        <div ref={ref} className="steps" style={{ position: 'relative', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 28, marginTop: 80 }}>
+          {/* Track + scroll-drawn line */}
+          <div className="steps-line" aria-hidden="true" style={{ position: 'absolute', top: 31, left: '16.6%', right: '16.6%', height: 1, background: 'rgba(255,255,255,0.08)' }}>
+            <motion.div style={{ scaleX: line, transformOrigin: '0% 50%', height: '100%', background: 'linear-gradient(90deg, #9aa0a8, #ffffff, #9aa0a8)', boxShadow: '0 0 12px rgba(255,255,255,0.6)' }} />
+          </div>
 
-          {STEPS.map((step, i) => (
-            <motion.div
-              key={step.number}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.15 }}
-              style={{ textAlign: 'center' }}
-            >
-              <div style={{
-                width: 72, height: 72, borderRadius: '50%',
-                background: `${step.color}15`,
-                border: `1px solid ${step.color}30`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                margin: '0 auto 24px',
-                fontSize: 28,
-                position: 'relative', zIndex: 1,
-              }}>
-                {step.icon}
-              </div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: step.color, letterSpacing: '2px', marginBottom: 10 }}>
-                STEP {step.number}
-              </div>
-              <h3 style={{ fontSize: 19, fontWeight: 700, color: 'white', letterSpacing: '-0.5px', marginBottom: 12, lineHeight: 1.3 }}>
-                {step.title}
-              </h3>
-              <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.45)', lineHeight: 1.7 }}>
-                {step.desc}
-              </p>
-            </motion.div>
-          ))}
+          {STEPS.map((s, i) => {
+            const start = i / STEPS.length
+            return <Step key={s.number} step={s} progress={scrollYProgress} at={start} />
+          })}
         </div>
       </div>
-
       <style>{`
-        @media (max-width: 760px) {
-          .steps-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
-          .connector-line { display: none !important; }
+        @media (max-width: 860px) {
+          .steps { grid-template-columns: 1fr !important; gap: 44px !important; }
+          .steps-line { display: none; }
         }
       `}</style>
     </section>
+  )
+}
+
+function Step({ step, progress, at }: { step: typeof STEPS[number]; progress: ReturnType<typeof useScroll>['scrollYProgress']; at: number }) {
+  const lit = useTransform(progress, [Math.max(0, at - 0.05), at + 0.12], [0, 1])
+  const glow = useTransform(lit, v => `0 0 0 1px rgba(255,255,255,${0.1 + v * 0.4}), 0 0 ${v * 40}px rgba(230,236,245,${v * 0.35})`)
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      style={{ textAlign: 'center', position: 'relative' }}
+    >
+      <motion.div style={{
+        width: 64, height: 64, borderRadius: 20, margin: '0 auto', position: 'relative', zIndex: 1,
+        display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f2f3f5',
+        background: 'linear-gradient(160deg, #2a2e35 0%, #121418 70%)', boxShadow: glow,
+      }}>
+        <Icon name={step.icon} size={26} />
+      </motion.div>
+      <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: '.2em', color: 'var(--steel-3)', marginTop: 24 }}>STEP {step.number}</div>
+      <h3 style={{ fontSize: 22, fontWeight: 750, letterSpacing: '-0.02em', marginTop: 10 }}>{step.title}</h3>
+      <p style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--text-muted)', marginTop: 10, maxWidth: 330, marginLeft: 'auto', marginRight: 'auto' }}>{step.desc}</p>
+    </motion.div>
   )
 }

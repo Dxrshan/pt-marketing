@@ -1,111 +1,74 @@
 'use client'
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 import BrandLogo from './BrandLogo'
+import { WordsReveal, CursorLight, Icon, Tilt } from './fx'
 
-function DashboardMockup() {
+const EASE = [0.22, 1, 0.36, 1] as const
+
+/* ── Dashboard mockup (graphite build of the real app) ─────────────────── */
+export function DashboardMockup() {
+  const nav = ['Dashboard', 'Clients', 'Bookings', 'Workout Plans', 'Progress', 'Payments', 'Leads']
+  const week = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
   return (
-    <div className="app-mockup" style={{ display: 'flex', height: '100%', minHeight: 400 }}>
-      {/* Sidebar */}
-      <div className="mockup-sidebar" style={{ width: 170, padding: '16px 0' }}>
-        <div style={{ padding: '0 14px 18px', display: 'flex', alignItems: 'center', gap: 7 }}>
-          <BrandLogo height={17} />
-        </div>
-
-        {[
-          { label: 'Dashboard', active: true, dot: '#2563EB' },
-          { label: 'Clients', active: false, dot: null },
-          { label: 'Bookings', active: false, dot: null },
-          { label: 'Workout Plans', active: false, dot: null },
-          { label: 'Progress', active: false, dot: null },
-          { label: 'Payments', active: false, dot: null },
-          { label: 'Leads', active: false, dot: null },
-        ].map(item => (
-          <div key={item.label} className={`mockup-nav-item ${item.active ? 'active' : ''}`}>
-            <div style={{ width: 5, height: 5, borderRadius: '50%', background: item.dot || 'transparent', flexShrink: 0 }} />
-            <span>{item.label}</span>
+    <div className="app-mockup" style={{ display: 'flex', minHeight: 440 }}>
+      <div className="mockup-sidebar hero-mock-side" style={{ width: 180, padding: '16px 0' }}>
+        <div style={{ padding: '2px 14px 18px' }}><BrandLogo height={16} /></div>
+        {nav.map((n, i) => (
+          <div key={n} className={`mockup-nav-item ${i === 0 ? 'active' : ''}`}>
+            <span style={{ width: 5, height: 5, borderRadius: '50%', background: i === 0 ? '#e8eaee' : 'transparent' }} />{n}
           </div>
         ))}
-
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 8, marginTop: 20 }}>
-          <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'linear-gradient(135deg, #2563EB, #06B6D4)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, fontWeight: 700, color: 'white' }}>D</div>
-          <div>
-            <div style={{ fontSize: 9, fontWeight: 600, color: '#e2e8f0' }}>Darshan M.</div>
-            <div style={{ fontSize: 8, color: '#475569' }}>Admin</div>
-          </div>
-        </div>
       </div>
-
-      {/* Main content */}
-      <div style={{ flex: 1, padding: '14px 16px', background: '#f1f5f9', overflow: 'hidden' }}>
-        {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+      <div style={{ flex: 1, padding: 18, display: 'flex', flexDirection: 'column', gap: 12, minWidth: 0 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
           <div>
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#0f172a' }}>Good morning, Darshan 👋</div>
-            <div style={{ fontSize: 9, color: '#64748b' }}>Monday, 16 June 2026</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: '#f2f3f5' }}>Good morning, Darshan</div>
+            <div style={{ fontSize: 10.5, color: '#6b717b', marginTop: 2 }}>Monday, 16 June 2026</div>
           </div>
-          <div style={{ padding: '5px 10px', background: '#2563EB', color: 'white', borderRadius: 6, fontSize: 9, fontWeight: 600, cursor: 'pointer' }}>+ New Session</div>
+          <span style={{ fontSize: 10, color: '#9aa0a8', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 999, padding: '4px 10px' }}>This week</span>
         </div>
-
-        {/* Metrics row */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 10 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
           {[
-            { label: "Today's Sessions", value: '4', sub: '2 completed', color: '#2563EB', bg: '#eff6ff' },
-            { label: 'Monthly Revenue', value: '£3,840', sub: '+12% vs last month', color: '#16a34a', bg: '#f0fdf4' },
-            { label: 'Active Clients', value: '18', sub: '3 action items', color: '#7c3aed', bg: '#faf5ff' },
-          ].map(card => (
-            <div key={card.label} className="mockup-card" style={{ position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', top: 0, right: 0, width: 40, height: 40, borderRadius: '0 0 0 40px', background: card.bg, opacity: 0.8 }} />
-              <div style={{ fontSize: 8, color: '#64748b', marginBottom: 3, fontWeight: 500 }}>{card.label}</div>
-              <div style={{ fontSize: 16, fontWeight: 800, color: card.color, lineHeight: 1 }}>{card.value}</div>
-              <div style={{ fontSize: 7.5, color: '#94a3b8', marginTop: 2 }}>{card.sub}</div>
+            ['Today’s sessions', '4', '2 completed'],
+            ['Revenue this month', '£3,840', '+12% vs last month'],
+            ['Active clients', '18', '3 need attention'],
+          ].map(([k, v, s], i) => (
+            <div key={k} className="mockup-card">
+              <div style={{ fontSize: 9.5, color: '#6b717b' }}>{k}</div>
+              <div style={{ fontSize: 20, fontWeight: 800, marginTop: 4, color: i === 1 ? '#8ff0bf' : '#f2f3f5', letterSpacing: '-0.02em' }}>{v}</div>
+              <div style={{ fontSize: 9, color: '#5a6069', marginTop: 2 }}>{s}</div>
             </div>
           ))}
         </div>
-
-        {/* Action Items */}
-        <div className="mockup-card" style={{ marginBottom: 8 }}>
-          <div style={{ fontSize: 9, fontWeight: 700, color: '#0f172a', marginBottom: 8, display: 'flex', justifyContent: 'space-between' }}>
-            <span>Action Items</span>
-            <span style={{ color: '#2563EB', fontWeight: 500 }}>3 items</span>
+        <div className="mockup-card" style={{ flex: 1 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 700, color: '#e8eaee', marginBottom: 8 }}>
+            Action items <span style={{ color: '#9aa0a8', fontWeight: 500, fontSize: 10 }}>3 items</span>
           </div>
           {[
-            { name: 'James T.', avatar: 'J', issue: 'Payment overdue — £240', dot: '#dc2626', bg: '#fef2f2' },
-            { name: 'Sarah K.', avatar: 'S', issue: 'No session in 14 days', dot: '#d97706', bg: '#fffbeb' },
-            { name: 'Marcus L.', avatar: 'M', issue: '2 sessions remaining in package', dot: '#2563EB', bg: '#eff6ff' },
-          ].map((item, i) => (
-            <div key={item.name} style={{
-              display: 'flex', alignItems: 'center', gap: 7, padding: '5px 0',
-              borderBottom: i < 2 ? '1px solid #f1f5f9' : 'none',
-            }}>
-              <div style={{ width: 20, height: 20, borderRadius: '50%', background: item.bg, border: `1.5px solid ${item.dot}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, fontWeight: 700, color: item.dot, flexShrink: 0 }}>{item.avatar}</div>
+            ['J', 'James T.', 'Payment overdue · £240', '#f87171'],
+            ['S', 'Sarah K.', 'No session in 14 days', '#fbbf24'],
+            ['M', 'Marcus L.', '2 sessions left in package', '#a9c7ff'],
+          ].map(([a, n, d, c]) => (
+            <div key={n} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '7px 0', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+              <span style={{ width: 22, height: 22, borderRadius: '50%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, fontWeight: 700, color: '#e8eaee', background: 'linear-gradient(160deg,#2a2e35,#15171c)', border: '1px solid rgba(255,255,255,0.08)' }}>{a}</span>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 9, fontWeight: 600, color: '#0f172a' }}>{item.name}</div>
-                <div style={{ fontSize: 8, color: '#64748b' }}>{item.issue}</div>
+                <div style={{ fontSize: 10.5, fontWeight: 600, color: '#e8eaee' }}>{n}</div>
+                <div style={{ fontSize: 9.5, color: '#6b717b' }}>{d}</div>
               </div>
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: item.dot, flexShrink: 0 }} />
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: c }} />
             </div>
           ))}
         </div>
-
-        {/* Training calendar strip */}
         <div className="mockup-card">
-          <div style={{ fontSize: 9, fontWeight: 600, color: '#0f172a', marginBottom: 6 }}>This Week</div>
-          <div style={{ display: 'flex', gap: 4 }}>
-            {[
-              { day: 'M', status: 'done' }, { day: 'T', status: 'done' }, { day: 'W', status: 'today' },
-              { day: 'T', status: 'upcoming' }, { day: 'F', status: 'upcoming' }, { day: 'S', status: 'rest' }, { day: 'S', status: 'rest' },
-            ].map((d, i) => (
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#e8eaee', marginBottom: 8 }}>This week</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 6 }}>
+            {week.map((d, i) => (
               <div key={i} style={{
-                flex: 1, padding: '4px 0', borderRadius: 5, textAlign: 'center',
-                background: d.status === 'done' ? '#16a34a' : d.status === 'today' ? '#2563EB' : d.status === 'upcoming' ? '#f1f5f9' : '#f8fafc',
-                color: d.status === 'done' || d.status === 'today' ? 'white' : '#94a3b8',
-                fontSize: 8, fontWeight: 600,
-                outline: d.status === 'today' ? '1.5px solid #2563EB' : 'none',
-                outlineOffset: 1,
-              }}>
-                {d.day}
-              </div>
+                textAlign: 'center', fontSize: 9.5, fontWeight: 700, padding: '6px 0', borderRadius: 6,
+                color: i < 2 ? '#0b0c0f' : i === 2 ? '#0b0c0f' : '#5a6069',
+                background: i < 2 ? 'linear-gradient(180deg,#8ff0bf,#5ee0a0)' : i === 2 ? 'linear-gradient(180deg,#fff,#c4c9d0)' : 'rgba(255,255,255,0.04)',
+              }}>{d}</div>
             ))}
           </div>
         </div>
@@ -114,228 +77,178 @@ function DashboardMockup() {
   )
 }
 
-function LiveSessionBadge() {
+/* ── Floating live toasts that cycle over the mockup ───────────────────── */
+const TOASTS = [
+  { icon: 'card', title: 'Payment received', sub: 'Sarah K. · £59.00', tone: '#8ff0bf' },
+  { icon: 'bolt', title: 'New PB', sub: 'Marcus L. · Bench 85kg', tone: '#e8eaee' },
+  { icon: 'calendar', title: 'Session booked', sub: 'Thu 10:00 · James T.', tone: '#a9c7ff' },
+  { icon: 'funnel', title: 'New enquiry', sub: 'Priya M. · via website', tone: '#e8eaee' },
+]
+
+export function LiveToasts() {
+  const [i, setI] = useState(0)
+  const reduce = useReducedMotion()
+  useEffect(() => {
+    if (reduce) return
+    const t = setInterval(() => setI(v => (v + 1) % TOASTS.length), 2600)
+    return () => clearInterval(t)
+  }, [reduce])
+  const t = TOASTS[i]
   return (
-    <div style={{
-      position: 'absolute', top: -12, right: -12,
-      background: '#0f172a', border: '1px solid rgba(255,255,255,0.1)',
-      borderRadius: 12, padding: '10px 14px', minWidth: 180,
-      boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
-    }} className="float-animation-2">
-      <div style={{ fontSize: 10, color: '#64748b', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
-        <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#16a34a', animation: 'glow-pulse 2s ease infinite' }} />
-        LIVE SESSION — Marcus L.
+    <div className="hero-toast-wrap" style={{ position: 'absolute', right: -28, top: 56, zIndex: 3, width: 250 }}>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, x: 30, scale: 0.96 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -14, scale: 0.98 }}
+          transition={{ duration: 0.5, ease: EASE }}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', borderRadius: 14,
+            background: 'rgba(18,20,24,0.82)', border: '1px solid rgba(255,255,255,0.12)',
+            backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)',
+            boxShadow: '0 20px 50px -15px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.08)',
+          }}
+        >
+          <span style={{ width: 34, height: 34, borderRadius: 10, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: t.tone, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+            <Icon name={t.icon} size={17} />
+          </span>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#f2f3f5' }}>{t.title}</div>
+            <div style={{ fontSize: 12, color: '#8c929b', marginTop: 1 }}>{t.sub}</div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  )
+}
+
+export function LiveSessionCard() {
+  return (
+    <div className="float-animation hero-live" style={{
+      position: 'absolute', left: -36, bottom: 64, zIndex: 3, width: 230, padding: 14, borderRadius: 16,
+      background: 'rgba(18,20,24,0.85)', border: '1px solid rgba(255,255,255,0.12)',
+      backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)',
+      boxShadow: '0 24px 60px -18px rgba(0,0,0,0.95), inset 0 1px 0 rgba(255,255,255,0.08)',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 10.5, color: '#8c929b', marginBottom: 8 }}>
+        <span className="live-dot" /> LIVE SESSION · Marcus L.
       </div>
-      <div style={{ fontSize: 11, fontWeight: 700, color: 'white', marginBottom: 4 }}>Bench Press</div>
-      {[
-        { set: 1, kg: '80kg', reps: '8', pb: true },
-        { set: 2, kg: '82.5kg', reps: '7', pb: false },
-      ].map(s => (
-        <div key={s.set} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 9, color: '#94a3b8', marginBottom: 3 }}>
-          <span style={{ color: '#475569' }}>Set {s.set}</span>
-          <span style={{ color: '#e2e8f0', fontWeight: 600 }}>{s.kg} × {s.reps}</span>
-          <span style={{ color: '#16a34a' }}>✓</span>
-          {s.pb && <span style={{ fontSize: 8, background: 'rgba(251,191,36,0.15)', color: '#fbbf24', padding: '1px 4px', borderRadius: 3 }}>🏆 PB</span>}
+      <div style={{ fontSize: 14, fontWeight: 700, color: '#f2f3f5', marginBottom: 8 }}>Bench press</div>
+      {[['Set 1', '80kg × 8'], ['Set 2', '82.5kg × 8'], ['Set 3', '85kg × 6 · PB']].map(([s, v], i) => (
+        <div key={s} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11.5, padding: '4px 0', color: i === 2 ? '#fff' : '#b6bcc5', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+          <span style={{ color: '#6b717b' }}>{s}</span><span style={{ fontWeight: 600 }}>{v}</span>
         </div>
       ))}
-      <div style={{ marginTop: 6, padding: '4px 8px', background: 'rgba(37,99,235,0.15)', borderRadius: 6, fontSize: 9, color: '#60a5fa', textAlign: 'center' }}>
-        Rest timer: 0:42 ⏱
+      <div style={{ marginTop: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px', borderRadius: 10, background: 'rgba(255,255,255,0.05)', fontSize: 11, color: '#c3c8cf' }}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon name="timer" size={13} /> Rest</span>
+        <span style={{ fontWeight: 700, color: '#fff', fontVariantNumeric: 'tabular-nums' }}>0:42</span>
       </div>
     </div>
   )
 }
 
-const STATS = [
-  { value: '18', label: 'Clients tracked' },
-  { value: '£3.8k', label: 'Revenue this month' },
-  { value: '47', label: 'Sessions logged' },
-]
-
 export default function Hero() {
-  const [email, setEmail] = useState('')
-  const [submitted, setSubmitted] = useState(false)
-  const [loading, setLoading] = useState(false)
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email || loading) return
-    setLoading(true)
-    try {
-      await fetch('/api/waitlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, source: 'hero' }),
-      })
-      setSubmitted(true)
-    } catch {
-      setSubmitted(true)
-    }
-    setLoading(false)
-  }
+  const ref = useRef<HTMLElement>(null)
+  const reduce = useReducedMotion()
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
+  // The dashboard starts tilted back like a screen on a desk and straightens as you scroll.
+  const rotateX = useTransform(scrollYProgress, [0, 0.45], reduce ? [0, 0] : [24, 0])
+  const scale = useTransform(scrollYProgress, [0, 0.45], reduce ? [1, 1] : [0.9, 1])
+  const glowOpacity = useTransform(scrollYProgress, [0, 0.4], [0.9, 0.35])
 
   return (
-    <section
-      id="hero"
-      className="mesh-bg noise"
-      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: 100, paddingBottom: 80, position: 'relative', overflow: 'hidden' }}
-    >
-      {/* Glow orbs */}
-      <div className="glow-orb glow-blue" style={{ width: 700, height: 700, top: '-20%', left: '-15%' }} />
-      <div className="glow-orb glow-cyan" style={{ width: 500, height: 500, top: '30%', right: '-10%' }} />
-      <div className="glow-orb glow-purple" style={{ width: 400, height: 400, bottom: '-10%', left: '40%' }} />
+    <section ref={ref} id="hero" className="mesh-bg grain" style={{ position: 'relative', overflow: 'hidden', paddingTop: 150, paddingBottom: 60 }}>
+      <CursorLight size={800} opacity={0.08} />
+      <div className="grid-floor" />
+      {/* Top light beam */}
+      <div aria-hidden="true" style={{
+        position: 'absolute', top: -200, left: '50%', width: 1100, height: 700, transform: 'translateX(-50%)', pointerEvents: 'none',
+        background: 'conic-gradient(from 180deg at 50% 0%, transparent 150deg, rgba(220,228,240,0.10) 175deg, rgba(255,255,255,0.16) 180deg, rgba(220,228,240,0.10) 185deg, transparent 210deg)',
+        filter: 'blur(10px)',
+      }} />
 
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 1 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center' }} className="hero-grid">
+      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 1, textAlign: 'center' }}>
+        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: EASE }}>
+          <a href="/pricing" className="badge badge-blue" style={{ textDecoration: 'none', marginBottom: 28 }}>
+            <span className="live-dot" />
+            Founding studio access is open
+            <span style={{ color: 'var(--steel-3)', display: 'inline-flex' }}><Icon name="arrow" size={14} /></span>
+          </a>
+        </motion.div>
 
-          {/* Left — copy */}
-          <div>
-            {/* Founding badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              <span className="badge badge-blue" style={{ marginBottom: 24, display: 'inline-flex' }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#60a5fa', animation: 'glow-pulse 2s ease infinite' }} />
-                Founding Member Access — Limited Spots
-              </span>
-            </motion.div>
+        <h1 style={{ fontSize: 'clamp(44px, 8vw, 104px)', fontWeight: 800, lineHeight: 0.98, letterSpacing: '-0.05em', margin: '0 auto', maxWidth: 1050 }}>
+          <WordsReveal text="Run your studio." className="steel-text" delay={0.1} />
+          <br />
+          <WordsReveal text="Not a group chat." className="sheen-text" delay={0.4} />
+        </h1>
 
-            {/* Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              style={{ fontSize: 'clamp(38px, 5vw, 62px)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-2px', marginBottom: 24, color: 'white' }}
-            >
-              Stop Running Your{' '}
-              <span className="gradient-text">£100k Business</span>
-              {' '}From a WhatsApp Group.
-            </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 18, filter: 'blur(6px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }}
+          transition={{ duration: 0.9, delay: 0.85, ease: EASE }}
+          style={{ fontSize: 'clamp(17px, 1.6vw, 20px)', lineHeight: 1.6, color: 'var(--text-muted)', maxWidth: 640, margin: '28px auto 0' }}
+        >
+          Clients, sessions, payments and leads in one beautifully simple platform, built for personal trainers who are done juggling WhatsApp, spreadsheets and five different apps.
+        </motion.p>
 
-            {/* Sub */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35 }}
-              style={{ fontSize: 18, color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, marginBottom: 36, maxWidth: 500 }}
-            >
-              DNI Studios gives personal trainers and studios one professional platform to manage clients, log sessions in real time, track payments, and grow — without the chaos.
-            </motion.p>
+        <motion.div
+          initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 1.05, ease: EASE }}
+          style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 38 }}
+        >
+          <a href="#waitlist" className="btn-steel" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 28px', borderRadius: 14, fontSize: 16, textDecoration: 'none' }}>
+            Start your free trial <Icon name="arrow" size={17} />
+          </a>
+          <a href="/features" className="btn-ghost" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 26px', borderRadius: 14, fontSize: 16, fontWeight: 600, textDecoration: 'none' }}>
+            Explore features
+          </a>
+        </motion.div>
 
-            {/* Email capture */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-            >
-              {!submitted ? (
-                <form onSubmit={handleSubmit}>
-                  <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                    <input
-                      type="email"
-                      placeholder="your@email.com"
-                      value={email}
-                      onChange={e => setEmail(e.target.value)}
-                      required
-                      className="input-dark"
-                      style={{ flex: 1, minWidth: 220, padding: '13px 18px', borderRadius: 10, fontSize: 15 }}
-                    />
-                    <button
-                      type="submit"
-                      className="btn-primary"
-                      disabled={loading}
-                      style={{ padding: '13px 28px', borderRadius: 10, fontSize: 15, fontWeight: 700, whiteSpace: 'nowrap', position: 'relative', zIndex: 1, opacity: loading ? 0.7 : 1 }}
-                    >
-                      {loading ? 'Joining...' : 'Get Early Access →'}
-                    </button>
-                  </div>
-                  <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', marginTop: 10 }}>
-                    Free 30-day trial · No credit card · Cancel anytime
-                  </p>
-                </form>
-              ) : (
-                <motion.div
-                  initial={{ scale: 0.95, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  style={{
-                    padding: '16px 24px', borderRadius: 12,
-                    background: 'rgba(22, 163, 74, 0.1)',
-                    border: '1px solid rgba(22, 163, 74, 0.3)',
-                    color: '#4ade80', fontSize: 15, fontWeight: 500,
-                  }}
-                >
-                  🎉 You&apos;re on the list! We&apos;ll be in touch very soon.
-                </motion.div>
-              )}
-            </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 1.3 }}
+          style={{ display: 'flex', gap: 22, justifyContent: 'center', flexWrap: 'wrap', marginTop: 22, fontSize: 13.5, color: 'var(--text-subtle)' }}
+        >
+          {['30-day free trial', 'No card needed', 'Unlimited clients', 'UK-built'].map(t => (
+            <span key={t} style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}><Icon name="check" size={14} style={{ color: 'var(--steel-2)' }} />{t}</span>
+          ))}
+        </motion.div>
 
-            {/* Stats */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-              style={{ display: 'flex', gap: 32, marginTop: 48 }}
-            >
-              {STATS.map(s => (
-                <div key={s.label}>
-                  <div style={{ fontSize: 22, fontWeight: 800, background: 'linear-gradient(135deg, #ffffff, #93c5fd)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                    {s.value}
-                  </div>
-                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginTop: 2 }}>{s.label}</div>
+        {/* Product shot */}
+        <motion.div
+          initial={{ opacity: 0, y: 80 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 1.1, ease: EASE }}
+          style={{ marginTop: 70, perspective: 1600, position: 'relative' }}
+        >
+          <motion.div aria-hidden="true" style={{
+            position: 'absolute', inset: '-8% 6% 20%', borderRadius: 40, pointerEvents: 'none', opacity: glowOpacity,
+            background: 'radial-gradient(ellipse at 50% 40%, rgba(220,228,240,0.22), transparent 65%)', filter: 'blur(30px)',
+          }} />
+          <motion.div style={{ rotateX, scale, transformOrigin: '50% 0%', maxWidth: 980, margin: '0 auto', position: 'relative' }}>
+            <Tilt max={5}>
+              <div style={{
+                position: 'relative', padding: 10, borderRadius: 22, textAlign: 'left',
+                background: 'linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03))',
+                border: '1px solid rgba(255,255,255,0.12)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2)',
+              }}>
+                <div style={{ display: 'flex', gap: 6, padding: '4px 6px 10px' }}>
+                  {[0, 1, 2].map(d => <span key={d} style={{ width: 9, height: 9, borderRadius: '50%', background: 'rgba(255,255,255,0.18)' }} />)}
+                  <span style={{ flex: 1, textAlign: 'center', fontSize: 11, color: '#6b717b', marginRight: 36 }}>app.dnianalytics.com</span>
                 </div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Right — app mockup */}
-          <motion.div
-            initial={{ opacity: 0, x: 40, scale: 0.95 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            style={{ position: 'relative' }}
-            className="hero-mockup float-animation"
-          >
-            <DashboardMockup />
-            <LiveSessionBadge />
-
-            {/* Wellness badge */}
-            <div style={{
-              position: 'absolute', bottom: -10, left: -14,
-              background: '#0f172a', border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: 12, padding: '10px 14px',
-              boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
-            }} className="float-animation-2">
-              <div style={{ fontSize: 9, color: '#64748b', marginBottom: 5 }}>CLIENT PORTAL</div>
-              <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: 16, fontWeight: 800, color: '#4ade80' }}>🔥 14</div>
-                  <div style={{ fontSize: 8, color: '#64748b' }}>Day Streak</div>
-                </div>
-                <div style={{ width: 1, height: 30, background: 'rgba(255,255,255,0.08)' }} />
-                <div>
-                  <div style={{ fontSize: 9, fontWeight: 600, color: '#e2e8f0', marginBottom: 3 }}>Today&apos;s Wellness</div>
-                  <div style={{ display: 'flex', gap: 4 }}>
-                    {['Energy', 'Sleep', 'Mood'].map((m, i) => (
-                      <div key={m} style={{ textAlign: 'center' }}>
-                        <div style={{ width: 20, height: 20, borderRadius: 5, background: ['rgba(251,191,36,0.2)', 'rgba(37,99,235,0.2)', 'rgba(22,163,74,0.2)'][i], display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9 }}>
-                          {['⚡', '😴', '😊'][i]}
-                        </div>
-                        <div style={{ fontSize: 7, color: '#475569', marginTop: 2 }}>{[4, 5, 4][i]}/5</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <DashboardMockup />
+                <LiveToasts />
+                <LiveSessionCard />
               </div>
-            </div>
+            </Tilt>
           </motion.div>
-        </div>
+          {/* Reflection fade into the page */}
+          <div aria-hidden="true" style={{ position: 'absolute', left: 0, right: 0, bottom: -2, height: 160, background: 'linear-gradient(to bottom, transparent, var(--bg))', pointerEvents: 'none', zIndex: 4 }} />
+        </motion.div>
       </div>
 
       <style>{`
-        @media (max-width: 900px) {
-          .hero-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
-          .hero-mockup { display: none; }
+        @media (max-width: 860px) {
+          .hero-mock-side { display: none; }
+          .hero-toast-wrap { right: 8px !important; top: -18px !important; width: 220px !important; }
+          .hero-live { display: none; }
         }
       `}</style>
     </section>

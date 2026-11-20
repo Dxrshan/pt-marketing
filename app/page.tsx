@@ -1,23 +1,26 @@
 import Nav from '@/components/Nav'
-import Hero from '@/components/Hero'
-import ProblemSection from '@/components/ProblemSection'
-import FeaturesSection from '@/components/FeaturesSection'
-import HowItWorks from '@/components/HowItWorks'
+import { CineHero, ProductReveal, Statement, BeforeAfter, FeatureGallery, BigNumbers } from '@/components/Cinematic'
+import { SmoothScroll, Cursor, Magnetic, WordBand } from '@/components/Polish'
 import PricingSection from '@/components/PricingSection'
-import TestimonialsSection from '@/components/TestimonialsSection'
 import EmailCaptureSection from '@/components/EmailCaptureSection'
 import Footer from '@/components/Footer'
 
 export default function Home() {
   return (
-    <main>
+    <main style={{ background: '#050607' }}>
+      <SmoothScroll />
+      <Cursor />
+      <Magnetic />
       <Nav />
-      <Hero />
-      <ProblemSection />
-      <FeaturesSection />
-      <HowItWorks />
+      <CineHero />
+      <ProductReveal />
+      <Statement />
+      <BeforeAfter />
+      <WordBand words={['Schedule', 'Track', 'Get paid', 'Grow']} />
+      <FeatureGallery />
+      <BigNumbers />
+      <WordBand words={['Built for PTs', 'Made in the UK', 'No per-seat fees']} reverse />
       <PricingSection />
-      <TestimonialsSection />
       <EmailCaptureSection />
       <Footer />
     </main>

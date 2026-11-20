@@ -5,7 +5,7 @@ import type { CSSProperties } from 'react'
 const SOURCES = {
   horizontal: { src: '/logo-horizontal.webp?v=3', w: 1402, h: 300 },
   stacked:    { src: '/logo-stacked.webp?v=3',    w: 825,  h: 810 },
-  mark:       { src: '/logo-mark-clear.webp?v=3', w: 412,  h: 300 },
+  mark:       { src: '/logo-mark-clear.webp?v=4', w: 822,  h: 598 },
 } as const
 
 type Props = {

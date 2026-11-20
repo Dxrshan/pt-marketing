@@ -7,7 +7,7 @@ import BrandLogo from './BrandLogo'
 // also contains the matching section, clicking scrolls to it instead.
 const NAV_LINKS = [
   { label: 'Features', href: '/features', section: 'features' },
-  { label: 'How It Works', href: '/#how-it-works', section: 'how-it-works' },
+  { label: 'Product', href: '/#story', section: 'story' },
   { label: 'Pricing', href: '/pricing', section: 'pricing' },
 ]
 
@@ -64,24 +64,20 @@ export default function Nav() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 100,
-          transition: 'background 0.4s ease, border-color 0.4s ease',
-          background: scrolled ? 'rgba(3, 3, 3, 0.85)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(12px)' : 'none',
-          WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent',
-        }}
+        style={{ position: 'fixed', top: 14, left: 0, right: 0, zIndex: 100, padding: '0 16px', pointerEvents: 'none' }}
       >
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 68 }}>
+        <div style={{
+          maxWidth: scrolled ? 1040 : 1240, margin: '0 auto', padding: '0 10px 0 22px', pointerEvents: 'auto',
+          borderRadius: 999, transition: 'max-width .6s cubic-bezier(.22,1,.36,1), background .4s ease, border-color .4s ease, box-shadow .4s ease',
+          background: scrolled ? 'rgba(14, 15, 18, 0.62)' : 'rgba(14, 15, 18, 0.0)',
+          backdropFilter: 'blur(20px) saturate(160%)', WebkitBackdropFilter: 'blur(20px) saturate(160%)',
+          border: `1px solid ${scrolled ? 'rgba(255,255,255,0.10)' : 'transparent'}`,
+          boxShadow: scrolled ? '0 20px 50px -20px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.06)' : 'none',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 60 }}>
             {/* Logo */}
             <a href="/" aria-label="DNI Studios home" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
-              <BrandLogo height={38} className="logo-wide" />
+              <BrandLogo height={32} className="logo-wide" />
               <BrandLogo variant="mark" height={34} className="logo-narrow" />
             </a>
 
@@ -96,9 +92,9 @@ export default function Nav() {
                     onClick={e => onNavClick(e, link)}
                     style={{
                       display: 'inline-block', textDecoration: 'none',
-                      background: isActive ? 'rgba(91,123,255,0.12)' : 'none',
+                      background: isActive ? 'rgba(255,255,255,0.07)' : 'none',
                       border: 'none', cursor: 'pointer',
-                      color: isActive ? '#7B96FF' : 'rgba(255,255,255,0.55)',
+                      color: isActive ? '#ffffff' : 'rgba(255,255,255,0.55)',
                       fontSize: 14, fontWeight: isActive ? 600 : 500,
                       padding: '8px 16px', borderRadius: 8,
                       transition: 'all 0.25s ease',
@@ -117,7 +113,7 @@ export default function Nav() {
                       <span style={{
                         position: 'absolute', bottom: 4, left: '50%', transform: 'translateX(-50%)',
                         width: 16, height: 2, borderRadius: 2,
-                        background: 'linear-gradient(90deg, #5B7BFF, #22D3EE)',
+                        background: 'linear-gradient(90deg, #9aa0a8, #ffffff, #9aa0a8)',
                         display: 'block',
                       }} />
                     )}
@@ -128,12 +124,12 @@ export default function Nav() {
                 href="/offer"
                 style={{
                   background: 'none', border: 'none', cursor: 'pointer',
-                  color: '#c9a86a', fontSize: 14, fontWeight: 500,
+                  color: '#e8eaee', fontSize: 14, fontWeight: 500,
                   padding: '8px 16px', borderRadius: 8,
                   transition: 'all 0.2s ease',
                   textDecoration: 'none',
                 }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(201,168,106,0.1)')}
+                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
                 onMouseLeave={e => (e.currentTarget.style.background = 'none')}
               >
                 View Offer
@@ -146,7 +142,7 @@ export default function Nav() {
                 href="https://app.dnianalytics.com"
                 className="btn-ghost hidden-mobile"
                 style={{
-                  padding: '8px 18px', borderRadius: 8,
+                  padding: '9px 18px', borderRadius: 999,
                   fontSize: 14, fontWeight: 500,
                   textDecoration: 'none', display: 'inline-block',
                 }}
@@ -155,9 +151,9 @@ export default function Nav() {
               </a>
               <button
                 onClick={() => scrollTo('#waitlist')}
-                className="btn-primary"
+                className="btn-spectrum magnetic"
                 style={{
-                  padding: '9px 20px', borderRadius: 8,
+                  padding: '10px 20px', borderRadius: 999,
                   fontSize: 14, fontWeight: 600,
                   position: 'relative', zIndex: 1,
                 }}
@@ -199,7 +195,7 @@ export default function Nav() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.15 }}
             style={{
-              position: 'fixed', top: 68, left: 0, right: 0, zIndex: 99,
+              position: 'fixed', top: 84, left: 16, right: 16, zIndex: 99, borderRadius: 22,
               background: 'rgb(10, 10, 10)',
               borderBottom: '1px solid rgba(255,255,255,0.08)',
               padding: '20px 24px 24px',
@@ -215,7 +211,7 @@ export default function Nav() {
                   style={{
                     display: 'block', width: '100%', textAlign: 'left', textDecoration: 'none',
                     background: 'none', border: 'none', cursor: 'pointer',
-                    color: isActive ? '#7B96FF' : 'rgba(255,255,255,0.7)',
+                    color: isActive ? '#ffffff' : 'rgba(255,255,255,0.7)',
                     fontSize: 16, fontWeight: isActive ? 600 : 500,
                     padding: '14px 0', fontFamily: 'inherit',
                     borderBottom: '1px solid rgba(255,255,255,0.06)',
@@ -229,7 +225,7 @@ export default function Nav() {
               href="/offer"
               style={{
                 display: 'block',
-                color: '#c9a86a', fontSize: 16, fontWeight: 500,
+                color: '#e8eaee', fontSize: 16, fontWeight: 500,
                 padding: '14px 0', textDecoration: 'none',
                 borderBottom: '1px solid rgba(255,255,255,0.06)',
               }}

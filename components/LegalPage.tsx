@@ -18,7 +18,7 @@ export default function LegalPage({
       <header style={{
         borderBottom: '1px solid var(--card-border)',
         padding: '18px 24px', position: 'sticky', top: 0, zIndex: 10,
-        background: 'rgba(7,7,15,0.85)', backdropFilter: 'blur(12px)',
+        background: 'rgba(8,9,11,0.78)', backdropFilter: 'blur(12px)',
       }}>
         <div style={{ maxWidth: 820, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
@@ -57,7 +57,7 @@ export default function LegalPage({
       {/* Scoped prose styling — the codebase styles pages with local <style> blocks
           (see app/offer/page.tsx) rather than adding one-off rules to globals.css. */}
       <style>{`
-        .legal-prose { color: rgba(200,200,230,0.72); font-size: 15.5px; line-height: 1.8; }
+        .legal-prose { color: rgba(222,226,232,0.72); font-size: 15.5px; line-height: 1.8; }
         .legal-prose h2 {
           color: var(--text); font-size: 22px; font-weight: 700; letter-spacing: -0.4px;
           margin: 48px 0 14px; padding-top: 24px; border-top: 1px solid var(--card-border);
