@@ -64,24 +64,20 @@ export default function Nav() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 100,
-          transition: 'background 0.4s ease, border-color 0.4s ease',
-          background: scrolled ? 'rgba(8, 9, 11, 0.72)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(18px) saturate(140%)' : 'none',
-          WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent',
-        }}
+        style={{ position: 'fixed', top: 14, left: 0, right: 0, zIndex: 100, padding: '0 16px', pointerEvents: 'none' }}
       >
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 68 }}>
+        <div style={{
+          maxWidth: scrolled ? 1040 : 1240, margin: '0 auto', padding: '0 10px 0 22px', pointerEvents: 'auto',
+          borderRadius: 999, transition: 'max-width .6s cubic-bezier(.22,1,.36,1), background .4s ease, border-color .4s ease, box-shadow .4s ease',
+          background: scrolled ? 'rgba(14, 15, 18, 0.62)' : 'rgba(14, 15, 18, 0.0)',
+          backdropFilter: 'blur(20px) saturate(160%)', WebkitBackdropFilter: 'blur(20px) saturate(160%)',
+          border: `1px solid ${scrolled ? 'rgba(255,255,255,0.10)' : 'transparent'}`,
+          boxShadow: scrolled ? '0 20px 50px -20px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.06)' : 'none',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 60 }}>
             {/* Logo */}
             <a href="/" aria-label="DNI Studios home" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
-              <BrandLogo height={38} className="logo-wide" />
+              <BrandLogo height={32} className="logo-wide" />
               <BrandLogo variant="mark" height={34} className="logo-narrow" />
             </a>
 
@@ -146,7 +142,7 @@ export default function Nav() {
                 href="https://app.dnianalytics.com"
                 className="btn-ghost hidden-mobile"
                 style={{
-                  padding: '8px 18px', borderRadius: 8,
+                  padding: '9px 18px', borderRadius: 999,
                   fontSize: 14, fontWeight: 500,
                   textDecoration: 'none', display: 'inline-block',
                 }}
@@ -155,9 +151,9 @@ export default function Nav() {
               </a>
               <button
                 onClick={() => scrollTo('#waitlist')}
-                className="btn-primary"
+                className="btn-spectrum magnetic"
                 style={{
-                  padding: '9px 20px', borderRadius: 8,
+                  padding: '10px 20px', borderRadius: 999,
                   fontSize: 14, fontWeight: 600,
                   position: 'relative', zIndex: 1,
                 }}
@@ -199,7 +195,7 @@ export default function Nav() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.15 }}
             style={{
-              position: 'fixed', top: 68, left: 0, right: 0, zIndex: 99,
+              position: 'fixed', top: 84, left: 16, right: 16, zIndex: 99, borderRadius: 22,
               background: 'rgb(10, 10, 10)',
               borderBottom: '1px solid rgba(255,255,255,0.08)',
               padding: '20px 24px 24px',

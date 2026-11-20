@@ -339,3 +339,69 @@ hr.gradient-hr { border: none; height: 1px; background: linear-gradient(90deg, t
   .hero-toast-wrap { right: 8px !important; top: -18px !important; width: 220px !important; }
   .hero-live { display: none; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   Colour: vivid light glowing out of the graphite (Apple-style).
+   Signature "spectrum" gradient + one accent per feature.
+   ══════════════════════════════════════════════════════════════════════ */
+:root {
+  --c-blue: #2f7bff; --c-violet: #8b5cff; --c-pink: #ff4fa3; --c-orange: #ff8a3d; --c-amber: #ffc24d;
+  --c-green: #2fe39a; --c-teal: #22d3ee; --c-red: #ff5a5f;
+  --spectrum: linear-gradient(90deg, #2f7bff 0%, #8b5cff 30%, #ff4fa3 60%, #ff8a3d 85%, #ffc24d 100%);
+}
+.spectrum-text {
+  background: linear-gradient(90deg, #4f8dff, #9b6bff, #ff5fae, #ff9248, #ffc24d, #ff5fae, #9b6bff, #4f8dff);
+  background-size: 300% 100%;
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+  animation: spectrum-move 9s linear infinite;
+}
+@keyframes spectrum-move { to { background-position: -300% 0; } }
+.tint-text { -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+
+/* Soft aurora blobs that drift and shift hue. */
+.aurora { position: absolute; pointer-events: none; filter: blur(70px); opacity: .55; }
+.aurora span { position: absolute; border-radius: 50%; mix-blend-mode: screen; animation: aurora-float 16s ease-in-out infinite; }
+@keyframes aurora-float {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(6%, -8%) scale(1.12); }
+  66% { transform: translate(-7%, 6%) scale(.92); }
+}
+
+/* Spectrum glowing edge (Apple Intelligence style). */
+.spectrum-ring { position: relative; isolation: isolate; }
+.spectrum-ring::before {
+  content: ''; position: absolute; inset: -2px; border-radius: inherit; z-index: -1;
+  background: conic-gradient(from var(--angle), #2f7bff, #8b5cff, #ff4fa3, #ff8a3d, #ffc24d, #2f7bff);
+  animation: ring-spin 6s linear infinite;
+}
+.spectrum-ring::after {
+  content: ''; position: absolute; inset: -18px; border-radius: inherit; z-index: -2; filter: blur(28px); opacity: .55;
+  background: conic-gradient(from var(--angle), #2f7bff, #8b5cff, #ff4fa3, #ff8a3d, #ffc24d, #2f7bff);
+  animation: ring-spin 6s linear infinite;
+}
+.btn-spectrum {
+  position: relative; isolation: isolate; color: #fff !important; font-weight: 650; cursor: pointer; border: none;
+  background: #0b0c0f;
+  box-shadow: 0 10px 40px -8px rgba(139, 92, 255, .55), 0 6px 30px -10px rgba(255, 79, 163, .45);
+  transition: transform .25s var(--ease-out), box-shadow .25s ease;
+}
+.btn-spectrum::before {
+  content: ''; position: absolute; inset: -2px; border-radius: inherit; z-index: -1;
+  background: conic-gradient(from var(--angle), #2f7bff, #8b5cff, #ff4fa3, #ff8a3d, #ffc24d, #2f7bff);
+  animation: ring-spin 4s linear infinite;
+}
+.btn-spectrum::after { content: ''; position: absolute; inset: 0; border-radius: inherit; z-index: -1; background: linear-gradient(180deg, #1a1c22, #0b0c0f); }
+.btn-spectrum:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 16px 50px -8px rgba(139, 92, 255, .7), 0 10px 40px -10px rgba(255, 138, 61, .55); }
+@media (prefers-reduced-motion: reduce) {
+  .spectrum-text, .aurora span, .spectrum-ring::before, .spectrum-ring::after, .btn-spectrum::before { animation: none !important; }
+}
+@media (max-width: 768px) { .aurora span { animation: none; } }
+
+/* ── Designer details ──────────────────────────────────────────────── */
+.mono { font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace; }
+.eyebrow { font-family: var(--font-mono), ui-monospace, monospace; font-weight: 500; letter-spacing: .16em; }
+.outline-text { color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.28); }
+html.has-cursor, html.has-cursor * { cursor: none !important; }
+.magnetic { transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .25s ease !important; will-change: transform; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }

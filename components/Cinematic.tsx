@@ -1,6 +1,6 @@
 'use client'
 // Full-screen, scroll-driven scenes for the home page (Apple-style product story).
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import React, { useEffect, useRef, useState, type ReactNode } from 'react'
 import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from 'framer-motion'
 import BrandLogo from './BrandLogo'
 import { DashboardMockup, LiveToasts, LiveSessionCard } from './Hero'
@@ -38,6 +38,19 @@ function Dust({ count = 26 }: { count?: number }) {
   )
 }
 
+/* Drifting colour glow. colors: 3-4 css colours. */
+function Aurora({ colors, style }: { colors: string[]; style?: React.CSSProperties }) {
+  const spots = [[10, 20, 55], [55, 5, 60], [30, 55, 50], [65, 50, 45]]
+  return (
+    <div aria-hidden="true" className="aurora" style={{ inset: 0, ...style }}>
+      {colors.map((c, i) => {
+        const [l, t, sz] = spots[i % spots.length]
+        return <span key={i} style={{ left: `${l}%`, top: `${t}%`, width: `${sz}%`, height: `${sz}%`, background: `radial-gradient(circle, ${c} 0%, transparent 65%)`, animationDelay: `${-i * 4}s`, animationDuration: `${14 + i * 3}s` }} />
+      })}
+    </div>
+  )
+}
+
 /* ── 1. Opening: giant metal mark, huge headline, fly-through on scroll ── */
 export function CineHero() {
   const ref = useRef<HTMLElement>(null)
@@ -59,6 +72,7 @@ export function CineHero() {
     <section ref={ref} id="hero" style={{ height: '170vh', position: 'relative' }}>
       <div className="grain" style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse 80% 60% at 50% 38%, #1a1d23 0%, #0b0c0f 55%, #050607 100%)' }}>
         <CursorLight size={900} opacity={0.07} />
+        <Aurora colors={['rgba(47,123,255,0.55)', 'rgba(139,92,255,0.5)', 'rgba(255,79,163,0.42)', 'rgba(255,138,61,0.35)']} style={{ inset: '-10% 5% 15%', opacity: 0.6 }} />
         <Dust />
         {/* Rotating light beams */}
         <div aria-hidden="true" className="beams" style={{
@@ -69,30 +83,30 @@ export function CineHero() {
 
         <motion.div style={{ scale: markScale, opacity: markOpacity, position: 'relative', zIndex: 1 }}>
           <motion.div initial={{ opacity: 0, scale: 0.7, filter: 'blur(18px)' }} animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }} transition={{ duration: 1.6, ease: EASE }}>
-            <div style={{ position: 'absolute', inset: '-30%', borderRadius: '50%', background: 'radial-gradient(circle, rgba(225,232,242,0.22), transparent 62%)', filter: 'blur(10px)' }} />
+            <div style={{ position: 'absolute', inset: '-30%', borderRadius: '50%', background: 'conic-gradient(from 0deg, rgba(47,123,255,0.45), rgba(139,92,255,0.45), rgba(255,79,163,0.4), rgba(255,138,61,0.38), rgba(47,123,255,0.45))', filter: 'blur(60px)', opacity: 0.8 }} />
             <BrandLogo variant="mark" height={markH} alt="DNI Studios" />
           </motion.div>
         </motion.div>
 
         <motion.div style={{ opacity: textOpacity, y: textY, scale: textScale, position: 'relative', zIndex: 2, textAlign: 'center', padding: '0 20px', marginTop: 34 }}>
           <motion.div initial={{ opacity: 0, letterSpacing: '0.6em' }} animate={{ opacity: 1, letterSpacing: '0.32em' }} transition={{ duration: 1.6, delay: 0.5, ease: EASE }}
-            style={{ fontSize: 13, fontWeight: 600, textTransform: 'uppercase', color: 'var(--steel-3)' }}>
+            className="mono" style={{ fontSize: 13, fontWeight: 500, textTransform: 'uppercase', color: 'var(--steel-3)' }}>
             Studio software for personal trainers
           </motion.div>
           <h1 style={{ fontSize: 'clamp(52px, 9.5vw, 150px)', fontWeight: 800, letterSpacing: '-0.055em', lineHeight: 0.92, marginTop: 18 }}>
             <motion.span className="steel-text" style={{ display: 'block' }} initial={{ opacity: 0, y: 40, filter: 'blur(14px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} transition={{ duration: 1.3, delay: 0.7, ease: EASE }}>
               Run your studio.
             </motion.span>
-            <motion.span className="sheen-text" style={{ display: 'block' }} initial={{ opacity: 0, y: 40, filter: 'blur(14px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} transition={{ duration: 1.3, delay: 0.95, ease: EASE }}>
+            <motion.span className="spectrum-text" style={{ display: 'block' }} initial={{ opacity: 0, y: 40, filter: 'blur(14px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} transition={{ duration: 1.3, delay: 0.95, ease: EASE }}>
               Beautifully.
             </motion.span>
           </h1>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 1.35, ease: EASE }}
             style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 40 }}>
-            <a href="#waitlist" className="btn-steel" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 30px', borderRadius: 999, fontSize: 16, textDecoration: 'none' }}>
+            <a href="#waitlist" className="btn-spectrum magnetic" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 30px', borderRadius: 999, fontSize: 16, textDecoration: 'none' }}>
               Start free trial <Icon name="arrow" size={17} />
             </a>
-            <a href="#story" className="btn-ghost" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 28px', borderRadius: 999, fontSize: 16, fontWeight: 600, textDecoration: 'none' }}>
+            <a href="#story" className="btn-ghost magnetic" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 28px', borderRadius: 999, fontSize: 16, fontWeight: 600, textDecoration: 'none' }}>
               Watch it work
             </a>
           </motion.div>
@@ -111,6 +125,7 @@ export function CineHero() {
 
 /* ── 2. Product reveal: dashboard rises, flattens, zooms; captions cycle ── */
 const CAPTIONS = ['Every client.', 'Every session.', 'Every pound.']
+const CAPTION_GRADS = ['linear-gradient(90deg,#4f8dff,#22d3ee)', 'linear-gradient(90deg,#ff8a3d,#ffc24d)', 'linear-gradient(90deg,#2fe39a,#22d3ee)']
 
 function Caption({ text, i, p }: { text: string; i: number; p: MotionValue<number> }) {
   const a = 0.08 + i * 0.24
@@ -119,7 +134,7 @@ function Caption({ text, i, p }: { text: string; i: number; p: MotionValue<numbe
   const blur = useTransform(p, [a, a + 0.06, a + 0.18, a + 0.24], ['blur(12px)', 'blur(0px)', 'blur(0px)', i === CAPTIONS.length - 1 ? 'blur(0px)' : 'blur(12px)'])
   return (
     <motion.div style={{ opacity, y, filter: blur, position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center' }}>
-      <span className="steel-text" style={{ fontSize: 'clamp(40px, 6.4vw, 104px)', fontWeight: 800, letterSpacing: '-0.05em', lineHeight: 1 }}>{text}</span>
+      <span className="tint-text" style={{ backgroundImage: CAPTION_GRADS[i], fontSize: 'clamp(40px, 6.4vw, 104px)', fontWeight: 800, letterSpacing: '-0.05em', lineHeight: 1 }}>{text}</span>
     </motion.div>
   )
 }
@@ -141,7 +156,7 @@ export function ProductReveal() {
           {CAPTIONS.map((c, i) => <Caption key={c} text={c} i={i} p={p} />)}
         </div>
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', perspective: 1400, paddingTop: '14vh' }}>
-          <motion.div style={{ opacity: glow, position: 'absolute', width: '80vw', height: '60vh', top: '30vh', borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(220,228,240,0.16), transparent 65%)', filter: 'blur(30px)' }} />
+          <motion.div style={{ opacity: glow, position: 'absolute', width: '80vw', height: '60vh', top: '30vh', borderRadius: '50%', background: 'radial-gradient(ellipse at 30% 50%, rgba(47,123,255,0.35), transparent 55%), radial-gradient(ellipse at 70% 50%, rgba(139,92,255,0.32), transparent 55%), radial-gradient(ellipse at 50% 70%, rgba(255,79,163,0.22), transparent 60%)', filter: 'blur(40px)' }} />
           <motion.div style={{ y, rotateX, scale, opacity, transformOrigin: '50% 100%', width: 'min(1100px, 92vw)', position: 'relative' }}>
             <div style={{ position: 'relative', padding: 10, borderRadius: 24, background: 'linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.03))', border: '1px solid rgba(255,255,255,0.14)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 80px 160px -40px rgba(0,0,0,1)' }}>
               <DashboardMockup />
@@ -162,7 +177,7 @@ function Word({ w, i, n, p }: { w: string; i: number; n: number; p: MotionValue<
   const start = 0.1 + (i / n) * 0.7
   const opacity = useTransform(p, [start, start + 0.06], [0.12, 1])
   const highlight = ['group', 'chat,', 'spreadsheet', 'five', 'apps.'].includes(w)
-  return <motion.span style={{ opacity }} className={highlight ? 'sheen-text' : undefined}>{w} </motion.span>
+  return <motion.span style={{ opacity }} className={highlight ? 'spectrum-text' : undefined}>{w} </motion.span>
 }
 
 export function Statement() {
@@ -181,12 +196,12 @@ export function Statement() {
 }
 
 /* ── 4. Horizontal feature gallery ───────────────────────────────────── */
-const PANELS: { n: string; kicker: string; title: string; sub: string; demo: ReactNode }[] = [
-  { n: '01', kicker: 'Live session logger', title: 'Every set.\nLogged live.', sub: 'Weights, reps and rest, mid-session. PBs spotted automatically.', demo: <LoggerDemo /> },
-  { n: '02', kicker: 'AI assistant', title: 'Ask.\nIt’s done.', sub: 'Book sessions and chase payments in plain English.', demo: <ChatDemo /> },
-  { n: '03', kicker: 'Payments', title: 'Every pound.\nAccounted for.', sub: 'Overdue accounts flagged. Receipts sent. No awkward chasing.', demo: <RevenueDemo /> },
-  { n: '04', kicker: 'Lead pipeline', title: 'No lead\nleft behind.', sub: 'From first enquiry to paying client, all in one view.', demo: <PipelineDemo /> },
-  { n: '05', kicker: 'Client app', title: 'Your studio.\nIn their pocket.', sub: 'Workouts, nutrition, wellness and streaks for every client.', demo: <PhoneDemo /> },
+const PANELS: { n: string; kicker: string; title: string; sub: string; demo: ReactNode; c1: string; c2: string }[] = [
+  { n: '01', kicker: 'Live session logger', title: 'Every set.\nLogged live.', sub: 'Weights, reps and rest, mid-session. PBs spotted automatically.', demo: <LoggerDemo />, c1: '#ff8a3d', c2: '#ff4f6d' },
+  { n: '02', kicker: 'AI assistant', title: 'Ask.\nIt’s done.', sub: 'Book sessions and chase payments in plain English.', demo: <ChatDemo />, c1: '#8b5cff', c2: '#ff4fa3' },
+  { n: '03', kicker: 'Payments', title: 'Every pound.\nAccounted for.', sub: 'Overdue accounts flagged. Receipts sent. No awkward chasing.', demo: <RevenueDemo />, c1: '#2fe39a', c2: '#22d3ee' },
+  { n: '04', kicker: 'Lead pipeline', title: 'No lead\nleft behind.', sub: 'From first enquiry to paying client, all in one view.', demo: <PipelineDemo />, c1: '#2f7bff', c2: '#22d3ee' },
+  { n: '05', kicker: 'Client app', title: 'Your studio.\nIn their pocket.', sub: 'Workouts, nutrition, wellness and streaks for every client.', demo: <PhoneDemo />, c1: '#c26bff', c2: '#ff5fae' },
 ]
 
 function Panel({ panel, wide }: { panel: typeof PANELS[number]; wide: boolean }) {
@@ -198,14 +213,17 @@ function Panel({ panel, wide }: { panel: typeof PANELS[number]; wide: boolean })
       <div style={{ display: 'grid', gridTemplateColumns: wide ? '1fr 1fr' : '1fr', gap: wide ? '6vw' : 36, alignItems: 'center', width: '100%', maxWidth: 1280 }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
-            <span className="steel-text" style={{ fontSize: 22, fontWeight: 800, fontVariantNumeric: 'tabular-nums' }}>{panel.n}</span>
-            <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: '.22em', textTransform: 'uppercase', color: 'var(--steel-3)' }}>{panel.kicker}</span>
+            <span className="tint-text" style={{ backgroundImage: `linear-gradient(90deg, ${panel.c1}, ${panel.c2})`, fontSize: 22, fontWeight: 800, fontVariantNumeric: 'tabular-nums' }}>{panel.n}</span>
+            <span className="mono" style={{ fontSize: 13, fontWeight: 500, letterSpacing: '.18em', textTransform: 'uppercase', color: panel.c1 }}>{panel.kicker}</span>
           </div>
-          <h3 className="steel-text" style={{ fontSize: 'clamp(44px, 6.2vw, 104px)', fontWeight: 800, letterSpacing: '-0.05em', lineHeight: 0.95, marginTop: 22, whiteSpace: 'pre-line' }}>{panel.title}</h3>
+          <h3 style={{ fontSize: 'clamp(44px, 6.2vw, 104px)', fontWeight: 800, letterSpacing: '-0.05em', lineHeight: 0.95, marginTop: 22 }}>
+            <span className="steel-text" style={{ display: 'block' }}>{panel.title.split('\n')[0]}</span>
+            <span className="tint-text" style={{ display: 'block', backgroundImage: `linear-gradient(90deg, ${panel.c1}, ${panel.c2})` }}>{panel.title.split('\n')[1]}</span>
+          </h3>
           <p style={{ fontSize: 'clamp(17px, 1.5vw, 21px)', lineHeight: 1.55, color: 'var(--text-muted)', marginTop: 22, maxWidth: 460 }}>{panel.sub}</p>
         </div>
         <div style={{ position: 'relative' }}>
-          <div style={{ position: 'absolute', inset: '-15%', borderRadius: '50%', background: 'radial-gradient(circle, rgba(220,228,240,0.12), transparent 62%)', filter: 'blur(20px)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', inset: '-25%', borderRadius: '50%', background: `radial-gradient(circle at 35% 40%, ${panel.c1}66, transparent 55%), radial-gradient(circle at 70% 65%, ${panel.c2}55, transparent 55%)`, filter: 'blur(50px)', pointerEvents: 'none' }} />
           <div className="spot" style={{ position: 'relative', padding: 30, borderRadius: 28, background: 'linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01))', boxShadow: '0 60px 120px -40px rgba(0,0,0,1), inset 0 1px 0 rgba(255,255,255,0.08)' }}>
             {panel.demo}
           </div>
@@ -245,6 +263,7 @@ export function FeatureGallery() {
 }
 
 /* ── 5. Giant numbers ────────────────────────────────────────────────── */
+const NUM_GRADS = ['linear-gradient(180deg,#9cc0ff,#2f7bff)', 'linear-gradient(180deg,#c6b0ff,#8b5cff)', 'linear-gradient(180deg,#ffb3d6,#ff4fa3)', 'linear-gradient(180deg,#ffd08a,#ff8a3d)']
 const NUMBERS = [
   { to: 10, prefix: '<', suffix: '', unit: 'min', label: 'to set up your studio' },
   { to: 0, prefix: '£', suffix: '', unit: '', label: 'per-seat fees, ever' },
@@ -261,7 +280,7 @@ export function BigNumbers() {
             initial={{ opacity: 0, y: 60, filter: 'blur(12px)' }} whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }} viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 1.1, delay: i * 0.12, ease: EASE }}
             style={{ borderTop: '1px solid rgba(255,255,255,0.12)', paddingTop: 28 }}>
-            <div className="steel-text" style={{ fontSize: 'clamp(64px, 9vw, 150px)', fontWeight: 800, letterSpacing: '-0.06em', lineHeight: 0.9, fontVariantNumeric: 'tabular-nums' }}>
+            <div className="tint-text" style={{ backgroundImage: NUM_GRADS[i], fontSize: 'clamp(64px, 9vw, 150px)', fontWeight: 800, letterSpacing: '-0.06em', lineHeight: 0.9, fontVariantNumeric: 'tabular-nums' }}>
               <Counter to={n.to} prefix={n.prefix} suffix={n.suffix} duration={2} />
               {n.unit && <span style={{ fontSize: '0.32em', letterSpacing: '-0.02em', marginLeft: 8 }}>{n.unit}</span>}
             </div>

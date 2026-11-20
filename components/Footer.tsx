@@ -7,7 +7,7 @@ export default function Footer() {
   }
 
   return (
-    <footer style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '60px 24px 40px' }}>
+    <footer style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '80px 24px 0', background: '#050607', overflow: 'hidden' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 60, marginBottom: 48 }} className="footer-grid">
 
@@ -110,6 +110,13 @@ export default function Footer() {
             ))}
           </div>
         </div>
+      </div>
+
+      <div aria-hidden="true" style={{ marginTop: 56, textAlign: 'center', lineHeight: 0.8, overflow: 'hidden' }}>
+        <span className="footer-giant" style={{ display: 'inline-block', fontSize: 'clamp(48px, 15vw, 260px)', fontWeight: 800, letterSpacing: '-0.06em', whiteSpace: 'nowrap',
+          background: 'linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.0) 85%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}>
+          DNI STUDIOS
+        </span>
       </div>
 
       <style>{`

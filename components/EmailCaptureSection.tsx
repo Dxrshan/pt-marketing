@@ -32,6 +32,7 @@ export default function EmailCaptureSection() {
   return (
     <section id="waitlist" className="grain" style={{ padding: '140px 24px 150px', position: 'relative', overflow: 'hidden' }}>
       <CursorLight size={700} opacity={0.08} />
+      <div aria-hidden="true" style={{ position: 'absolute', inset: '10% 10% 20%', pointerEvents: 'none', filter: 'blur(90px)', opacity: 0.4, background: 'radial-gradient(circle at 25% 50%, #2f7bff, transparent 45%), radial-gradient(circle at 75% 45%, #ff4fa3, transparent 45%), radial-gradient(circle at 50% 80%, #ff8a3d, transparent 45%)' }} />
       {/* Light beam from above */}
       <div aria-hidden="true" style={{
         position: 'absolute', top: -120, left: '50%', width: 900, height: 600, transform: 'translateX(-50%)', pointerEvents: 'none',
@@ -42,7 +43,7 @@ export default function EmailCaptureSection() {
         <motion.div initial={{ opacity: 0, y: 30, filter: 'blur(6px)' }} whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }} viewport={{ once: true }} transition={{ duration: 0.9, ease: EASE }}>
           <span className="badge badge-blue" style={{ marginBottom: 26 }}><span className="live-dot" /> Limited founding spots</span>
           <h2 style={{ fontSize: 'clamp(40px, 6vw, 76px)', fontWeight: 800, letterSpacing: '-0.045em', lineHeight: 1, marginBottom: 22 }}>
-            <span className="steel-text">Join the</span><br /><span className="sheen-text">founding studios.</span>
+            <span className="steel-text">Join the</span><br /><span className="spectrum-text">founding studios.</span>
           </h2>
           <p style={{ fontSize: 18, color: 'var(--text-muted)', lineHeight: 1.65, marginBottom: 40 }}>
             Get early access, lock in founding pricing for life, and help shape what DNI Studios becomes.
@@ -86,7 +87,7 @@ export default function EmailCaptureSection() {
                   style={{ padding: '15px 18px', borderRadius: 13, fontSize: 15.5, width: '100%' }} />
               </div>
 
-              <button type="submit" disabled={loading} className="btn-steel"
+              <button type="submit" disabled={loading} className="btn-spectrum"
                 style={{ width: '100%', padding: 17, borderRadius: 14, fontSize: 16, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 10, opacity: loading ? 0.75 : 1 }}>
                 {loading ? 'Securing your spot…' : <>Secure my founding spot <Icon name="arrow" size={17} /></>}
               </button>

@@ -32,7 +32,7 @@ export default function PricingSection() {
 
   return (
     <section id="pricing" style={{ padding: '140px 24px', position: 'relative', overflow: 'hidden' }}>
-      <div className="glow-orb glow-blue" style={{ width: 800, height: 800, top: '20%', left: '50%', transform: 'translateX(-50%)' }} />
+      <div aria-hidden="true" style={{ position: 'absolute', width: 900, height: 700, top: '25%', left: '50%', transform: 'translateX(-50%)', pointerEvents: 'none', filter: 'blur(80px)', opacity: 0.45, background: 'radial-gradient(circle at 30% 40%, #2f7bff, transparent 50%), radial-gradient(circle at 70% 40%, #ff4fa3, transparent 50%), radial-gradient(circle at 50% 75%, #8b5cff, transparent 55%)' }} />
 
       <div style={{ maxWidth: 720, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         <SectionHead
@@ -64,7 +64,7 @@ export default function PricingSection() {
 
         {/* Card with a ring of light running around its edge */}
         <Reveal delay={0.15} style={{ marginTop: 34 }}>
-          <div className="ring-light">
+          <div className="spectrum-ring" style={{ borderRadius: 26 }}>
             <div className="pricing-featured" style={{ borderRadius: 25, padding: '40px 40px 36px', background: 'radial-gradient(120% 120% at 0% 0%, #1d2026 0%, #111317 45%, #0b0c0f 100%)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, flexWrap: 'wrap' }}>
                 <div>
@@ -88,7 +88,7 @@ export default function PricingSection() {
                 </div>
               </div>
 
-              <a href="/offer" className="btn-steel" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, padding: 17, borderRadius: 14, fontSize: 16, textDecoration: 'none', marginTop: 30 }}>
+              <a href="/offer" className="btn-spectrum" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, padding: 17, borderRadius: 14, fontSize: 16, textDecoration: 'none', marginTop: 30 }}>
                 Claim founding price <Icon name="arrow" size={17} />
               </a>
               <p style={{ fontSize: 13, color: 'var(--text-subtle)', textAlign: 'center', marginTop: 12 }}>30-day free trial · No card needed · Cancel anytime</p>

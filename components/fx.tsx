@@ -194,7 +194,7 @@ export function SectionHead({ eyebrow, title, accent, sub, align = 'center' }: {
     <Reveal style={{ textAlign: align, maxWidth: align === 'center' ? 760 : undefined, margin: align === 'center' ? '0 auto' : undefined }}>
       <div className="eyebrow" style={{ marginBottom: 18 }}>{eyebrow}</div>
       <h2 style={{ fontSize: 'clamp(34px, 4.6vw, 60px)', fontWeight: 800, letterSpacing: '-0.035em', lineHeight: 1.04 }}>
-        <span className="steel-text">{title}</span>{accent && <> <span className="sheen-text">{accent}</span></>}
+        <span className="steel-text">{title}</span>{accent && <> <span className="spectrum-text">{accent}</span></>}
       </h2>
       {sub && <p style={{ fontSize: 18, lineHeight: 1.65, color: 'var(--text-muted)', marginTop: 18, maxWidth: 600, marginLeft: align === 'center' ? 'auto' : 0, marginRight: align === 'center' ? 'auto' : 0 }}>{sub}</p>}
     </Reveal>
