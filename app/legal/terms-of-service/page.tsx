@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   title: 'Terms of Service',
   description: 'The terms that govern use of the DNI Studios platform, provided by DNI Ltd.',
   alternates: { canonical: '/legal/terms-of-service' },
+  // Keep legal pages out of Google results (and its sitelinks); links still work.
+  robots: { index: false, follow: true },
 }
 
 export default function Page() {

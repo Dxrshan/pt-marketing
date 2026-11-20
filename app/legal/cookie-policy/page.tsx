@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   title: 'Cookie Policy',
   description: 'Which cookies DNI Studios uses and how to control them.',
   alternates: { canonical: '/legal/cookie-policy' },
+  // Keep legal pages out of Google results (and its sitelinks); links still work.
+  robots: { index: false, follow: true },
 }
 
 export default function Page() {

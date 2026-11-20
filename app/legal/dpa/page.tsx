@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   title: 'Data Processing Agreement',
   description: 'The data processing agreement between DNI Ltd and studios using DNI Studios.',
   alternates: { canonical: '/legal/dpa' },
+  // Keep legal pages out of Google results (and its sitelinks); links still work.
+  robots: { index: false, follow: true },
 }
 
 export default function Page() {
