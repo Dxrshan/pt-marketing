@@ -1,11 +1,8 @@
 'use client'
-// Site-wide finishing touches: inertia scrolling, intro, custom cursor, magnetic buttons.
+// Site-wide finishing touches: inertia scrolling, custom cursor, magnetic buttons.
 import { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { useReducedMotion } from 'framer-motion'
 import Lenis from 'lenis'
-import BrandLogo from './BrandLogo'
-
-const EASE = [0.76, 0, 0.24, 1] as const
 
 /** Buttery inertia scrolling; anchor links glide too. */
 export function SmoothScroll() {
@@ -31,50 +28,6 @@ export function SmoothScroll() {
     return () => { cancelAnimationFrame(raf); lenis.destroy(); document.removeEventListener('click', onClick) }
   }, [reduce])
   return null
-}
-
-/** Branded intro: counter to 100, logo, then the curtain lifts. Once per session. */
-export function Intro() {
-  const [show, setShow] = useState(false)
-  const [n, setN] = useState(0)
-  const reduce = useReducedMotion()
-  useEffect(() => {
-    let seen = false
-    try { seen = sessionStorage.getItem('dni-intro') === '1' } catch {}
-    if (seen || reduce) return
-    setShow(true)
-    try { sessionStorage.setItem('dni-intro', '1') } catch {}
-    document.documentElement.style.overflow = 'hidden'
-    const start = performance.now()
-    let raf = 0
-    const tick = (t: number) => {
-      const k = Math.min((t - start) / 1500, 1)
-      setN(Math.round(100 * (1 - Math.pow(1 - k, 3))))
-      if (k < 1) raf = requestAnimationFrame(tick)
-      else setTimeout(() => { setShow(false); document.documentElement.style.overflow = '' }, 350)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => { cancelAnimationFrame(raf); document.documentElement.style.overflow = '' }
-  }, [reduce])
-  return (
-    <AnimatePresence>
-      {show && (
-        <motion.div key="intro" exit={{ y: '-100%' }} transition={{ duration: 1, ease: EASE }}
-          style={{ position: 'fixed', inset: 0, zIndex: 1000, background: '#050607', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <motion.div initial={{ opacity: 0, scale: 0.85, filter: 'blur(10px)' }} animate={{ opacity: 1, scale: 1, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            style={{ position: 'relative' }}>
-            <div style={{ position: 'absolute', inset: '-40%', borderRadius: '50%', filter: 'blur(50px)', opacity: 0.7, background: 'conic-gradient(from 0deg, #2f7bff, #8b5cff, #ff4fa3, #ff8a3d, #2f7bff)' }} />
-            <BrandLogo variant="mark" height={110} />
-          </motion.div>
-          <div className="mono" style={{ position: 'absolute', left: 32, bottom: 28, fontSize: 12, color: '#6b717b', letterSpacing: '.2em' }}>DNI STUDIOS — LOADING</div>
-          <div className="mono" style={{ position: 'absolute', right: 32, bottom: 18, fontSize: 'clamp(48px, 8vw, 120px)', fontWeight: 500, color: '#f2f3f5', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
-            {String(n).padStart(3, '0')}
-          </div>
-          <div style={{ position: 'absolute', left: 0, bottom: 0, height: 2, width: `${n}%`, background: 'linear-gradient(90deg,#2f7bff,#8b5cff,#ff4fa3,#ff8a3d)' }} />
-        </motion.div>
-      )}
-    </AnimatePresence>
-  )
 }
 
 /** Small dot + trailing ring cursor; grows over links and buttons. Desktop only. */
