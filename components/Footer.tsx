@@ -60,7 +60,7 @@ export default function Footer() {
         </div>
 
         <div style={{ marginTop: 56, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.06)', fontSize: 12.5, color: 'rgba(255,255,255,0.3)' }}>
-          © {new Date().getFullYear()} DNI Ltd, trading as DNI Analytics · Registered in England &amp; Wales, company no. 15630271
+          {`© ${new Date().getFullYear()} DNI Ltd, trading as DNI Analytics · Registered in England & Wales, company no. 15630271`}
         </div>
       </div>
       <div aria-hidden="true" style={{ marginTop: 56, textAlign: 'center', lineHeight: 0.8, overflow: 'hidden' }}>
