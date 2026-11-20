@@ -82,15 +82,10 @@ export default function OfferPage() {
   const [contact, setContact] = useState('')
   const [ref, setRef] = useState('')
   const [issued, setIssued] = useState('')
-  const [validUntil, setValidUntil] = useState('')
 
   // Dates are set on the client so server and client render the same markup.
   useEffect(() => {
-    const now = new Date()
-    const until = new Date(now)
-    until.setDate(until.getDate() + 14)
-    setIssued(fmtDate(now))
-    setValidUntil(fmtDate(until))
+    setIssued(fmtDate(new Date()))
   }, [])
 
   const plan = PLANS[term]
@@ -172,11 +167,6 @@ export default function OfferPage() {
         <header className="head">
           <div>
             <BrandLogo variant="stacked" height={118} className="on-light" />
-            <p className="from">
-              DNI Ltd, trading as DNI Analytics<br />
-              78a Deacon Road, London NW2 5QJ<br />
-              Company no. 15630271
-            </p>
           </div>
           <div className="head-right">
             <h1 className="doc-title">Invoice</h1>
@@ -184,19 +174,16 @@ export default function OfferPage() {
               <dt>No.</dt>
               <dd><input className="inline-input" placeholder="DNI-2026-XXX" value={ref} onChange={e => setRef(e.target.value)} aria-label="Reference" /></dd>
               <dt>Date</dt><dd>{issued || '—'}</dd>
-              <dt>Valid until</dt><dd>{validUntil || '—'}</dd>
             </dl>
           </div>
         </header>
 
         <div className="for">
           <div>
-            <label className="label" htmlFor="q-studio">Prepared for</label>
-            <input id="q-studio" className="line" placeholder="Studio name" value={studio} onChange={e => setStudio(e.target.value)} />
+            <input id="q-studio" className="line" aria-label="Studio name" placeholder="Studio name" value={studio} onChange={e => setStudio(e.target.value)} />
           </div>
           <div>
-            <label className="label" htmlFor="q-contact">Attention</label>
-            <input id="q-contact" className="line" placeholder="Owner or contact" value={contact} onChange={e => setContact(e.target.value)} />
+            <input id="q-contact" className="line" aria-label="Owner or contact" placeholder="Owner or contact" value={contact} onChange={e => setContact(e.target.value)} />
           </div>
         </div>
 
@@ -498,7 +485,6 @@ body { background: #f3f1ec; }
 .sheet + .sheet { margin-top: 24px; }
 
 .head { display: flex; justify-content: space-between; gap: 32px; }
-.from { font-size: 12.5px; line-height: 1.6; color: var(--muted); margin-top: 22px; }
 .head-right { text-align: right; }
 .doc-title { font-family: var(--serif); font-weight: 400; font-size: 40px; line-height: 1; color: var(--ink); letter-spacing: -.01em; }
 .doc-meta { display: grid; grid-template-columns: auto auto; gap: 4px 16px; margin-top: 18px; font-size: 13px; justify-content: end; }
