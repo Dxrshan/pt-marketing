@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import BrandMark from './BrandMark'
 
 function DashboardMockup() {
   return (
@@ -8,9 +9,7 @@ function DashboardMockup() {
       {/* Sidebar */}
       <div className="mockup-sidebar" style={{ width: 170, padding: '16px 0' }}>
         <div style={{ padding: '0 14px 18px', display: 'flex', alignItems: 'center', gap: 7 }}>
-          <div style={{ width: 22, height: 22, borderRadius: 5, background: 'linear-gradient(135deg, #2563EB, #06B6D4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="white" /></svg>
-          </div>
+          <BrandMark height={18} />
           <span style={{ fontSize: 11, fontWeight: 700, background: 'linear-gradient(135deg, #60a5fa, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>DNI Studios</span>
         </div>
 

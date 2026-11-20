@@ -1,4 +1,5 @@
 'use client'
+import BrandMark from './BrandMark'
 export default function Footer() {
   const scrollTo = (href: string) => {
     const el = document.querySelector(href)
@@ -13,15 +14,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-              <div style={{
-                width: 32, height: 32, borderRadius: 8,
-                background: 'linear-gradient(135deg, #2563EB, #06B6D4)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="white" />
-                </svg>
-              </div>
+              <BrandMark height={30} />
               <span style={{ fontWeight: 700, fontSize: 17, color: 'white', letterSpacing: '-0.3px' }}>DNI Studios</span>
             </div>
             <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.35)', lineHeight: 1.7, maxWidth: 280 }}>

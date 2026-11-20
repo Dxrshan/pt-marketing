@@ -10,7 +10,8 @@ export const metadata: Metadata = {
   description: 'Manage clients, log sessions in real time, track payments, and grow your training business — all in one professional platform built for PTs.',
   keywords: 'personal trainer software, PT management app, fitness business software, client management personal trainer',
   icons: {
-    icon: '/favicon.svg',
+    icon: '/icon-32.png',
+    apple: '/apple-touch-icon.png',
   },
   openGraph: {
     title: 'DNI Studios — Built for Elite Personal Trainers',
