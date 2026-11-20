@@ -39,9 +39,9 @@ export default function Footer() {
             ].map(link => (
               link.external || link.href.startsWith('/') ? (
                 <a key={link.label} href={link.href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener noreferrer' : undefined}
-                  style={{ display: 'block', fontSize: 14, color: link.href === '/offer' ? 'rgba(201,168,106,0.7)' : 'rgba(255,255,255,0.45)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = link.href === '/offer' ? '#c9a86a' : 'white')}
-                  onMouseLeave={e => (e.currentTarget.style.color = link.href === '/offer' ? 'rgba(201,168,106,0.7)' : 'rgba(255,255,255,0.45)')}
+                  style={{ display: 'block', fontSize: 14, color: link.href === '/offer' ? 'rgba(232,234,238,0.75)' : 'rgba(255,255,255,0.45)', textDecoration: 'none', marginBottom: 10, transition: 'color 0.2s' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = link.href === '/offer' ? '#e8eaee' : 'white')}
+                  onMouseLeave={e => (e.currentTarget.style.color = link.href === '/offer' ? 'rgba(232,234,238,0.75)' : 'rgba(255,255,255,0.45)')}
                 >
                   {link.label}
                 </a>

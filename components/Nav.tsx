@@ -71,8 +71,8 @@ export default function Nav() {
           right: 0,
           zIndex: 100,
           transition: 'background 0.4s ease, border-color 0.4s ease',
-          background: scrolled ? 'rgba(3, 3, 3, 0.85)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(12px)' : 'none',
+          background: scrolled ? 'rgba(8, 9, 11, 0.72)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(18px) saturate(140%)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
           borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent',
         }}
@@ -96,9 +96,9 @@ export default function Nav() {
                     onClick={e => onNavClick(e, link)}
                     style={{
                       display: 'inline-block', textDecoration: 'none',
-                      background: isActive ? 'rgba(91,123,255,0.12)' : 'none',
+                      background: isActive ? 'rgba(255,255,255,0.07)' : 'none',
                       border: 'none', cursor: 'pointer',
-                      color: isActive ? '#7B96FF' : 'rgba(255,255,255,0.55)',
+                      color: isActive ? '#ffffff' : 'rgba(255,255,255,0.55)',
                       fontSize: 14, fontWeight: isActive ? 600 : 500,
                       padding: '8px 16px', borderRadius: 8,
                       transition: 'all 0.25s ease',
@@ -117,7 +117,7 @@ export default function Nav() {
                       <span style={{
                         position: 'absolute', bottom: 4, left: '50%', transform: 'translateX(-50%)',
                         width: 16, height: 2, borderRadius: 2,
-                        background: 'linear-gradient(90deg, #5B7BFF, #22D3EE)',
+                        background: 'linear-gradient(90deg, #9aa0a8, #ffffff, #9aa0a8)',
                         display: 'block',
                       }} />
                     )}
@@ -128,12 +128,12 @@ export default function Nav() {
                 href="/offer"
                 style={{
                   background: 'none', border: 'none', cursor: 'pointer',
-                  color: '#c9a86a', fontSize: 14, fontWeight: 500,
+                  color: '#e8eaee', fontSize: 14, fontWeight: 500,
                   padding: '8px 16px', borderRadius: 8,
                   transition: 'all 0.2s ease',
                   textDecoration: 'none',
                 }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(201,168,106,0.1)')}
+                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
                 onMouseLeave={e => (e.currentTarget.style.background = 'none')}
               >
                 View Offer
@@ -215,7 +215,7 @@ export default function Nav() {
                   style={{
                     display: 'block', width: '100%', textAlign: 'left', textDecoration: 'none',
                     background: 'none', border: 'none', cursor: 'pointer',
-                    color: isActive ? '#7B96FF' : 'rgba(255,255,255,0.7)',
+                    color: isActive ? '#ffffff' : 'rgba(255,255,255,0.7)',
                     fontSize: 16, fontWeight: isActive ? 600 : 500,
                     padding: '14px 0', fontFamily: 'inherit',
                     borderBottom: '1px solid rgba(255,255,255,0.06)',
@@ -229,7 +229,7 @@ export default function Nav() {
               href="/offer"
               style={{
                 display: 'block',
-                color: '#c9a86a', fontSize: 16, fontWeight: 500,
+                color: '#e8eaee', fontSize: 16, fontWeight: 500,
                 padding: '14px 0', textDecoration: 'none',
                 borderBottom: '1px solid rgba(255,255,255,0.06)',
               }}

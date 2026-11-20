@@ -1,103 +1,56 @@
 'use client'
-import { motion } from 'framer-motion'
+// Product facts + promises. (Replaces placeholder testimonials: no reviews are
+// shown until real founding studios have given them.)
+import { SectionHead, Counter, Reveal, SpotlightCard, Icon } from './fx'
 
-const TESTIMONIALS = [
-  {
-    quote: "I used to spend 3 hours every Sunday updating my spreadsheet. Now it takes me 5 minutes to check the dashboard and I know exactly where every client stands. Game changer.",
-    name: 'Alex R.',
-    role: 'Personal Trainer · London',
-    avatar: 'A',
-    avatarColor: '#2563EB',
-    stars: 5,
-  },
-  {
-    quote: "My clients love having their own portal. The daily wellness log means I actually know how they're feeling before every session — I'm coaching so much better now. And they stick around longer.",
-    name: 'Chloe M.',
-    role: 'Online PT & Studio Owner',
-    avatar: 'C',
-    avatarColor: '#7c3aed',
-    stars: 5,
-  },
-  {
-    quote: "The live session logger is unreal. I used to write everything on my phone notes and transfer it later. Now I log sets in real time and clients can see their PBs on the spot — they love it.",
-    name: 'Jake T.',
-    role: 'Strength & Conditioning Coach',
-    avatar: 'J',
-    avatarColor: '#06B6D4',
-    stars: 5,
-  },
+const FACTS = [
+  { value: 10, suffix: ' min', prefix: '<', label: 'to set up your studio' },
+  { value: 0, prefix: '£', suffix: '', label: 'per-trainer or per-client fees' },
+  { value: 30, suffix: ' days', prefix: '', label: 'free trial, no card' },
+  { value: 100, suffix: '%', prefix: '', label: 'of features on every plan' },
 ]
 
-function Stars({ count }: { count: number }) {
-  return (
-    <div style={{ display: 'flex', gap: 3 }}>
-      {Array.from({ length: count }).map((_, i) => (
-        <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-        </svg>
-      ))}
-    </div>
-  )
-}
+const PROMISES = [
+  ['heart', 'Built with PTs', 'Shaped by working personal trainers and studio owners, around the jobs that eat their week.'],
+  ['shield', 'Your data stays yours', 'Export everything any time. We never sell or share client data. UK company, UK law.'],
+  ['users', 'A real human on day one', 'Founding studios get a 1:1 setup call with the founder and priority support for 90 days.'],
+]
 
 export default function TestimonialsSection() {
   return (
-    <section id="testimonials" style={{ padding: '100px 0', position: 'relative' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+    <section id="why" style={{ padding: '120px 24px', position: 'relative' }}>
+      <div style={{ maxWidth: 1180, margin: '0 auto' }}>
+        <SectionHead eyebrow="Why DNI Studios" title="Premium software." accent="Fair, simple terms." />
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.7 }}
-          style={{ textAlign: 'center', marginBottom: 64 }}
-        >
-          <div className="badge badge-blue" style={{ marginBottom: 20, display: 'inline-flex' }}>Early Feedback</div>
-          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 44px)', fontWeight: 900, letterSpacing: '-1px', lineHeight: 1.1 }}>
-            Trainers who made the switch
-          </h2>
-        </motion.div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }} className="testimonial-grid">
-          {TESTIMONIALS.map((t, i) => (
-            <motion.div
-              key={t.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="feature-card"
-              style={{ padding: '28px 28px' }}
-            >
-              <Stars count={t.stars} />
-              <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, margin: '16px 0 24px', fontStyle: 'italic' }}>
-                &quot;{t.quote}&quot;
-              </p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div style={{
-                  width: 40, height: 40, borderRadius: '50%',
-                  background: `linear-gradient(135deg, ${t.avatarColor}, ${t.avatarColor}88)`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 16, fontWeight: 700, color: 'white', flexShrink: 0,
-                }}>
-                  {t.avatar}
+        <Reveal delay={0.1}>
+          <div className="facts" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', marginTop: 64, borderRadius: 24, border: '1px solid rgba(255,255,255,0.07)', background: 'linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.005))', overflow: 'hidden' }}>
+            {FACTS.map(f => (
+              <div key={f.label} style={{ padding: '34px 26px', borderRight: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
+                <div className="steel-text" style={{ fontSize: 'clamp(40px, 4.4vw, 58px)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
+                  <Counter to={f.value} prefix={f.prefix} suffix={f.suffix} />
                 </div>
-                <div>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: 'white' }}>{t.name}</div>
-                  <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>{t.role}</div>
-                </div>
+                <div style={{ fontSize: 14, color: 'var(--text-muted)', marginTop: 10 }}>{f.label}</div>
               </div>
-            </motion.div>
+            ))}
+          </div>
+        </Reveal>
+
+        <div className="promises" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginTop: 16 }}>
+          {PROMISES.map(([icon, t, d], i) => (
+            <Reveal key={t} delay={0.1 + i * 0.08}>
+              <SpotlightCard style={{ padding: 28, height: '100%' }}>
+                <span style={{ color: 'var(--steel-1)' }}><Icon name={icon} size={24} /></span>
+                <div style={{ fontSize: 18, fontWeight: 700, marginTop: 14 }}>{t}</div>
+                <p style={{ fontSize: 14.5, lineHeight: 1.6, color: 'var(--text-muted)', marginTop: 8 }}>{d}</p>
+              </SpotlightCard>
+            </Reveal>
           ))}
         </div>
       </div>
-
       <style>{`
         @media (max-width: 900px) {
-          .testimonial-grid { grid-template-columns: 1fr !important; }
-        }
-        @media (min-width: 560px) and (max-width: 900px) {
-          .testimonial-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .facts { grid-template-columns: 1fr 1fr !important; }
+          .promises { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </section>
