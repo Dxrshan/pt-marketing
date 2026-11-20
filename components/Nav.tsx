@@ -3,10 +3,12 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import BrandLogo from './BrandLogo'
 
+// Each link is a real page/URL (crawlable, works from any page). On a page that
+// also contains the matching section, clicking scrolls to it instead.
 const NAV_LINKS = [
-  { label: 'Features', href: '#features' },
-  { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Pricing', href: '#pricing' },
+  { label: 'Features', href: '/features', section: 'features' },
+  { label: 'How It Works', href: '/#how-it-works', section: 'how-it-works' },
+  { label: 'Pricing', href: '/pricing', section: 'pricing' },
 ]
 
 export default function Nav() {
@@ -21,7 +23,7 @@ export default function Nav() {
   }, [])
 
   useEffect(() => {
-    const ids = NAV_LINKS.map(l => l.href.replace('#', ''))
+    const ids = NAV_LINKS.map(l => l.section)
     const observers: IntersectionObserver[] = []
 
     ids.forEach(id => {
@@ -42,6 +44,18 @@ export default function Nav() {
     setMobileOpen(false)
     const el = document.querySelector(href)
     if (el) el.scrollIntoView({ behavior: 'smooth' })
+    else window.location.href = '/' + href
+  }
+
+  // Follow the link normally unless the section is on this page and this is the
+  // home page (where the nav acts as in-page navigation).
+  const onNavClick = (e: React.MouseEvent, link: typeof NAV_LINKS[number]) => {
+    const el = document.getElementById(link.section)
+    if (el && window.location.pathname === '/') {
+      e.preventDefault()
+      setMobileOpen(false)
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   return (
@@ -66,7 +80,7 @@ export default function Nav() {
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 68 }}>
             {/* Logo */}
-            <a href="#" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
+            <a href="/" aria-label="DNI Studios home" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
               <BrandLogo height={38} className="logo-wide" />
               <BrandLogo variant="mark" height={34} className="logo-narrow" />
             </a>
@@ -74,12 +88,14 @@ export default function Nav() {
             {/* Desktop nav links */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 4 }} className="hidden-mobile">
               {NAV_LINKS.map(link => {
-                const isActive = activeSection === link.href.replace('#', '')
+                const isActive = activeSection === link.section
                 return (
-                  <button
+                  <a
                     key={link.label}
-                    onClick={() => scrollTo(link.href)}
+                    href={link.href}
+                    onClick={e => onNavClick(e, link)}
                     style={{
+                      display: 'inline-block', textDecoration: 'none',
                       background: isActive ? 'rgba(91,123,255,0.12)' : 'none',
                       border: 'none', cursor: 'pointer',
                       color: isActive ? '#7B96FF' : 'rgba(255,255,255,0.55)',
@@ -105,7 +121,7 @@ export default function Nav() {
                         display: 'block',
                       }} />
                     )}
-                  </button>
+                  </a>
                 )
               })}
               <a
@@ -190,13 +206,14 @@ export default function Nav() {
             }}
           >
             {NAV_LINKS.map(link => {
-              const isActive = activeSection === link.href.replace('#', '')
+              const isActive = activeSection === link.section
               return (
-                <button
+                <a
                   key={link.label}
-                  onClick={() => scrollTo(link.href)}
+                  href={link.href}
+                  onClick={e => onNavClick(e, link)}
                   style={{
-                    display: 'block', width: '100%', textAlign: 'left',
+                    display: 'block', width: '100%', textAlign: 'left', textDecoration: 'none',
                     background: 'none', border: 'none', cursor: 'pointer',
                     color: isActive ? '#7B96FF' : 'rgba(255,255,255,0.7)',
                     fontSize: 16, fontWeight: isActive ? 600 : 500,
@@ -205,7 +222,7 @@ export default function Nav() {
                   }}
                 >
                   {isActive ? '→ ' : ''}{link.label}
-                </button>
+                </a>
               )
             })}
             <a
