@@ -431,8 +431,8 @@ export default function OfferPage() {
 
 const CLAUSES = [
   { num: '1.', title: 'Subscription & Payment', paras: [
-    'The Service is provided on a monthly subscription basis at the price stated above. Your price is fixed for as long as your subscription remains continuously active, in accordance with the Founding Customer Guarantee.',
-    'Payment is due monthly in advance by the method agreed at sign-up. Where payment is not received within 7 days of the due date, we may suspend access to the Service until payment is made.',
+    'The Service is provided on a subscription basis at the price and billing cycle (monthly, quarterly or annual) stated in this invoice. Your price is fixed for as long as your subscription remains continuously active, in accordance with the Founding Customer Guarantee.',
+    'Payment for each billing cycle is due in advance, at the start of that cycle, by the method agreed at sign-up. Where payment is not received within 7 days of the due date, we may suspend access to the Service until payment is made.',
   ]},
   { num: '2.', title: 'Term & Cancellation', paras: [
     'This is a rolling agreement with no fixed minimum term beyond the billing cycle selected. You may cancel at any time by providing 14 days\' written notice. Cancellation takes effect at the end of the then-current billing period.',
