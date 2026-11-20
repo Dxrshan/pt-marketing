@@ -1,7 +1,7 @@
 'use client'
 // Full-screen, scroll-driven scenes for the home page (Apple-style product story).
 import React, { useEffect, useRef, useState, type ReactNode } from 'react'
-import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from 'framer-motion'
+import { motion, useScroll, useTransform, useReducedMotion, useMotionValue, useSpring, useMotionTemplate, type MotionValue } from 'framer-motion'
 import BrandLogo from './BrandLogo'
 import { DashboardMockup, LiveToasts, LiveSessionCard } from './Hero'
 import { LoggerDemo, ChatDemo, RevenueDemo, PipelineDemo, PhoneDemo } from './FeaturesSection'
@@ -51,6 +51,58 @@ function Aurora({ colors, style }: { colors: string[]; style?: React.CSSProperti
   )
 }
 
+/* Metal mark that tilts toward the cursor, with a light gliding across it. */
+function InteractiveMark({ height }: { height: number }) {
+  const reduce = useReducedMotion()
+  const mx = useMotionValue(0.5), my = useMotionValue(0.5)
+  const sx = useSpring(mx, { stiffness: 90, damping: 18 }), sy = useSpring(my, { stiffness: 90, damping: 18 })
+  const rotateY = useTransform(sx, [0, 1], reduce ? [0, 0] : [-22, 22])
+  const rotateX = useTransform(sy, [0, 1], reduce ? [0, 0] : [16, -16])
+  const lx = useTransform(sx, [0, 1], ['10%', '90%']), ly = useTransform(sy, [0, 1], ['10%', '90%'])
+  const shine = useMotionTemplate`radial-gradient(circle at ${lx} ${ly}, rgba(255,255,255,0.75), rgba(255,255,255,0) 38%)`
+  useEffect(() => {
+    if (reduce) return
+    const move = (e: MouseEvent) => { mx.set(e.clientX / window.innerWidth); my.set(e.clientY / window.innerHeight) }
+    window.addEventListener('mousemove', move)
+    return () => window.removeEventListener('mousemove', move)
+  }, [reduce, mx, my])
+  const width = Math.round(height * 822 / 598)
+  return (
+    <div style={{ perspective: 900 }}>
+      <motion.div style={{ rotateX, rotateY, transformStyle: 'preserve-3d', position: 'relative', width, height }}>
+        <BrandLogo variant="mark" height={height} alt="DNI Studios" />
+        <motion.div aria-hidden="true" style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none', backgroundImage: shine, mixBlendMode: 'overlay',
+          WebkitMask: 'url(/logo-mark-clear.webp?v=4) center / contain no-repeat', mask: 'url(/logo-mark-clear.webp?v=4) center / contain no-repeat',
+        }} />
+      </motion.div>
+    </div>
+  )
+}
+
+/* Dot grid that lights up around the cursor. */
+function DotGrid() {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = ref.current, parent = el?.parentElement
+    if (!el || !parent) return
+    const move = (e: MouseEvent) => {
+      const r = parent.getBoundingClientRect()
+      el.style.setProperty('--dx', `${e.clientX - r.left}px`); el.style.setProperty('--dy', `${e.clientY - r.top}px`)
+    }
+    parent.addEventListener('mousemove', move)
+    return () => parent.removeEventListener('mousemove', move)
+  }, [])
+  return (
+    <div ref={ref} aria-hidden="true" style={{
+      position: 'absolute', inset: 0, pointerEvents: 'none',
+      backgroundImage: 'radial-gradient(rgba(255,255,255,0.55) 1px, transparent 1.2px)', backgroundSize: '28px 28px',
+      WebkitMaskImage: 'radial-gradient(260px circle at var(--dx, -500px) var(--dy, -500px), #000 0%, transparent 70%)',
+      maskImage: 'radial-gradient(260px circle at var(--dx, -500px) var(--dy, -500px), #000 0%, transparent 70%)',
+    }} />
+  )
+}
+
 /* ── 1. Opening: giant metal mark, huge headline, fly-through on scroll ── */
 export function CineHero() {
   const ref = useRef<HTMLElement>(null)
@@ -72,6 +124,7 @@ export function CineHero() {
     <section ref={ref} id="hero" style={{ height: '170vh', position: 'relative' }}>
       <div className="grain" style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse 80% 60% at 50% 38%, #1a1d23 0%, #0b0c0f 55%, #050607 100%)' }}>
         <CursorLight size={900} opacity={0.07} />
+        <DotGrid />
         <Aurora colors={['rgba(47,123,255,0.55)', 'rgba(139,92,255,0.5)', 'rgba(255,79,163,0.42)', 'rgba(255,138,61,0.35)']} style={{ inset: '-10% 5% 15%', opacity: 0.6 }} />
         <Dust />
         {/* Rotating light beams */}
@@ -84,7 +137,7 @@ export function CineHero() {
         <motion.div style={{ scale: markScale, opacity: markOpacity, position: 'relative', zIndex: 1 }}>
           <motion.div initial={{ opacity: 0, scale: 0.7, filter: 'blur(18px)' }} animate={{ opacity: 1, scale: 1, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }} transition={{ duration: 1.6, ease: EASE }}>
             <div style={{ position: 'absolute', inset: '-30%', borderRadius: '50%', background: 'conic-gradient(from 0deg, rgba(47,123,255,0.45), rgba(139,92,255,0.45), rgba(255,79,163,0.4), rgba(255,138,61,0.38), rgba(47,123,255,0.45))', filter: 'blur(60px)', opacity: 0.8 }} />
-            <BrandLogo variant="mark" height={markH} alt="DNI Studios" />
+            <InteractiveMark height={markH} />
           </motion.div>
         </motion.div>
 
@@ -209,9 +262,15 @@ function Panel({ panel, wide }: { panel: typeof PANELS[number]; wide: boolean })
   return (
     <div style={{
       width: wide ? '100vw' : '100%', height: wide ? '100vh' : 'auto', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
-      padding: wide ? '0 7vw' : '80px 22px',
+      padding: wide ? '0 7vw' : '80px 22px', position: 'relative',
     }}>
-      <div style={{ display: 'grid', gridTemplateColumns: wide ? '1fr 1fr' : '1fr', gap: wide ? '6vw' : 36, alignItems: 'center', width: '100%', maxWidth: 1280 }}>
+      {wide && (
+        <span aria-hidden="true" style={{
+          position: 'absolute', right: '4vw', top: '50%', transform: 'translateY(-50%)', fontSize: '42vw', fontWeight: 800, letterSpacing: '-0.08em', lineHeight: 0.8,
+          color: 'transparent', WebkitTextStroke: '1px rgba(255,255,255,0.05)', pointerEvents: 'none', zIndex: 0,
+        }}>{panel.n}</span>
+      )}
+      <div style={{ display: 'grid', gridTemplateColumns: wide ? '1fr 1fr' : '1fr', gap: wide ? '6vw' : 36, alignItems: 'center', width: '100%', maxWidth: 1280, position: 'relative', zIndex: 1 }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
             <span className="tint-text" style={{ backgroundImage: `linear-gradient(90deg, ${panel.c1}, ${panel.c2})`, fontSize: 22, fontWeight: 800, fontVariantNumeric: 'tabular-nums' }}>{panel.n}</span>
@@ -241,6 +300,12 @@ export function FeatureGallery() {
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ['start start', 'end end'] })
   const x = useTransform(p, [0.05, 0.95], ['0vw', `-${(PANELS.length - 1) * 100}vw`])
   const bar = useTransform(p, [0.05, 0.95], [0, 1])
+  const stops = PANELS.map((_, i) => 0.05 + (0.9 * i) / (PANELS.length - 1))
+  const toRgba = (h: string, a: number) => `rgba(${parseInt(h.slice(1, 3), 16)}, ${parseInt(h.slice(3, 5), 16)}, ${parseInt(h.slice(5, 7), 16)}, ${a})`
+  const tint1 = useTransform(p, stops, PANELS.map(pn => toRgba(pn.c1, 0.22)))
+  const tint2 = useTransform(p, stops, PANELS.map(pn => toRgba(pn.c2, 0.16)))
+  const barBg = useTransform(p, stops, PANELS.map(pn => pn.c1))
+  const bg = useMotionTemplate`radial-gradient(ellipse 55% 60% at 72% 50%, ${tint1}, transparent 70%), radial-gradient(ellipse 50% 50% at 20% 80%, ${tint2}, transparent 70%), radial-gradient(ellipse 70% 60% at 50% 50%, #101216, #050607 75%)`
 
   if (!wide || reduce) {
     return (
@@ -251,14 +316,14 @@ export function FeatureGallery() {
   }
   return (
     <section ref={ref} id="features" style={{ height: `${PANELS.length * 100}vh`, position: 'relative' }}>
-      <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: 'radial-gradient(ellipse 70% 60% at 50% 50%, #101216, #050607 75%)' }}>
+      <motion.div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', backgroundImage: bg }}>
         <motion.div style={{ x, display: 'flex', height: '100%' }}>
           {PANELS.map(pn => <Panel key={pn.n} panel={pn} wide />)}
         </motion.div>
         <div style={{ position: 'absolute', left: '7vw', right: '7vw', bottom: 44, height: 2, borderRadius: 2, background: 'rgba(255,255,255,0.08)' }}>
-          <motion.div style={{ scaleX: bar, transformOrigin: '0% 50%', height: '100%', borderRadius: 2, background: 'linear-gradient(90deg, #9aa0a8, #fff)', boxShadow: '0 0 12px rgba(255,255,255,.5)' }} />
+          <motion.div style={{ scaleX: bar, transformOrigin: '0% 50%', height: '100%', borderRadius: 2, backgroundColor: barBg, boxShadow: '0 0 14px rgba(255,255,255,.35)' }} />
         </div>
-      </div>
+      </motion.div>
     </section>
   )
 }
@@ -290,6 +355,101 @@ export function BigNumbers() {
         ))}
       </div>
       <style>{`@media (max-width: 900px) { .big-nums { grid-template-columns: 1fr 1fr !important; gap: 48px 24px !important; } }`}</style>
+    </section>
+  )
+}
+
+
+/* ── Before / after: drag from chaos to calm ─────────────────────────── */
+function Chaos() {
+  const bubble = (t: string, me = false): React.CSSProperties => ({
+    position: 'absolute', padding: '10px 14px', borderRadius: 16, fontSize: 14, lineHeight: 1.35, maxWidth: 260,
+    background: me ? '#005c4b' : '#202c33', color: '#e9edef', boxShadow: '0 10px 30px rgba(0,0,0,.5)',
+  })
+  return (
+    <div style={{ position: 'absolute', inset: 0, background: 'repeating-linear-gradient(45deg, #121417 0 12px, #101215 12px 24px)', overflow: 'hidden' }}>
+      <div style={{ ...bubble(''), left: '6%', top: '10%', transform: 'rotate(-4deg)' }}><b style={{ color: '#53bdeb', fontSize: 12 }}>Sarah K.</b><br />can i move tmrw to 7am?? 🙏</div>
+      <div style={{ ...bubble('', true), left: '30%', top: '24%', transform: 'rotate(3deg)' }}>did you get my transfer for last month? 👀</div>
+      <div style={{ ...bubble(''), left: '8%', top: '52%', transform: 'rotate(2deg)' }}><b style={{ color: '#53bdeb', fontSize: 12 }}>James T.</b><br />sorry mate will pay next week</div>
+      <div style={{ position: 'absolute', right: '6%', top: '8%', width: 300, transform: 'rotate(5deg)', background: '#fff', color: '#202124', borderRadius: 6, boxShadow: '0 20px 40px rgba(0,0,0,.6)', fontSize: 11, overflow: 'hidden' }}>
+        <div style={{ background: '#0f9d58', color: '#fff', padding: '6px 10px', fontWeight: 700 }}>clients_FINAL_v3 (2).xlsx</div>
+        {['Name|Paid?|Sessions', 'Sarah|??|8', 'James|NO|3', 'Marcus|yes i think|12', 'Priya||'].map((r, i) => (
+          <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', borderTop: '1px solid #e0e0e0', fontWeight: i ? 400 : 700, background: i === 2 ? '#fce8e6' : undefined }}>
+            {r.split('|').map((c, j) => <span key={j} style={{ padding: '5px 8px', borderLeft: j ? '1px solid #e0e0e0' : undefined }}>{c}</span>)}
+          </div>
+        ))}
+      </div>
+      <div style={{ position: 'absolute', right: '14%', bottom: '12%', width: 180, padding: 14, transform: 'rotate(-6deg)', background: '#ffe066', color: '#3b3200', boxShadow: '0 14px 30px rgba(0,0,0,.5)', fontFamily: 'cursive', fontSize: 15, lineHeight: 1.3 }}>
+        chase james £240<br />book marcus thurs??<br />update sheet!!!
+      </div>
+      <div style={{ position: 'absolute', left: '34%', bottom: '10%', width: 230, padding: 12, transform: 'rotate(-2deg)', background: '#1c1c1e', border: '1px solid #333', borderRadius: 14, color: '#ddd', fontSize: 12.5, boxShadow: '0 14px 30px rgba(0,0,0,.5)' }}>
+        <div style={{ color: '#ff9f0a', fontWeight: 700, marginBottom: 4 }}>Notes</div>
+        Marcus PB bench 85kg? or was it 82.5 · Sarah knee niggle · invoice priya
+      </div>
+      <div style={{ position: 'absolute', left: '50%', top: '46%', padding: '6px 12px', borderRadius: 999, background: '#ff3b30', color: '#fff', fontWeight: 800, fontSize: 13, boxShadow: '0 0 0 6px rgba(255,59,48,.2)' }}>47 unread</div>
+    </div>
+  )
+}
+
+export function BeforeAfter() {
+  const box = useRef<HTMLDivElement>(null)
+  const [pos, setPos] = useState(50)
+  const [drag, setDrag] = useState(false)
+  const [touched, setTouched] = useState(false)
+  const reduce = useReducedMotion()
+  // Sweep once on first view to show it's interactive.
+  useEffect(() => {
+    const el = box.current
+    if (!el || reduce) return
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting || touched) return
+      io.disconnect()
+      const start = performance.now()
+      const tick = (t: number) => {
+        const k = Math.min((t - start) / 2200, 1)
+        setPos(50 + Math.sin(k * Math.PI * 2) * 28 * (1 - k))
+        if (k < 1) requestAnimationFrame(tick)
+      }
+      requestAnimationFrame(tick)
+    }, { threshold: 0.6 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [reduce, touched])
+  const setFrom = (clientX: number) => {
+    const r = box.current!.getBoundingClientRect()
+    setPos(Math.max(0, Math.min(100, ((clientX - r.left) / r.width) * 100)))
+  }
+  return (
+    <section style={{ padding: '140px 4vw', background: '#050607', position: 'relative' }}>
+      <div style={{ textAlign: 'center', marginBottom: 56 }}>
+        <style>{`@media (max-width: 760px) { .ba-box { aspect-ratio: auto !important; height: 520px; border-radius: 22px !important; } .ba-box .hero-toast-wrap, .ba-box .hero-live { display: none; } }`}</style>
+        <div className="eyebrow" style={{ justifyContent: 'center' }}>Drag to compare</div>
+        <h2 style={{ fontSize: 'clamp(40px, 6vw, 96px)', fontWeight: 800, letterSpacing: '-0.05em', lineHeight: 0.95, marginTop: 18 }}>
+          <span className="steel-text">From chaos</span> <span className="spectrum-text">to calm.</span>
+        </h2>
+      </div>
+      <div ref={box}
+        onPointerDown={e => { setDrag(true); setTouched(true); (e.target as HTMLElement).setPointerCapture?.(e.pointerId); setFrom(e.clientX) }}
+        onPointerMove={e => drag && setFrom(e.clientX)}
+        onPointerUp={() => setDrag(false)}
+        className="ba-box" style={{ position: 'relative', maxWidth: 1240, margin: '0 auto', aspectRatio: '16 / 9', borderRadius: 28, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 80px 160px -50px rgba(0,0,0,1)', touchAction: 'pan-y', userSelect: 'none', cursor: 'ew-resize' }}>
+        {/* After */}
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 30%, #1a1d23, #0b0c0f 70%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4%' }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 70% 30%, rgba(47,123,255,.25), transparent 50%), radial-gradient(circle at 30% 80%, rgba(139,92,255,.2), transparent 50%)' }} />
+          <div style={{ width: '100%', maxWidth: 900, position: 'relative' }}><DashboardMockup /></div>
+        </div>
+        {/* Before (clipped) */}
+        <div style={{ position: 'absolute', inset: 0, clipPath: `inset(0 ${100 - pos}% 0 0)` }}><Chaos /></div>
+        {/* Labels */}
+        <span className="mono" style={{ position: 'absolute', left: 20, top: 18, fontSize: 12, letterSpacing: '.2em', color: '#fff', padding: '6px 12px', borderRadius: 999, background: 'rgba(0,0,0,.55)', opacity: pos > 12 ? 1 : 0, transition: 'opacity .2s' }}>BEFORE</span>
+        <span className="mono" style={{ position: 'absolute', right: 20, top: 18, fontSize: 12, letterSpacing: '.2em', color: '#0b0c0f', padding: '6px 12px', borderRadius: 999, background: 'linear-gradient(180deg,#fff,#c9ced5)', opacity: pos < 88 ? 1 : 0, transition: 'opacity .2s' }}>WITH DNI STUDIOS</span>
+        {/* Handle */}
+        <div style={{ position: 'absolute', top: 0, bottom: 0, left: `${pos}%`, width: 2, marginLeft: -1, background: 'linear-gradient(180deg, #2f7bff, #8b5cff, #ff4fa3, #ff8a3d)', boxShadow: '0 0 20px rgba(139,92,255,.8)' }}>
+          <div style={{ position: 'absolute', top: '50%', left: '50%', width: 56, height: 56, marginLeft: -28, marginTop: -28, borderRadius: '50%', background: 'linear-gradient(180deg,#fff,#c9ced5)', boxShadow: '0 10px 30px rgba(0,0,0,.6), 0 0 0 6px rgba(255,255,255,.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, color: '#0b0c0f' }}>
+            <Icon name="arrow" size={16} style={{ transform: 'rotate(180deg)' }} /><Icon name="arrow" size={16} />
+          </div>
+        </div>
+      </div>
     </section>
   )
 }

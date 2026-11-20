@@ -1,5 +1,5 @@
 import Nav from '@/components/Nav'
-import { CineHero, ProductReveal, Statement, FeatureGallery, BigNumbers } from '@/components/Cinematic'
+import { CineHero, ProductReveal, Statement, BeforeAfter, FeatureGallery, BigNumbers } from '@/components/Cinematic'
 import { SmoothScroll, Cursor, Magnetic, WordBand } from '@/components/Polish'
 import PricingSection from '@/components/PricingSection'
 import EmailCaptureSection from '@/components/EmailCaptureSection'
@@ -15,6 +15,7 @@ export default function Home() {
       <CineHero />
       <ProductReveal />
       <Statement />
+      <BeforeAfter />
       <WordBand words={['Schedule', 'Track', 'Get paid', 'Grow']} />
       <FeatureGallery />
       <BigNumbers />

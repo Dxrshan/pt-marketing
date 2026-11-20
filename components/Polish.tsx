@@ -10,7 +10,8 @@ export function SmoothScroll() {
   useEffect(() => {
     if (reduce || window.matchMedia('(pointer: coarse)').matches) return
     document.documentElement.style.scrollBehavior = 'auto'
-    const lenis = new Lenis({ duration: 1.15, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true })
+    // Lower lerp = longer, silkier glide after each wheel movement.
+    const lenis = new Lenis({ lerp: 0.065, wheelMultiplier: 0.9, touchMultiplier: 1.2, smoothWheel: true })
     let raf = 0
     const loop = (t: number) => { lenis.raf(t); raf = requestAnimationFrame(loop) }
     raf = requestAnimationFrame(loop)
@@ -22,7 +23,7 @@ export function SmoothScroll() {
       const el = document.querySelector(url.hash)
       if (!el) return
       e.preventDefault()
-      lenis.scrollTo(el as HTMLElement, { offset: 0, duration: 1.6 })
+      lenis.scrollTo(el as HTMLElement, { offset: 0, duration: 1.8 })
     }
     document.addEventListener('click', onClick)
     return () => { cancelAnimationFrame(raf); lenis.destroy(); document.removeEventListener('click', onClick) }
