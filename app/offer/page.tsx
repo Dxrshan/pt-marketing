@@ -165,8 +165,41 @@ export default function OfferPage() {
       {/* ── Sheet 1: invoice ─────────────────────────────── */}
       <article className="sheet">
         <header className="head">
-          <div>
+          <div className="head-left">
             <BrandLogo variant="stacked" height={118} className="on-light" />
+
+            <div className="billto">
+              <h2 className="label">Billed to</h2>
+              <dl>
+                <div className="bt-row">
+                  <dt><label htmlFor="bt-studio">Studio</label></dt>
+                  <dd><input id="bt-studio" className="bt-input" placeholder="Studio name" autoComplete="organization" value={studio} onChange={e => setStudio(e.target.value)} /></dd>
+                </div>
+                <div className="bt-row">
+                  <dt><label htmlFor="bt-contact">Name</label></dt>
+                  <dd><input id="bt-contact" className="bt-input" placeholder="Owner or contact" autoComplete="name" value={contact} onChange={e => setContact(e.target.value)} /></dd>
+                </div>
+                <div className="bt-row">
+                  <dt><label htmlFor="bt-addr">Address</label></dt>
+                  <dd><input id="bt-addr" className="bt-input" placeholder="Street address" autoComplete="street-address" /></dd>
+                </div>
+                <div className="bt-row">
+                  <dt><label htmlFor="bt-city">City</label></dt>
+                  <dd className="bt-split">
+                    <input id="bt-city" className="bt-input" placeholder="City" autoComplete="address-level2" />
+                    <input className="bt-input" placeholder="Postcode" autoComplete="postal-code" aria-label="Postcode" />
+                  </dd>
+                </div>
+                <div className="bt-row">
+                  <dt><label htmlFor="bt-email">Email</label></dt>
+                  <dd><input id="bt-email" className="bt-input" type="email" placeholder="name@studio.com" autoComplete="email" /></dd>
+                </div>
+                <div className="bt-row">
+                  <dt><label htmlFor="bt-phone">Phone</label></dt>
+                  <dd><input id="bt-phone" className="bt-input" type="tel" placeholder="Phone number" autoComplete="tel" /></dd>
+                </div>
+              </dl>
+            </div>
           </div>
           <div className="head-right">
             <h1 className="doc-title">Invoice</h1>
@@ -178,14 +211,6 @@ export default function OfferPage() {
           </div>
         </header>
 
-        <div className="for">
-          <div>
-            <input id="q-studio" className="line" aria-label="Studio name" placeholder="Studio name" value={studio} onChange={e => setStudio(e.target.value)} />
-          </div>
-          <div>
-            <input id="q-contact" className="line" aria-label="Owner or contact" placeholder="Owner or contact" value={contact} onChange={e => setContact(e.target.value)} />
-          </div>
-        </div>
 
         {/* Billing */}
         <section className="part selection" id="plan">
@@ -374,16 +399,7 @@ export default function OfferPage() {
         {/* Acceptance */}
         <section className="part" id="signup">
           <h2 className="label">Acceptance</h2>
-          <div className="fields">
-            <div className="field"><label htmlFor="s-studio">Studio name</label><input id="s-studio" className="line" value={studio} onChange={e => setStudio(e.target.value)} /></div>
-            <div className="field"><label htmlFor="s-contact">Owner / contact</label><input id="s-contact" className="line" value={contact} onChange={e => setContact(e.target.value)} /></div>
-            <div className="field wide"><label htmlFor="s-addr">Address</label><input id="s-addr" className="line" autoComplete="street-address" /></div>
-            <div className="field"><label htmlFor="s-city">City</label><input id="s-city" className="line" autoComplete="address-level2" /></div>
-            <div className="field"><label htmlFor="s-post">Postcode</label><input id="s-post" className="line" autoComplete="postal-code" /></div>
-            <div className="field wide"><label htmlFor="s-email">Email</label><input id="s-email" className="line" type="email" autoComplete="email" /></div>
-          </div>
-
-          <p className="agree">By signing, the Customer accepts this invoice and the Terms &amp; Conditions that follow, which form part of this agreement.</p>
+          <p className="agree">By signing, {studio ? <strong>{studio}</strong> : 'the studio named above'} accepts this invoice and the Terms &amp; Conditions that follow, which form part of this agreement.</p>
 
           <div className="signs">
             <div><div className="sign-line" /><div className="sign-label">Studio signature &amp; date</div></div>
@@ -486,7 +502,18 @@ body { background: #f3f1ec; }
 
 .head { display: flex; justify-content: space-between; gap: 32px; }
 .head-right { text-align: right; }
-.doc-title { font-family: var(--serif); font-weight: 400; font-size: 40px; line-height: 1; color: var(--ink); letter-spacing: -.01em; }
+.doc-title {
+  font-family: var(--sans); font-weight: 700; font-size: 34px; line-height: 1;
+  letter-spacing: .32em; margin-right: -.32em; text-transform: uppercase;
+  /* dark brushed steel, to sit with the metallic logo */
+  background: linear-gradient(180deg, #5d636d 0%, #1d2026 38%, #0d0e11 50%, #3c4149 62%, #15171b 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,.6));
+}
+.doc-title::after {
+  content: ""; display: block; height: 2px; width: 56px; margin: 14px 0 0 auto; margin-right: .32em;
+  background: linear-gradient(90deg, #c9ccd2, #6b7079, #c9ccd2); border-radius: 2px;
+}
 .doc-meta { display: grid; grid-template-columns: auto auto; gap: 4px 16px; margin-top: 18px; font-size: 13px; justify-content: end; }
 .doc-meta dt { color: var(--faint); text-align: left; }
 .doc-meta dd { color: var(--text); text-align: right; }
@@ -496,7 +523,20 @@ body { background: #f3f1ec; }
 .inline-input::placeholder { color: var(--faint); }
 .inline-input:focus { outline: none; box-shadow: 0 1px 0 var(--ink); }
 
-.for { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 48px; }
+.head-left { flex: 1; min-width: 0; max-width: 380px; }
+.billto { margin-top: 32px; }
+.billto dl { display: flex; flex-direction: column; }
+.bt-row { display: grid; grid-template-columns: 72px 1fr; align-items: baseline; gap: 12px; padding: 4px 0; }
+.bt-row dt { font-size: 12.5px; color: var(--faint); }
+.bt-row dd { min-width: 0; }
+.bt-split { display: grid; grid-template-columns: 1fr 96px; gap: 12px; }
+.bt-input {
+  width: 100%; border: none; border-bottom: 1px dashed transparent; background: transparent; border-radius: 0;
+  font: inherit; font-size: 14px; color: var(--ink); padding: 3px 0; transition: border-color .15s ease;
+}
+.bt-input::placeholder { color: #c4beb3; }
+.bt-input:hover { border-bottom-color: var(--line-2); }
+.bt-input:focus { outline: none; border-bottom: 1px solid var(--ink); }
 
 .label {
   display: block; font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 1.2px;
@@ -590,10 +630,8 @@ body { background: #f3f1ec; }
 .assure { font-size: 12.5px; color: var(--faint); margin-top: 12px; text-align: right; }
 
 /* Acceptance */
-.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 32px; }
-.field label { display: block; font-size: 12.5px; color: var(--muted); }
-.field.wide { grid-column: 1 / -1; }
-.agree { font-size: 13px; line-height: 1.6; color: var(--muted); margin: 32px 0 48px; }
+.agree { font-size: 13px; line-height: 1.6; color: var(--muted); margin: 4px 0 48px; }
+.agree strong { color: var(--ink); font-weight: 600; }
 .signs { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
 .sign-line { border-bottom: 1px solid var(--ink); height: 44px; }
 .sign-label { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
@@ -615,10 +653,13 @@ body { background: #f3f1ec; }
   .sheet { padding: 32px 22px 40px; }
   .head { flex-direction: column; gap: 28px; }
   .head-right { text-align: left; }
+  .doc-title::after { margin-left: 0; }
+  .head-right { order: -1; }
   .doc-meta { justify-content: start; }
   .doc-meta dd { text-align: left; }
   .inline-input { text-align: left; }
-  .for, .fields, .signs { grid-template-columns: 1fr; gap: 24px; }
+  .signs { grid-template-columns: 1fr; gap: 24px; }
+  .head-left { max-width: none; }
   .part { margin-top: 44px; }
   .plans { grid-template-columns: 1fr; gap: 10px; }
   .features { grid-template-columns: 1fr; }
@@ -639,6 +680,8 @@ body { background: #f3f1ec; }
   .sheet { box-shadow: none; padding: 0 12mm; max-width: none; }
   .sheet + .sheet { margin-top: 0; }
   .lines tr.removed { display: none; }
+  .bt-input { border-bottom-color: transparent !important; }
+  .bt-input::placeholder { color: transparent; }
   .terms { break-before: page; }
 }
 `
