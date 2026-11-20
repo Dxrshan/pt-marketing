@@ -7,7 +7,7 @@ import BrandLogo from './BrandLogo'
 // also contains the matching section, clicking scrolls to it instead.
 const NAV_LINKS = [
   { label: 'Features', href: '/features', section: 'features' },
-  { label: 'How It Works', href: '/#how-it-works', section: 'how-it-works' },
+  { label: 'Product', href: '/#story', section: 'story' },
   { label: 'Pricing', href: '/pricing', section: 'pricing' },
 ]
 

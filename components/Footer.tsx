@@ -31,7 +31,7 @@ export default function Footer() {
             </div>
             {[
               { label: 'Features', href: '/features' },
-              { label: 'How It Works', href: '/#how-it-works' },
+              { label: 'How It Works', href: '/features#how-it-works' },
               { label: 'Pricing', href: '/pricing' },
               { label: 'View Offer', href: '/offer', external: false },
               { label: 'Login', href: 'https://app.dnianalytics.com', external: true },

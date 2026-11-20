@@ -63,7 +63,7 @@ body {
   font-family: var(--font-inter), 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   font-feature-settings: 'ss01', 'cv11';
 }
 
@@ -321,4 +321,21 @@ hr.gradient-hr { border: none; height: 1px; background: linear-gradient(90deg, t
   .gradient-text, .sheen-text, .ring-light::before, .ring-light::after, .live-dot { animation: none !important; }
   .brand-logo::after { animation: none; opacity: 0; }
   html { scroll-behavior: auto; }
+}
+
+/* ── Cinematic scenes ──────────────────────────────────────────────── */
+@keyframes dust-rise { from { transform: translateY(0); } to { transform: translateY(-110vh); } }
+@keyframes scroll-cue { 0% { transform: translateY(-20px); } 100% { transform: translateY(48px); } }
+@keyframes beams-spin { to { transform: rotate(360deg); } }
+.scroll-cue { animation: scroll-cue 1.8s cubic-bezier(.4,0,.2,1) infinite; }
+.beams { animation: beams-spin 80s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .dust, .beams, .scroll-cue { animation: none !important; }
+  .dust { display: none; }
+}
+@media (max-width: 768px) { .beams { animation: none; } }
+@media (max-width: 860px) {
+  .hero-mock-side { display: none; }
+  .hero-toast-wrap { right: 8px !important; top: -18px !important; width: 220px !important; }
+  .hero-live { display: none; }
 }

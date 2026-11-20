@@ -19,7 +19,7 @@ function TileHead({ icon, kicker, title, text }: { icon: string; kicker: string;
 }
 
 /* Live session logger: sets appear one by one, rest timer counts down. */
-function LoggerDemo() {
+export function LoggerDemo() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: false, margin: '-80px' })
   const [n, setN] = useState(0)
@@ -88,7 +88,7 @@ const CHAT = [
   { me: true, t: 'Who has overdue payments?' },
   { me: false, t: '3 clients: James T. (£240), Sarah K. (£160), Priya M. (£80). £480 outstanding in total.' },
 ]
-function ChatDemo() {
+export function ChatDemo() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { margin: '-80px' })
   const [n, setN] = useState(0)
@@ -125,7 +125,7 @@ function ChatDemo() {
 }
 
 /* Revenue: bars grow on view. */
-function RevenueDemo() {
+export function RevenueDemo() {
   const bars = [38, 52, 46, 64, 58, 76, 70, 88, 82, 100]
   return (
     <div style={{ marginTop: 22 }}>
@@ -148,7 +148,7 @@ function RevenueDemo() {
 }
 
 /* Pipeline: a lead card moves across stages. */
-function PipelineDemo() {
+export function PipelineDemo() {
   const stages = ['Enquiry', 'Consult', 'Trial', 'Client']
   const [s, setS] = useState(0)
   const reduce = useReducedMotion()
@@ -176,7 +176,7 @@ function PipelineDemo() {
 }
 
 /* Client app: a phone with the client's day. */
-function PhoneDemo() {
+export function PhoneDemo() {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', marginTop: 22 }}>
       <motion.div

@@ -7,7 +7,7 @@ import { WordsReveal, CursorLight, Icon, Tilt } from './fx'
 const EASE = [0.22, 1, 0.36, 1] as const
 
 /* ── Dashboard mockup (graphite build of the real app) ─────────────────── */
-function DashboardMockup() {
+export function DashboardMockup() {
   const nav = ['Dashboard', 'Clients', 'Bookings', 'Workout Plans', 'Progress', 'Payments', 'Leads']
   const week = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
   return (
@@ -85,7 +85,7 @@ const TOASTS = [
   { icon: 'funnel', title: 'New enquiry', sub: 'Priya M. · via website', tone: '#e8eaee' },
 ]
 
-function LiveToasts() {
+export function LiveToasts() {
   const [i, setI] = useState(0)
   const reduce = useReducedMotion()
   useEffect(() => {
@@ -123,7 +123,7 @@ function LiveToasts() {
   )
 }
 
-function LiveSessionCard() {
+export function LiveSessionCard() {
   return (
     <div className="float-animation hero-live" style={{
       position: 'absolute', left: -36, bottom: 64, zIndex: 3, width: 230, padding: 14, borderRadius: 16,
