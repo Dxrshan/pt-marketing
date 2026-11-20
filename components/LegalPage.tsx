@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Footer from '@/components/Footer'
+import BrandMark from './BrandMark'
 
 const DOCS = [
   { label: 'Privacy Policy',   href: '/legal/privacy-policy' },
@@ -21,15 +22,7 @@ export default function LegalPage({
       }}>
         <div style={{ maxWidth: 820, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-            <div style={{
-              width: 32, height: 32, borderRadius: 8,
-              background: 'linear-gradient(135deg, #2563EB, #06B6D4)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="white" />
-              </svg>
-            </div>
+            <BrandMark height={30} />
             <span style={{ fontWeight: 700, fontSize: 17, color: 'var(--text)', letterSpacing: '-0.3px' }}>DNI Studios</span>
           </Link>
           <Link href="/" style={{ fontSize: 14, color: 'var(--text-muted)', textDecoration: 'none' }}>← Back to site</Link>

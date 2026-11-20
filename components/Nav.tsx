@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import BrandMark from './BrandMark'
 
 const NAV_LINKS = [
   { label: 'Features', href: '#features' },
@@ -66,16 +67,7 @@ export default function Nav() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 68 }}>
             {/* Logo */}
             <a href="#" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{
-                width: 32, height: 32, borderRadius: 8,
-                background: 'linear-gradient(135deg, #2563EB, #06B6D4)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0,
-              }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="white" />
-                </svg>
-              </div>
+              <BrandMark height={30} />
               <span style={{
                 fontWeight: 700, fontSize: 17, letterSpacing: '-0.3px',
                 background: 'linear-gradient(135deg, #ffffff, #93c5fd)',

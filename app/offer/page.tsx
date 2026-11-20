@@ -48,14 +48,8 @@ const fmtDate = (d: Date) =>
 /* ─── Small pieces ─────────────────────────────────────────────────────── */
 
 function Logo() {
-  return (
-    <span className="logo">
-      <span className="logo-mark" aria-hidden="true">
-        <svg width="15" height="15" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="#fff" /></svg>
-      </span>
-      <span className="logo-word">DNI Studios</span>
-    </span>
-  )
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img className="logo-img" src="/dni-studios-logo.webp" alt="DNI Studios" width={600} height={381} />
 }
 
 /** Eases a number towards its new value so the total glides rather than jumps. */
@@ -177,7 +171,7 @@ export default function OfferPage() {
         </div>
       </div>
 
-      {/* ── Sheet 1: proposal ─────────────────────────────── */}
+      {/* ── Sheet 1: invoice ─────────────────────────────── */}
       <article className="sheet">
         <header className="head">
           <div>
@@ -189,7 +183,7 @@ export default function OfferPage() {
             </p>
           </div>
           <div className="head-right">
-            <h1 className="doc-title">Proposal</h1>
+            <h1 className="doc-title">Invoice</h1>
             <dl className="doc-meta num">
               <dt>No.</dt>
               <dd><input className="inline-input" placeholder="DNI-2026-XXX" value={ref} onChange={e => setRef(e.target.value)} aria-label="Reference" /></dd>
@@ -388,7 +382,7 @@ export default function OfferPage() {
 
           <div className="accept no-print">
             <button className="cta" onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}>
-              Accept proposal
+              Accept invoice
             </button>
             <p className="assure">30-day money-back guarantee. Your rate is fixed for as long as you stay subscribed.</p>
           </div>
@@ -406,7 +400,7 @@ export default function OfferPage() {
             <div className="field wide"><label htmlFor="s-email">Email</label><input id="s-email" className="line" type="email" autoComplete="email" /></div>
           </div>
 
-          <p className="agree">By signing, the Customer accepts this proposal and the Terms &amp; Conditions that follow, which form part of this agreement.</p>
+          <p className="agree">By signing, the Customer accepts this invoice and the Terms &amp; Conditions that follow, which form part of this agreement.</p>
 
           <div className="signs">
             <div><div className="sign-line" /><div className="sign-label">Studio signature &amp; date</div></div>
@@ -487,14 +481,8 @@ body { background: #f3f1ec; }
 .offer button { font-family: inherit; }
 .offer :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
-/* Logo (matches the site nav) */
-.logo { display: inline-flex; align-items: center; gap: 10px; }
-.logo-mark {
-  width: 28px; height: 28px; border-radius: 7px; flex-shrink: 0;
-  display: inline-flex; align-items: center; justify-content: center;
-  background: linear-gradient(135deg, #2563EB, #06B6D4);
-}
-.logo-word { font-weight: 700; font-size: 16px; letter-spacing: -.3px; color: var(--ink); }
+/* Logo */
+.logo-img { display: block; width: 132px; height: auto; }
 
 /* Top bar */
 .bar { max-width: 820px; margin: 0 auto; display: flex; align-items: center; justify-content: flex-end; padding: 18px 0; }
@@ -646,6 +634,7 @@ body { background: #f3f1ec; }
   .sheet { padding: 32px 22px 40px; }
   .head { flex-direction: column; gap: 28px; }
   .head-right { text-align: left; }
+  .logo-img { width: 112px; }
   .doc-meta { justify-content: start; }
   .doc-meta dd { text-align: left; }
   .inline-input { text-align: left; }
@@ -663,7 +652,7 @@ body { background: #f3f1ec; }
   .offer *, .offer *::before, .offer *::after { transition: none !important; }
 }
 
-/* Print: the proposal and terms, without the choosing steps or controls */
+/* Print: the invoice and terms, without the choosing steps or controls */
 @media print {
   .no-print, .selection { display: none !important; }
   .offer, body { background: #fff; padding: 0; }
@@ -671,6 +660,5 @@ body { background: #f3f1ec; }
   .sheet + .sheet { margin-top: 0; }
   .lines tr.removed { display: none; }
   .terms { break-before: page; }
-  .logo-mark { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 `
