@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: 'How DNI Studios (DNI Ltd) collects, uses and protects personal data.',
   alternates: { canonical: '/legal/privacy-policy' },
+  // Keep legal pages out of Google results (and its sitelinks); links still work.
+  robots: { index: false, follow: true },
 }
 
 export default function Page() {
