@@ -212,7 +212,7 @@ const ALSO = [
   ['shield', 'Your data, protected', 'Encrypted, UK-based company'],
 ]
 
-export default function FeaturesSection() {
+export default function FeaturesSection({ bare = false }: { bare?: boolean }) {
   const cell = (i: number) => ({
     initial: { opacity: 0, y: 34 },
     whileInView: { opacity: 1, y: 0 },
@@ -223,12 +223,12 @@ export default function FeaturesSection() {
     <section id="features" style={{ padding: '140px 0 120px', position: 'relative' }}>
       <div className="glow-orb glow-blue" style={{ width: 900, height: 900, top: '10%', left: '50%', transform: 'translateX(-50%)', opacity: .6 }} />
       <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 1 }}>
-        <SectionHead
+        {!bare && <SectionHead
           eyebrow="The platform"
           title="Everything you need."
           accent="Nothing you don't."
           sub="Built with working PTs around the moments that actually slow a studio down."
-        />
+        />}
 
         <div className="bento" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 16, marginTop: 70 }}>
           <motion.div {...cell(0)} style={{ gridColumn: 'span 3' }}>

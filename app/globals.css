@@ -405,3 +405,12 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
 .magnetic { transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .25s ease !important; will-change: transform; }
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+/* Scene lengths: shorter scroll runs on phones so there's no dead black space. */
+.cine-hero { height: 170vh; }
+.cine-story { height: 320vh; }
+@media (max-width: 760px) {
+  .cine-hero { height: 135vh; }
+  .cine-story { height: 240vh; }
+}
+@media (max-width: 760px), (max-height: 760px) { .scroll-hint { display: none !important; } }

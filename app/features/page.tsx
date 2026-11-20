@@ -28,7 +28,7 @@ export default function FeaturesPage() {
         accent="built for studios."
         intro="Bookings, client progress, payments and leads in one place, so you can stop juggling WhatsApp, spreadsheets and five different apps."
       />
-      <div style={{ marginTop: -80 }}><FeaturesSection /></div>
+      <div style={{ marginTop: -110 }}><FeaturesSection bare /></div>
       <HowItWorks />
       <EmailCaptureSection />
       <Footer />

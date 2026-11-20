@@ -28,7 +28,7 @@ export default function PricingPage() {
         accent="PT studios."
         intro="One plan with every feature. Unlimited trainers and clients, no per-seat fees, and a founding rate that never goes up."
       />
-      <div style={{ marginTop: -80 }}><PricingSection /></div>
+      <div style={{ marginTop: -110 }}><PricingSection bare /></div>
       <PricingFaq />
       <EmailCaptureSection />
       <Footer />

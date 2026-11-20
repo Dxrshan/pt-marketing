@@ -127,13 +127,13 @@ export function CineHero() {
   const textScale = useTransform(scrollYProgress, [0, 0.3], reduce ? [1, 1] : [1, 1.12])
   const [markH, setMarkH] = useState(240)
   useEffect(() => {
-    const set = () => setMarkH(Math.round(Math.min(Math.max(window.innerHeight * 0.26, 140), 300)))
+    const set = () => setMarkH(Math.round(Math.min(Math.max(window.innerHeight * 0.26, 110), 300, window.innerWidth * 0.36)))
     set(); window.addEventListener('resize', set)
     return () => window.removeEventListener('resize', set)
   }, [])
 
   return (
-    <section ref={ref} id="hero" style={{ height: '170vh', position: 'relative' }}>
+    <section ref={ref} id="hero" className="cine-hero" style={{ position: 'relative' }}>
       <div className="grain" style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse 80% 60% at 50% 38%, #1a1d23 0%, #0b0c0f 55%, #050607 100%)' }}>
         <CursorLight size={900} opacity={0.07} />
         <DotGrid />
@@ -177,7 +177,7 @@ export function CineHero() {
           </motion.div>
         </motion.div>
 
-        <motion.div style={{ opacity: textOpacity, position: 'absolute', bottom: 18, left: '50%', x: '-50%', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, fontSize: 11, letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--steel-4)' }}>
+        <motion.div className="scroll-hint" style={{ opacity: textOpacity, position: 'absolute', bottom: 18, left: '50%', x: '-50%', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, fontSize: 11, letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--steel-4)' }}>
           Scroll
           <span style={{ width: 1, height: 44, background: 'rgba(255,255,255,0.1)', position: 'relative', overflow: 'hidden' }}>
             <span className="scroll-cue" style={{ position: 'absolute', left: 0, top: 0, width: 1, height: 18, background: 'linear-gradient(transparent, #fff)' }} />
@@ -216,7 +216,7 @@ export function ProductReveal() {
   const glow = useTransform(p, [0.1, 0.4], [0, 1])
 
   return (
-    <section ref={ref} id="story" style={{ height: '320vh', position: 'relative' }}>
+    <section ref={ref} id="story" className="cine-story" style={{ position: 'relative' }}>
       <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#050607' }}>
         <div style={{ position: 'absolute', top: '9vh', left: 0, right: 0, height: 110, zIndex: 3 }}>
           {CAPTIONS.map((c, i) => <Caption key={c} text={c} i={i} p={p} />)}

@@ -26,7 +26,7 @@ const INCLUDED = [
   'Priority onboarding support',
 ]
 
-export default function PricingSection() {
+export default function PricingSection({ bare = false }: { bare?: boolean }) {
   const [term, setTerm] = useState<Term>('quarterly')
   const plan = BILLING[term]
 
@@ -35,12 +35,12 @@ export default function PricingSection() {
       <div aria-hidden="true" style={{ position: 'absolute', width: 900, height: 700, top: '25%', left: '50%', transform: 'translateX(-50%)', pointerEvents: 'none', filter: 'blur(80px)', opacity: 0.45, background: 'radial-gradient(circle at 30% 40%, #2f7bff, transparent 50%), radial-gradient(circle at 70% 40%, #ff4fa3, transparent 50%), radial-gradient(circle at 50% 75%, #8b5cff, transparent 55%)' }} />
 
       <div style={{ maxWidth: 720, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-        <SectionHead
+        {!bare && <SectionHead
           eyebrow="Founding pricing"
           title="One price."
           accent="Everything included."
           sub="No tiers, no per-seat fees, no surprises. Lock in your founding rate and it never goes up."
-        />
+        />}
 
         {/* Billing toggle with sliding pill */}
         <Reveal delay={0.1} style={{ display: 'flex', justifyContent: 'center', marginTop: 48 }}>
