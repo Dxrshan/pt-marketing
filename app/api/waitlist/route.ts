@@ -18,8 +18,7 @@ const emailShell = (bodyHtml: string) => `
       <td style="padding-bottom:28px;">
         <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">
           <tr>
-            <td style="width:30px;height:30px;border-radius:9px;background:#5b7bff;background:linear-gradient(135deg,#5b7bff,#8b5cf6);text-align:center;vertical-align:middle;font-size:15px;line-height:30px;">⚡</td>
-            <td style="padding-left:10px;font-size:17px;font-weight:800;color:#ffffff;letter-spacing:-0.3px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">DNI Studios</td>
+            <td align="center"><img src="https://www.dnianalytics.com/email-logo.png?v=1" width="220" alt="DNI Studios" style="display:block;width:220px;height:auto;border:0;outline:none;text-decoration:none;" /></td>
           </tr>
         </table>
       </td>
@@ -105,8 +104,8 @@ export async function POST(req: NextRequest) {
           </td></tr>
           <tr><td style="padding:28px 32px 8px;text-align:center;">
             <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">
-              <tr><td style="border-radius:12px;background:#5b7bff;background:linear-gradient(135deg,#5b7bff,#8b5cf6);">
-                <a href="https://app.dnianalytics.com" style="display:inline-block;padding:14px 32px;font-size:15px;font-weight:700;color:#ffffff;text-decoration:none;">Try DNI Studios →</a>
+              <tr><td style="border-radius:12px;background:#e9ecef;background:linear-gradient(180deg,#ffffff,#c9ced5);">
+                <a href="https://app.dnianalytics.com" style="display:inline-block;padding:14px 32px;font-size:15px;font-weight:700;color:#0b0c0f;text-decoration:none;">Try DNI Studios →</a>
               </td></tr>
             </table>
           </td></tr>
