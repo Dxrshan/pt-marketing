@@ -343,3 +343,35 @@ hr.gradient-hr {
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(91,123,255,0.15), rgba(255,255,255,0.06), rgba(91,123,255,0.15), transparent);
 }
+
+/* ── Brand logo: metallic image + occasional light sweep ───────────────── */
+.brand-logo {
+  position: relative; display: inline-block; flex-shrink: 0; line-height: 0;
+}
+.brand-logo img {
+  display: block; width: 100%; height: 100%;
+  filter: drop-shadow(0 1px 0.5px rgba(0,0,0,0.45)) drop-shadow(0 4px 10px rgba(0,0,0,0.22));
+}
+.brand-logo::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(105deg, transparent 42%, rgba(255,255,255,0.85) 50%, transparent 58%) no-repeat;
+  background-size: 300% 100%; background-position: 100% 0;
+  -webkit-mask: var(--logo-src) center / contain no-repeat;
+          mask: var(--logo-src) center / contain no-repeat;
+  animation: brand-sheen 7s cubic-bezier(.4,0,.2,1) 1s infinite;
+}
+.brand-logo:hover::after { animation-duration: 2.2s; animation-delay: 0s; }
+@keyframes brand-sheen {
+  0%   { background-position: 100% 0; }
+  22%  { background-position: 0% 0; }
+  100% { background-position: 0% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand-logo::after { animation: none; opacity: 0; }
+}
+.brand-logo.on-light img { filter: drop-shadow(0 1px 0.5px rgba(0,0,0,0.22)); }
+.brand-logo.logo-narrow { display: none; }
+@media (max-width: 520px) {
+  .brand-logo.logo-wide { display: none; }
+  .brand-logo.logo-narrow { display: inline-block; }
+}

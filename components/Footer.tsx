@@ -1,5 +1,5 @@
 'use client'
-import BrandMark from './BrandMark'
+import BrandLogo from './BrandLogo'
 export default function Footer() {
   const scrollTo = (href: string) => {
     const el = document.querySelector(href)
@@ -13,9 +13,8 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-              <BrandMark height={30} />
-              <span style={{ fontWeight: 700, fontSize: 17, color: 'white', letterSpacing: '-0.3px' }}>DNI Studios</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>
+              <BrandLogo height={42} />
             </div>
             <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.35)', lineHeight: 1.7, maxWidth: 280 }}>
               The all-in-one platform built for personal trainers and studios who are serious about their business.
