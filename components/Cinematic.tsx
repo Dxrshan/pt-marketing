@@ -103,18 +103,6 @@ function DotGrid() {
   )
 }
 
-/* "Watch it work": glide to the point in the product scene where the dashboard
-   is fully in view (its very top is still a dark lead-in). */
-function watchItWork(e: React.MouseEvent) {
-  const sec = document.getElementById('story')
-  if (!sec) return
-  e.preventDefault()
-  const y = sec.getBoundingClientRect().top + window.scrollY + (sec.offsetHeight - window.innerHeight) * 0.2
-  const lenis = (window as unknown as { __lenis?: { scrollTo: (y: number, o?: object) => void } }).__lenis
-  if (lenis) lenis.scrollTo(y, { duration: 2.4 })
-  else window.scrollTo({ top: y, behavior: 'smooth' })
-}
-
 /* ── 1. Opening: giant metal mark, huge headline, fly-through on scroll ── */
 export function CineHero() {
   const ref = useRef<HTMLElement>(null)
@@ -170,9 +158,6 @@ export function CineHero() {
             style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 40 }}>
             <a href="#waitlist" className="btn-spectrum magnetic" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 30px', borderRadius: 999, fontSize: 16, textDecoration: 'none' }}>
               Start free trial <Icon name="arrow" size={17} />
-            </a>
-            <a href="#story" onClick={watchItWork} className="btn-ghost magnetic" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 28px', borderRadius: 999, fontSize: 16, fontWeight: 600, textDecoration: 'none' }}>
-              Watch it work
             </a>
           </motion.div>
         </motion.div>
