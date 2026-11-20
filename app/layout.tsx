@@ -87,7 +87,7 @@ const JSON_LD = {
         lowPrice: '49',
         highPrice: '69',
         offerCount: 3,
-        url: `${SITE}/offer`,
+        url: `${SITE}/pricing`,
       },
     },
   ],

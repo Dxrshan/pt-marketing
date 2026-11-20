@@ -11,9 +11,11 @@ const display = Fraunces({
 })
 
 export const metadata: Metadata = {
-  title: 'Pricing & Founding Offer',
+  title: 'Invoice',
   description: 'DNI Studios pricing for PT studios: monthly, quarterly or annual plans from £49/month, with free onboarding and setup for founding studios.',
   alternates: { canonical: '/offer' },
+  // This is the editable invoice used on sales calls; the public pricing page is /pricing.
+  robots: { index: false, follow: true },
   openGraph: {
     title: 'DNI Studios Pricing & Founding Offer', url: '/offer', siteName: 'DNI Studios', type: 'website', locale: 'en_GB',
     images: [{ url: '/og-image.png?v=4', width: 1200, height: 630, alt: 'DNI Studios' }],
