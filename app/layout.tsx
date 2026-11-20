@@ -12,8 +12,8 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://www.dnianalytics.com'),
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/icon-32.png', type: 'image/png', sizes: '32x32' },
+      { url: '/favicon.ico?v=3', sizes: 'any' },
+      { url: '/icon-32.png?v=3', type: 'image/png', sizes: '32x32' },
     ],
     apple: '/apple-touch-icon.png',
   },
