@@ -164,53 +164,63 @@ export default function OfferPage() {
 
       {/* ── Sheet 1: invoice ─────────────────────────────── */}
       <article className="sheet">
-        <header className="head">
-          <div className="head-left">
-            <BrandLogo variant="stacked" height={118} className="on-light" />
-
-            <div className="billto">
-              <h2 className="label">Billed to</h2>
-              <dl>
-                <div className="bt-row">
-                  <dt><label htmlFor="bt-studio">Studio</label></dt>
-                  <dd><input id="bt-studio" className="bt-input" placeholder="Studio name" autoComplete="organization" value={studio} onChange={e => setStudio(e.target.value)} /></dd>
-                </div>
-                <div className="bt-row">
-                  <dt><label htmlFor="bt-contact">Name</label></dt>
-                  <dd><input id="bt-contact" className="bt-input" placeholder="Owner or contact" autoComplete="name" value={contact} onChange={e => setContact(e.target.value)} /></dd>
-                </div>
-                <div className="bt-row">
-                  <dt><label htmlFor="bt-addr">Address</label></dt>
-                  <dd><input id="bt-addr" className="bt-input" placeholder="Street address" autoComplete="street-address" /></dd>
-                </div>
-                <div className="bt-row">
-                  <dt><label htmlFor="bt-city">City</label></dt>
-                  <dd className="bt-split">
-                    <input id="bt-city" className="bt-input" placeholder="City" autoComplete="address-level2" />
-                    <input className="bt-input" placeholder="Postcode" autoComplete="postal-code" aria-label="Postcode" />
-                  </dd>
-                </div>
-                <div className="bt-row">
-                  <dt><label htmlFor="bt-email">Email</label></dt>
-                  <dd><input id="bt-email" className="bt-input" type="email" placeholder="name@studio.com" autoComplete="email" /></dd>
-                </div>
-                <div className="bt-row">
-                  <dt><label htmlFor="bt-phone">Phone</label></dt>
-                  <dd><input id="bt-phone" className="bt-input" type="tel" placeholder="Phone number" autoComplete="tel" /></dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-          <div className="head-right">
+        <header className="letterhead">
+          <BrandLogo height={54} />
+          <div className="lh-title">
             <h1 className="doc-title">Invoice</h1>
-            <dl className="doc-meta num">
-              <dt>No.</dt>
-              <dd><input className="inline-input" placeholder="DNI-2026-XXX" value={ref} onChange={e => setRef(e.target.value)} aria-label="Reference" /></dd>
-              <dt>Date</dt><dd>{issued || '—'}</dd>
-            </dl>
+            <div className="lh-sub">Founding studio offer</div>
           </div>
         </header>
 
+        <div className="sheet-body">
+        <div className="parties">
+          <section className="panel">
+            <h2 className="label">Billed to</h2>
+            <dl>
+              <div className="p-row">
+                <dt><label htmlFor="bt-studio">Studio</label></dt>
+                <dd><input id="bt-studio" className="p-input strong" placeholder="Studio name" autoComplete="organization" value={studio} onChange={e => setStudio(e.target.value)} /></dd>
+              </div>
+              <div className="p-row">
+                <dt><label htmlFor="bt-contact">Name</label></dt>
+                <dd><input id="bt-contact" className="p-input" placeholder="Owner or contact" autoComplete="name" value={contact} onChange={e => setContact(e.target.value)} /></dd>
+              </div>
+              <div className="p-row">
+                <dt><label htmlFor="bt-addr">Address</label></dt>
+                <dd><input id="bt-addr" className="p-input" placeholder="Street address" autoComplete="street-address" /></dd>
+              </div>
+              <div className="p-row">
+                <dt><label htmlFor="bt-city">City</label></dt>
+                <dd className="p-split">
+                  <input id="bt-city" className="p-input" placeholder="City" autoComplete="address-level2" />
+                  <input className="p-input" placeholder="Postcode" autoComplete="postal-code" aria-label="Postcode" />
+                </dd>
+              </div>
+              <div className="p-row">
+                <dt><label htmlFor="bt-email">Email</label></dt>
+                <dd><input id="bt-email" className="p-input" type="email" placeholder="name@studio.com" autoComplete="email" /></dd>
+              </div>
+              <div className="p-row">
+                <dt><label htmlFor="bt-phone">Phone</label></dt>
+                <dd><input id="bt-phone" className="p-input" type="tel" placeholder="Phone number" autoComplete="tel" /></dd>
+              </div>
+            </dl>
+          </section>
+
+          <section className="panel">
+            <h2 className="label">Invoice details</h2>
+            <dl className="num">
+              <div className="p-row">
+                <dt><label htmlFor="inv-ref">Invoice no.</label></dt>
+                <dd><input id="inv-ref" className="p-input" placeholder="DNI-2026-XXX" value={ref} onChange={e => setRef(e.target.value)} /></dd>
+              </div>
+              <div className="p-row"><dt>Issued</dt><dd>{issued || '—'}</dd></div>
+              <div className="p-row"><dt>Plan</dt><dd>{plan.label}</dd></div>
+              <div className="p-row"><dt>Billing</dt><dd>{plan.term}</dd></div>
+              <div className="p-row"><dt>Payment</dt><dd>Due on acceptance</dd></div>
+            </dl>
+          </section>
+        </div>
 
         {/* Billing */}
         <section className="part selection" id="plan">
@@ -370,29 +380,29 @@ export default function OfferPage() {
             </div>
           )}
 
-          <div className="totals num">
-            <div className="t-row"><span>Subtotal</span><span>{gbp(totals.subtotal)}</span></div>
-            {totals.discountTotal > 0 && (
-              <div className="t-row"><span>Discounts</span><span>−{gbp(totals.discountTotal)}</span></div>
-            )}
-            <div className="t-due">
-              <div>
+          <div className="summary">
+            <div className="summary-note">
+              <h3>Payment terms</h3>
+              <p>Due on acceptance. Covered by a 30-day money-back guarantee, and your rate stays fixed for as long as you stay subscribed.</p>
+            </div>
+            <div className="sum-card num">
+              <div className="t-row"><span>Subtotal</span><span>{gbp(totals.subtotal)}</span></div>
+              {totals.discountTotal > 0 && (
+                <div className="t-row"><span>Discounts</span><span>−{gbp(totals.discountTotal)}</span></div>
+              )}
+              <div className="t-due">
                 <div className="t-due-label">Due today</div>
+                <div className="t-due-num">{gbp(dueShown)}</div>
                 <div className="t-due-note">{`Covers your ${monthsWord}${totals.onceExtras > 0 ? ' and one-off items' : ''}`}</div>
               </div>
-              <div className="t-due-num">{gbp(dueShown)}</div>
+              <div className="t-then">
+                <span>Then <strong>{gbp(totals.recurringTotal)}</strong> {plan.period}</span>
+                {plan.months > 1 && <span className="t-then-sub">{`${gbp(totals.recurringTotal / plan.months)} a month`}</span>}
+              </div>
+              <button className="cta no-print" onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}>
+                Accept invoice
+              </button>
             </div>
-            <div className="t-then">
-              {`Then ${gbp(totals.recurringTotal)} ${plan.period}`}
-              {plan.months > 1 && <span>{` · ${gbp(totals.recurringTotal / plan.months)} a month`}</span>}
-            </div>
-          </div>
-
-          <div className="accept no-print">
-            <button className="cta" onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}>
-              Accept invoice
-            </button>
-            <p className="assure">30-day money-back guarantee. Your rate is fixed for as long as you stay subscribed.</p>
           </div>
         </section>
 
@@ -406,6 +416,12 @@ export default function OfferPage() {
             <div><div className="sign-line" /><div className="sign-label">For DNI Studios</div></div>
           </div>
         </section>
+        </div>
+
+        <footer className="sheet-foot">
+          <span>Thank you for choosing DNI Studios.</span>
+          <span>dnianalytics.com</span>
+        </footer>
       </article>
 
       {/* ── Sheet 2: terms ─────────────────────────────────── */}
@@ -468,141 +484,157 @@ const CLAUSES = [
 
 const CSS = `
 .offer {
-  --ink: #16140f; --text: #2b2924; --muted: #77716a; --faint: #a39d93;
-  --line: #e7e3db; --line-2: #d6d0c4; --bg: #f3f1ec;
-  --serif: var(--font-display), Georgia, 'Times New Roman', serif;
+  --ink: #111318; --text: #2a2d33; --muted: #6c717a; --faint: #9a9fa8;
+  --line: #e6e7ea; --line-soft: #f0f1f3; --bg: #eceef1;
+  --steel-1: #23262c; --steel-2: #121418; --silver: #c9cdd3;
   --sans: var(--font-inter), 'Helvetica Neue', Arial, sans-serif;
-  background: var(--bg); color: var(--text); font-family: var(--sans);
-  min-height: 100vh; padding: 0 16px 48px; -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(1200px 500px at 50% -200px, #ffffff 0%, transparent 70%),
+    var(--bg);
+  color: var(--text); font-family: var(--sans);
+  min-height: 100vh; padding: 0 16px 56px; -webkit-font-smoothing: antialiased;
 }
-body { background: #f3f1ec; }
+body { background: #eceef1; }
 .offer .num { font-variant-numeric: tabular-nums; }
 .offer button { font-family: inherit; }
 .offer :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
-/* Logo */
-
 /* Top bar */
-.bar { max-width: 820px; margin: 0 auto; display: flex; align-items: center; justify-content: flex-end; padding: 18px 0; }
-.bar-actions { display: flex; gap: 4px; }
+.bar { max-width: 860px; margin: 0 auto; display: flex; justify-content: flex-end; padding: 20px 0 14px; }
+.bar-actions { display: flex; gap: 6px; }
 .text-btn {
-  border: none; background: transparent; color: var(--muted); font-size: 13.5px; font-weight: 500;
-  padding: 7px 12px; border-radius: 8px; cursor: pointer;
+  border: 1px solid transparent; background: transparent; color: var(--muted); font-size: 13px; font-weight: 500;
+  padding: 7px 14px; border-radius: 999px; cursor: pointer; transition: all .15s ease;
 }
-.text-btn:hover { color: var(--ink); background: rgba(0,0,0,.04); }
-.text-btn.on { background: var(--ink); color: #fff; }
+.text-btn:hover { color: var(--ink); background: #fff; border-color: var(--line); }
+.text-btn.on { background: var(--ink); color: #fff; border-color: var(--ink); }
 
 /* Sheet */
 .sheet {
-  max-width: 820px; margin: 0 auto; background: #fff; border-radius: 6px;
-  padding: 64px 72px 72px;
-  box-shadow: 0 1px 2px rgba(22,20,15,.04), 0 12px 40px -24px rgba(22,20,15,.18);
+  max-width: 860px; margin: 0 auto; background: #fff; border-radius: 16px; overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(17,19,24,.04), 0 2px 4px rgba(17,19,24,.04), 0 30px 70px -30px rgba(17,19,24,.35);
 }
-.sheet + .sheet { margin-top: 24px; }
+.sheet + .sheet { margin-top: 28px; }
+.sheet-body { padding: 0 56px 56px; }
 
-.head { display: flex; justify-content: space-between; gap: 32px; }
-.head-right { text-align: right; }
+/* Letterhead: brushed graphite with a polished edge */
+.letterhead {
+  position: relative; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  padding: 40px 56px 38px; color: #e8eaee;
+  background:
+    radial-gradient(140% 160% at 0% 0%, #30343c 0%, var(--steel-1) 35%, var(--steel-2) 75%, #0a0b0d 100%);
+}
+.letterhead::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .7;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.022) 0 1px, transparent 1px 3px);
+}
+.letterhead::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  background: linear-gradient(90deg, #5c626b, #f2f4f7 30%, #8a9099 50%, #e4e7eb 70%, #5c626b);
+}
+.letterhead > * { position: relative; }
+.lh-title { text-align: right; }
 .doc-title {
-  font-family: var(--sans); font-weight: 700; font-size: 34px; line-height: 1;
-  letter-spacing: .32em; margin-right: -.32em; text-transform: uppercase;
-  /* dark brushed steel, to sit with the metallic logo */
-  background: linear-gradient(180deg, #5d636d 0%, #1d2026 38%, #0d0e11 50%, #3c4149 62%, #15171b 100%);
+  font-family: var(--sans); font-weight: 600; font-size: 30px; line-height: 1;
+  letter-spacing: .38em; margin-right: -.38em; text-transform: uppercase;
+  background: linear-gradient(180deg, #ffffff 0%, #dfe2e6 40%, #8f959e 52%, #e9ecef 78%, #b9bec5 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
-  filter: drop-shadow(0 1px 0 rgba(255,255,255,.6));
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,.45));
 }
-.doc-title::after {
-  content: ""; display: block; height: 2px; width: 56px; margin: 14px 0 0 auto; margin-right: .32em;
-  background: linear-gradient(90deg, #c9ccd2, #6b7079, #c9ccd2); border-radius: 2px;
-}
-.doc-meta { display: grid; grid-template-columns: auto auto; gap: 4px 16px; margin-top: 18px; font-size: 13px; justify-content: end; }
-.doc-meta dt { color: var(--faint); text-align: left; }
-.doc-meta dd { color: var(--text); text-align: right; }
-.inline-input {
-  width: 120px; text-align: right; border: none; background: transparent; font: inherit; color: var(--text); padding: 0;
-}
-.inline-input::placeholder { color: var(--faint); }
-.inline-input:focus { outline: none; box-shadow: 0 1px 0 var(--ink); }
+.lh-sub { margin-top: 12px; font-size: 11px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; color: #8d939c; }
 
-.head-left { flex: 1; min-width: 0; max-width: 380px; }
-.billto { margin-top: 32px; }
-.billto dl { display: flex; flex-direction: column; }
-.bt-row { display: grid; grid-template-columns: 72px 1fr; align-items: baseline; gap: 12px; padding: 4px 0; }
-.bt-row dt { font-size: 12.5px; color: var(--faint); }
-.bt-row dd { min-width: 0; }
-.bt-split { display: grid; grid-template-columns: 1fr 96px; gap: 12px; }
-.bt-input {
-  width: 100%; border: none; border-bottom: 1px dashed transparent; background: transparent; border-radius: 0;
-  font: inherit; font-size: 14px; color: var(--ink); padding: 3px 0; transition: border-color .15s ease;
-}
-.bt-input::placeholder { color: #c4beb3; }
-.bt-input:hover { border-bottom-color: var(--line-2); }
-.bt-input:focus { outline: none; border-bottom: 1px solid var(--ink); }
-
+/* Section labels */
 .label {
-  display: block; font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 1.2px;
-  text-transform: uppercase; color: var(--faint); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 14px; font-family: var(--sans); font-size: 11px; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin: 0 0 16px;
 }
-.line {
-  width: 100%; border: none; border-bottom: 1px solid var(--line); background: transparent;
-  font: inherit; font-size: 15px; color: var(--ink); padding: 6px 0 8px; border-radius: 0;
-  transition: border-color .15s ease;
-}
-.line::placeholder { color: #c4beb3; }
-.line:focus { outline: none; border-bottom-color: var(--ink); }
+.label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 
-.part { margin-top: 56px; scroll-margin-top: 24px; }
+/* Billed to / details panels */
+.parties { display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px; margin-top: 40px; }
+.panel {
+  border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px 10px;
+  background: linear-gradient(180deg, #ffffff, #fbfbfc);
+}
+.panel .label { margin-bottom: 6px; }
+.p-row {
+  display: grid; grid-template-columns: 84px 1fr; align-items: center; gap: 12px;
+  padding: 8px 0; border-top: 1px solid var(--line-soft); min-height: 40px;
+}
+.p-row:first-child { border-top: none; }
+.p-row dt { font-size: 12.5px; color: var(--faint); }
+.p-row dd { font-size: 14px; color: var(--ink); min-width: 0; }
+.p-split { display: grid; grid-template-columns: 1fr 100px; gap: 10px; }
+.p-input {
+  width: 100%; border: 1px solid transparent; background: transparent; border-radius: 8px;
+  font: inherit; font-size: 14px; color: var(--ink); padding: 5px 8px; margin: -5px -8px;
+  width: calc(100% + 16px); transition: background .15s ease, border-color .15s ease;
+}
+.p-split .p-input { width: calc(100% + 16px); }
+.p-input.strong { font-weight: 600; font-size: 15px; }
+.p-input::placeholder { color: #c2c6cc; font-weight: 400; }
+.p-input:hover { background: #f5f6f8; }
+.p-input:focus { outline: none; background: #fff; border-color: #c9cdd3; box-shadow: 0 0 0 3px rgba(17,19,24,.06); }
+
+.part { margin-top: 48px; scroll-margin-top: 24px; }
 
 /* Plans */
 .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .plan {
   position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; text-align: left;
-  background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 18px 18px 16px 46px;
-  cursor: pointer; color: var(--text); transition: border-color .15s ease, box-shadow .15s ease;
+  background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 18px 18px 16px 46px;
+  cursor: pointer; color: var(--text); transition: border-color .15s ease, box-shadow .2s ease, background .2s ease, transform .15s ease;
 }
-.plan:hover { border-color: var(--line-2); }
-.plan.on { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.plan:hover { border-color: #cfd2d7; transform: translateY(-1px); }
+.plan.on {
+  background: radial-gradient(140% 160% at 0% 0%, #30343c 0%, var(--steel-1) 40%, var(--steel-2) 100%);
+  border-color: var(--steel-2); box-shadow: 0 14px 28px -16px rgba(17,19,24,.6), inset 0 1px 0 rgba(255,255,255,.08);
+}
 .radio {
   position: absolute; left: 18px; top: 20px; width: 16px; height: 16px; border-radius: 50%;
-  border: 1.5px solid var(--line-2); transition: all .15s ease;
+  border: 1.5px solid #cfd2d7; transition: all .15s ease;
 }
-.plan.on .radio { border-color: var(--ink); box-shadow: inset 0 0 0 3.5px #fff; background: var(--ink); }
+.plan.on .radio { border-color: #e8eaee; background: radial-gradient(#e8eaee 0 3.5px, transparent 4px); }
 .plan-name { font-size: 15px; font-weight: 600; color: var(--ink); }
 .plan-term { font-size: 13px; color: var(--muted); }
-.plan-save { font-size: 12.5px; color: var(--ink); margin-top: 6px; font-weight: 500; }
+.plan-save { font-size: 12px; font-weight: 600; margin-top: 8px; color: var(--ink); background: #f1f2f4; border-radius: 999px; padding: 3px 9px; }
+.plan.on .plan-name { color: #fff; }
+.plan.on .plan-term { color: #9ba1aa; }
+.plan.on .plan-save { color: var(--ink); background: linear-gradient(180deg, #f4f5f7, #c9cdd3); }
 
 /* Features */
 .features { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
-.features li { display: flex; flex-direction: column; gap: 2px; padding: 12px 0; border-top: 1px solid var(--line); }
+.features li { display: grid; grid-template-columns: 18px 1fr; column-gap: 10px; padding: 12px 0; border-top: 1px solid var(--line-soft); }
+.features li::before {
+  content: ""; grid-row: span 2; width: 14px; height: 14px; margin-top: 3px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff, #b7bcc4 55%, #6e747d);
+  box-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
 .f-name { font-size: 14px; font-weight: 500; color: var(--ink); }
 .f-det { font-size: 13px; color: var(--muted); }
 
-/* Quote */
-.edit-note { font-size: 13px; color: var(--muted); background: var(--bg); border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; }
+/* Line items */
+.edit-note { font-size: 13px; color: var(--muted); background: #f5f6f8; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
 .lines { width: 100%; border-collapse: collapse; }
 .lines th {
-  font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--faint);
-  text-align: left; padding: 0 0 10px; border-bottom: 1px solid var(--ink);
+  font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint);
+  text-align: left; padding: 0 0 12px; border-bottom: 1px solid var(--ink);
 }
-.lines td { padding: 14px 0; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14.5px; }
-.lines .amt { text-align: right; white-space: nowrap; padding-left: 24px; color: var(--ink); }
+.lines td { padding: 15px 0; border-bottom: 1px solid var(--line-soft); vertical-align: top; font-size: 14.5px; }
+.lines .amt { text-align: right; white-space: nowrap; padding-left: 24px; color: var(--ink); font-weight: 500; }
 .th-title { font: inherit; letter-spacing: inherit; }
-.l-main { color: var(--ink); }
+.l-main { color: var(--ink); font-weight: 500; }
 .l-sub { font-size: 13px; color: var(--faint); margin-top: 3px; }
-.struck { color: var(--faint); margin-right: 6px; }
+.struck { color: var(--faint); margin-right: 6px; font-weight: 400; }
 .lines tr.removed td { opacity: .4; }
 .lines tr.removed .l-main { text-decoration: line-through; }
 
 .ctls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
 .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
-.seg button {
-  border: none; background: #fff; color: var(--muted); font-size: 12.5px; padding: 6px 11px; cursor: pointer;
-}
+.seg button { border: none; background: #fff; color: var(--muted); font-size: 12.5px; padding: 6px 11px; cursor: pointer; }
 .seg button + button { border-left: 1px solid var(--line); }
 .seg button.on { background: var(--ink); color: #fff; }
-.ctl {
-  border: 1px solid var(--line); border-radius: 8px; background: #fff; font: inherit; font-size: 13.5px;
-  color: var(--ink); padding: 6px 10px;
-}
+.ctl { border: 1px solid var(--line); border-radius: 8px; background: #fff; font: inherit; font-size: 13.5px; color: var(--ink); padding: 6px 10px; }
 .ctl:focus { outline: none; border-color: var(--ink); }
 .ctl-wide { width: 100%; max-width: 340px; }
 .ctl-amt { width: 96px; text-align: right; }
@@ -610,24 +642,41 @@ body { background: #f3f1ec; }
 .link-btn:hover { color: var(--ink); text-decoration: underline; }
 .add { display: flex; gap: 16px; padding: 12px 0 0; }
 
-.totals { margin-left: auto; max-width: 360px; padding-top: 20px; }
-.t-row { display: flex; justify-content: space-between; font-size: 14px; color: var(--muted); padding: 4px 0; }
-.t-due {
-  display: flex; justify-content: space-between; align-items: flex-end; gap: 16px;
-  margin-top: 12px; padding-top: 16px; border-top: 1px solid var(--ink);
+/* Summary */
+.summary { display: grid; grid-template-columns: 1fr 340px; gap: 32px; align-items: end; margin-top: 28px; }
+.summary-note h3 { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
+.summary-note p { font-size: 13px; line-height: 1.65; color: var(--muted); max-width: 300px; }
+.sum-card {
+  position: relative; overflow: hidden; border-radius: 16px; padding: 22px 24px 24px; color: #c8ccd2;
+  background: radial-gradient(140% 140% at 0% 0%, #30343c 0%, var(--steel-1) 40%, var(--steel-2) 100%);
+  box-shadow: 0 24px 50px -24px rgba(17,19,24,.7), inset 0 1px 0 rgba(255,255,255,.08);
 }
-.t-due-label { font-size: 14px; font-weight: 600; color: var(--ink); }
-.t-due-note { font-size: 12.5px; color: var(--faint); margin-top: 2px; }
-.t-due-num { font-family: var(--serif); font-size: 40px; font-weight: 400; line-height: 1; color: var(--ink); letter-spacing: -.02em; }
-.t-then { font-size: 13px; color: var(--muted); text-align: right; margin-top: 10px; }
-
-.accept { display: flex; flex-direction: column; align-items: flex-end; margin-top: 36px; }
+.sum-card::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .7;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.022) 0 1px, transparent 1px 3px);
+}
+.sum-card > * { position: relative; }
+.t-row { display: flex; justify-content: space-between; font-size: 13.5px; color: #9ba1aa; padding: 3px 0; }
+.t-row span:last-child { color: #e3e6ea; }
+.t-due { margin-top: 14px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.12); }
+.t-due-label { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #9ba1aa; }
+.t-due-num {
+  font-size: 44px; font-weight: 600; line-height: 1.05; letter-spacing: -.02em; margin-top: 8px;
+  background: linear-gradient(180deg, #ffffff 0%, #e2e5e9 45%, #9aa0a8 60%, #eef0f2 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.t-due-note { font-size: 12.5px; color: #8d939c; margin-top: 6px; }
+.t-then { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: #9ba1aa; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.08); }
+.t-then strong { color: #e3e6ea; font-weight: 600; }
+.t-then-sub { color: #8d939c; font-size: 12.5px; white-space: nowrap; }
 .cta {
-  border: none; border-radius: 10px; background: var(--ink); color: #fff; cursor: pointer;
-  font-size: 15px; font-weight: 500; padding: 15px 36px; min-width: 240px; transition: background .15s ease;
+  margin-top: 20px; width: 100%; border: none; border-radius: 11px; cursor: pointer;
+  font-size: 14.5px; font-weight: 600; letter-spacing: .02em; color: var(--ink); padding: 14px 20px;
+  background: linear-gradient(180deg, #ffffff 0%, #e6e8eb 50%, #c5c9cf 100%);
+  box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 6px 16px -6px rgba(0,0,0,.6);
+  transition: transform .15s ease, filter .15s ease;
 }
-.cta:hover { background: #000; }
-.assure { font-size: 12.5px; color: var(--faint); margin-top: 12px; text-align: right; }
+.cta:hover { transform: translateY(-1px); filter: brightness(1.04); }
 
 /* Acceptance */
 .agree { font-size: 13px; line-height: 1.6; color: var(--muted); margin: 4px 0 48px; }
@@ -636,36 +685,41 @@ body { background: #f3f1ec; }
 .sign-line { border-bottom: 1px solid var(--ink); height: 44px; }
 .sign-label { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
 
+.sheet-foot {
+  display: flex; justify-content: space-between; gap: 16px; padding: 18px 56px;
+  border-top: 1px solid var(--line-soft); background: #fafbfc; font-size: 12.5px; color: var(--faint);
+}
+
 /* Terms */
-.terms-title { font-family: var(--serif); font-weight: 400; font-size: 26px; color: var(--ink); }
+.terms { padding: 52px 56px 56px; }
+.terms-title { font-weight: 600; font-size: 20px; letter-spacing: .02em; color: var(--ink); }
 .terms-intro { font-size: 13px; line-height: 1.7; color: var(--muted); margin: 14px 0 32px; }
 .clauses { columns: 2; column-gap: 40px; }
 .clause { break-inside: avoid; margin-bottom: 20px; }
 .clause h3 { font-size: 13.5px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
 .clause p { font-size: 12.5px; line-height: 1.65; color: var(--muted); margin-bottom: 6px; }
 
-.foot { max-width: 820px; margin: 28px auto 0; text-align: center; font-size: 12px; color: var(--faint); }
+.foot { max-width: 860px; margin: 28px auto 0; text-align: center; font-size: 12px; color: var(--faint); }
 
 /* Small screens */
-@media (max-width: 720px) {
+@media (max-width: 760px) {
   .offer { padding: 0 10px 32px; }
   .bar { padding: 10px 0; }
-  .sheet { padding: 32px 22px 40px; }
-  .head { flex-direction: column; gap: 28px; }
-  .head-right { text-align: left; }
-  .doc-title::after { margin-left: 0; }
-  .head-right { order: -1; }
-  .doc-meta { justify-content: start; }
-  .doc-meta dd { text-align: left; }
-  .inline-input { text-align: left; }
-  .signs { grid-template-columns: 1fr; gap: 24px; }
-  .head-left { max-width: none; }
-  .part { margin-top: 44px; }
+  .sheet { border-radius: 14px; }
+  .letterhead { flex-direction: column; align-items: flex-start; padding: 28px 22px 26px; gap: 22px; }
+  .lh-title { text-align: left; }
+  .doc-title { font-size: 26px; }
+  .sheet-body { padding: 0 20px 40px; }
+  .parties { grid-template-columns: 1fr; margin-top: 28px; }
+  .panel { padding: 16px 16px 8px; }
+  .p-row { grid-template-columns: 74px 1fr; }
+  .part { margin-top: 40px; }
   .plans { grid-template-columns: 1fr; gap: 10px; }
   .features { grid-template-columns: 1fr; }
-  .totals { max-width: none; }
-  .accept { align-items: stretch; }
-  .assure { text-align: center; }
+  .summary { grid-template-columns: 1fr; gap: 20px; }
+  .signs { grid-template-columns: 1fr; gap: 24px; }
+  .sheet-foot { padding: 16px 20px; flex-direction: column; gap: 4px; }
+  .terms { padding: 32px 20px 36px; }
   .clauses { columns: 1; }
 }
 
@@ -677,11 +731,11 @@ body { background: #f3f1ec; }
 @media print {
   .no-print, .selection { display: none !important; }
   .offer, body { background: #fff; padding: 0; }
-  .sheet { box-shadow: none; padding: 0 12mm; max-width: none; }
+  .sheet { box-shadow: none; max-width: none; border-radius: 0; }
   .sheet + .sheet { margin-top: 0; }
   .lines tr.removed { display: none; }
-  .bt-input { border-bottom-color: transparent !important; }
-  .bt-input::placeholder { color: transparent; }
+  .p-input::placeholder { color: transparent; }
+  .letterhead, .sum-card, .plan.on { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .terms { break-before: page; }
 }
 `
