@@ -15,7 +15,9 @@ export function SmoothScroll() {
     let raf = 0
     const loop = (t: number) => { lenis.raf(t); raf = requestAnimationFrame(loop) }
     raf = requestAnimationFrame(loop)
+    ;(window as unknown as { __lenis?: Lenis }).__lenis = lenis
     const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented) return
       const a = (e.target as HTMLElement).closest('a[href*="#"]') as HTMLAnchorElement | null
       if (!a) return
       const url = new URL(a.href)
@@ -26,7 +28,7 @@ export function SmoothScroll() {
       lenis.scrollTo(el as HTMLElement, { offset: 0, duration: 1.8 })
     }
     document.addEventListener('click', onClick)
-    return () => { cancelAnimationFrame(raf); lenis.destroy(); document.removeEventListener('click', onClick) }
+    return () => { cancelAnimationFrame(raf); lenis.destroy(); delete (window as unknown as { __lenis?: Lenis }).__lenis; document.removeEventListener('click', onClick) }
   }, [reduce])
   return null
 }
