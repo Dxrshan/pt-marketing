@@ -72,7 +72,7 @@ export default function PricingSection() {
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginTop: 14, height: 84, overflow: 'hidden' }}>
                     <AnimatePresence mode="popLayout" initial={false}>
                       <motion.span key={plan.price}
-                        initial={{ y: 60, opacity: 0, filter: 'blur(8px)' }} animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }} exit={{ y: -60, opacity: 0, filter: 'blur(8px)' }}
+                        initial={{ y: 60, opacity: 0, filter: 'blur(8px)' }} animate={{ y: 0, opacity: 1, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }} exit={{ y: -60, opacity: 0, filter: 'blur(8px)' }}
                         transition={{ duration: 0.5, ease: EASE }}
                         className="steel-text" style={{ fontSize: 84, fontWeight: 800, letterSpacing: '-0.05em', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
                         £{plan.price}

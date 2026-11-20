@@ -14,7 +14,7 @@ export function Reveal({ children, delay = 0, y = 28, className, style }: {
       className={className}
       style={style}
       initial={{ opacity: 0, y, filter: 'blur(6px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.8, delay, ease: EASE }}
     >
@@ -38,7 +38,7 @@ export function WordsReveal({ text, className, style, delay = 0, stagger = 0.06 
             className={className}
             style={{ display: 'inline-block' }}
             initial={{ y: '105%', opacity: 0, filter: 'blur(8px)' }}
-            animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
+            animate={{ y: 0, opacity: 1, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }}
             transition={{ duration: 0.9, delay: delay + i * stagger, ease: EASE }}
           >
             {w}{i < words.length - 1 ? ' ' : ''}

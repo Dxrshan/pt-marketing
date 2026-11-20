@@ -82,7 +82,7 @@ export function CineHero() {
         }} />
 
         <motion.div style={{ scale: markScale, opacity: markOpacity, position: 'relative', zIndex: 1 }}>
-          <motion.div initial={{ opacity: 0, scale: 0.7, filter: 'blur(18px)' }} animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }} transition={{ duration: 1.6, ease: EASE }}>
+          <motion.div initial={{ opacity: 0, scale: 0.7, filter: 'blur(18px)' }} animate={{ opacity: 1, scale: 1, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }} transition={{ duration: 1.6, ease: EASE }}>
             <div style={{ position: 'absolute', inset: '-30%', borderRadius: '50%', background: 'conic-gradient(from 0deg, rgba(47,123,255,0.45), rgba(139,92,255,0.45), rgba(255,79,163,0.4), rgba(255,138,61,0.38), rgba(47,123,255,0.45))', filter: 'blur(60px)', opacity: 0.8 }} />
             <BrandLogo variant="mark" height={markH} alt="DNI Studios" />
           </motion.div>
@@ -94,10 +94,10 @@ export function CineHero() {
             Studio software for personal trainers
           </motion.div>
           <h1 style={{ fontSize: 'clamp(52px, 9.5vw, 150px)', fontWeight: 800, letterSpacing: '-0.055em', lineHeight: 0.92, marginTop: 18 }}>
-            <motion.span className="steel-text" style={{ display: 'block' }} initial={{ opacity: 0, y: 40, filter: 'blur(14px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} transition={{ duration: 1.3, delay: 0.7, ease: EASE }}>
+            <motion.span className="steel-text" style={{ display: 'block' }} initial={{ opacity: 0, y: 40, filter: 'blur(14px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }} transition={{ duration: 1.3, delay: 0.7, ease: EASE }}>
               Run your studio.
             </motion.span>
-            <motion.span className="spectrum-text" style={{ display: 'block' }} initial={{ opacity: 0, y: 40, filter: 'blur(14px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} transition={{ duration: 1.3, delay: 0.95, ease: EASE }}>
+            <motion.span className="spectrum-text" style={{ display: 'block' }} initial={{ opacity: 0, y: 40, filter: 'blur(14px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }} transition={{ duration: 1.3, delay: 0.95, ease: EASE }}>
               Beautifully.
             </motion.span>
           </h1>
@@ -112,7 +112,7 @@ export function CineHero() {
           </motion.div>
         </motion.div>
 
-        <motion.div style={{ opacity: textOpacity, position: 'absolute', bottom: 34, left: '50%', x: '-50%', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, fontSize: 11, letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--steel-4)' }}>
+        <motion.div style={{ opacity: textOpacity, position: 'absolute', bottom: 18, left: '50%', x: '-50%', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, fontSize: 11, letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--steel-4)' }}>
           Scroll
           <span style={{ width: 1, height: 44, background: 'rgba(255,255,255,0.1)', position: 'relative', overflow: 'hidden' }}>
             <span className="scroll-cue" style={{ position: 'absolute', left: 0, top: 0, width: 1, height: 18, background: 'linear-gradient(transparent, #fff)' }} />
@@ -131,7 +131,8 @@ function Caption({ text, i, p }: { text: string; i: number; p: MotionValue<numbe
   const a = 0.08 + i * 0.24
   const opacity = useTransform(p, [a, a + 0.06, a + 0.18, a + 0.24], [0, 1, 1, i === CAPTIONS.length - 1 ? 1 : 0])
   const y = useTransform(p, [a, a + 0.06, a + 0.18, a + 0.24], [40, 0, 0, i === CAPTIONS.length - 1 ? 0 : -40])
-  const blur = useTransform(p, [a, a + 0.06, a + 0.18, a + 0.24], ['blur(12px)', 'blur(0px)', 'blur(0px)', i === CAPTIONS.length - 1 ? 'blur(0px)' : 'blur(12px)'])
+  const blurPx = useTransform(p, [a, a + 0.06, a + 0.18, a + 0.24], [12, 0, 0, i === CAPTIONS.length - 1 ? 0 : 12])
+  const blur = useTransform(blurPx, v => (v < 0.2 ? 'none' : `blur(${v}px)`))
   return (
     <motion.div style={{ opacity, y, filter: blur, position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center' }}>
       <span className="tint-text" style={{ backgroundImage: CAPTION_GRADS[i], fontSize: 'clamp(40px, 6.4vw, 104px)', fontWeight: 800, letterSpacing: '-0.05em', lineHeight: 1 }}>{text}</span>
@@ -277,7 +278,7 @@ export function BigNumbers() {
       <div className="big-nums" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '4vw', width: '100%', maxWidth: 1400, margin: '0 auto' }}>
         {NUMBERS.map((n, i) => (
           <motion.div key={n.label}
-            initial={{ opacity: 0, y: 60, filter: 'blur(12px)' }} whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }} viewport={{ once: true, margin: '-100px' }}
+            initial={{ opacity: 0, y: 60, filter: 'blur(12px)' }} whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }} viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 1.1, delay: i * 0.12, ease: EASE }}
             style={{ borderTop: '1px solid rgba(255,255,255,0.12)', paddingTop: 28 }}>
             <div className="tint-text" style={{ backgroundImage: NUM_GRADS[i], fontSize: 'clamp(64px, 9vw, 150px)', fontWeight: 800, letterSpacing: '-0.06em', lineHeight: 0.9, fontVariantNumeric: 'tabular-nums' }}>

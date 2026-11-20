@@ -61,7 +61,7 @@ export function Intro() {
       {show && (
         <motion.div key="intro" exit={{ y: '-100%' }} transition={{ duration: 1, ease: EASE }}
           style={{ position: 'fixed', inset: 0, zIndex: 1000, background: '#050607', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <motion.div initial={{ opacity: 0, scale: 0.85, filter: 'blur(10px)' }} animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          <motion.div initial={{ opacity: 0, scale: 0.85, filter: 'blur(10px)' }} animate={{ opacity: 1, scale: 1, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             style={{ position: 'relative' }}>
             <div style={{ position: 'absolute', inset: '-40%', borderRadius: '50%', filter: 'blur(50px)', opacity: 0.7, background: 'conic-gradient(from 0deg, #2f7bff, #8b5cff, #ff4fa3, #ff8a3d, #2f7bff)' }} />
             <BrandLogo variant="mark" height={110} />

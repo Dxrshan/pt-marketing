@@ -40,7 +40,7 @@ export default function EmailCaptureSection() {
       }} />
 
       <div style={{ maxWidth: 620, margin: '0 auto', position: 'relative', zIndex: 1, textAlign: 'center' }}>
-        <motion.div initial={{ opacity: 0, y: 30, filter: 'blur(6px)' }} whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }} viewport={{ once: true }} transition={{ duration: 0.9, ease: EASE }}>
+        <motion.div initial={{ opacity: 0, y: 30, filter: 'blur(6px)' }} whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }} viewport={{ once: true }} transition={{ duration: 0.9, ease: EASE }}>
           <span className="badge badge-blue" style={{ marginBottom: 26 }}><span className="live-dot" /> Limited founding spots</span>
           <h2 style={{ fontSize: 'clamp(40px, 6vw, 76px)', fontWeight: 800, letterSpacing: '-0.045em', lineHeight: 1, marginBottom: 22 }}>
             <span className="steel-text">Join the</span><br /><span className="spectrum-text">founding studios.</span>
