@@ -3,8 +3,9 @@ import LegalPage from '@/components/LegalPage'
 import CookiePolicyContent from '@/components/legal/CookiePolicyContent'
 
 export const metadata: Metadata = {
-  title: 'Cookie Policy — DNI Studios',
-  description: 'The Cookie Policy for DNI Studios, a product of DNI Ltd (trading as DNI Analytics).',
+  title: 'Cookie Policy',
+  description: 'Which cookies DNI Studios uses and how to control them.',
+  alternates: { canonical: '/legal/cookie-policy' },
 }
 
 export default function Page() {

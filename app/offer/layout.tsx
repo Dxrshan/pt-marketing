@@ -11,8 +11,13 @@ const display = Fraunces({
 })
 
 export const metadata: Metadata = {
-  title: 'Founding Offer — DNI Studio',
-  description: 'Your DNI Studio founding quote: choose a plan, review what is included, and lock in your rate.',
+  title: 'Pricing & Founding Offer',
+  description: 'DNI Studios pricing for PT studios: monthly, quarterly or annual plans from £49/month, with free onboarding and setup for founding studios.',
+  alternates: { canonical: '/offer' },
+  openGraph: {
+    title: 'DNI Studios Pricing & Founding Offer', url: '/offer', siteName: 'DNI Studios', type: 'website', locale: 'en_GB',
+    images: [{ url: '/og-image.png?v=4', width: 1200, height: 630, alt: 'DNI Studios' }],
+  },
 }
 
 export default function OfferLayout({ children }: { children: React.ReactNode }) {
