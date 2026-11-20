@@ -526,27 +526,27 @@ body { background: #eceef1; }
 .label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 
 /* Billed to / details panels */
-.parties { display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px; margin-top: 40px; }
+.parties { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; margin-top: 32px; align-items: start; }
 .panel {
-  border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px 10px;
+  border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px 8px;
   background: linear-gradient(180deg, #ffffff, #fbfbfc);
 }
-.panel .label { margin-bottom: 6px; }
+.panel .label { margin-bottom: 2px; }
 .p-row {
-  display: grid; grid-template-columns: 84px 1fr; align-items: center; gap: 12px;
-  padding: 8px 0; border-top: 1px solid var(--line-soft); min-height: 40px;
+  display: grid; grid-template-columns: 76px 1fr; align-items: center; gap: 10px;
+  padding: 4px 0; border-top: 1px solid var(--line-soft); min-height: 32px;
 }
 .p-row:first-child { border-top: none; }
-.p-row dt { font-size: 12.5px; color: var(--faint); }
-.p-row dd { font-size: 14px; color: var(--ink); min-width: 0; }
+.p-row dt { font-size: 12px; color: var(--faint); }
+.p-row dd { font-size: 13.5px; color: var(--ink); min-width: 0; }
 .p-split { display: grid; grid-template-columns: 1fr 100px; gap: 10px; }
 .p-input {
   width: 100%; border: 1px solid transparent; background: transparent; border-radius: 8px;
-  font: inherit; font-size: 14px; color: var(--ink); padding: 5px 8px; margin: -5px -8px;
+  font: inherit; font-size: 13.5px; color: var(--ink); padding: 4px 8px; margin: -4px -8px;
   width: calc(100% + 16px); transition: background .15s ease, border-color .15s ease;
 }
 .p-split .p-input { width: calc(100% + 16px); }
-.p-input.strong { font-weight: 600; font-size: 15px; }
+.p-input.strong { font-weight: 600; font-size: 14.5px; }
 .p-input::placeholder { color: #c2c6cc; font-weight: 400; }
 .p-input:hover { background: #f5f6f8; }
 .p-input:focus { outline: none; background: #fff; border-color: #c9cdd3; box-shadow: 0 0 0 3px rgba(17,19,24,.06); }
@@ -705,7 +705,7 @@ body { background: #eceef1; }
   .sheet-body { padding: 0 20px 40px; }
   .parties { grid-template-columns: 1fr; margin-top: 28px; }
   .panel { padding: 16px 16px 8px; }
-  .p-row { grid-template-columns: 74px 1fr; }
+  .p-row { grid-template-columns: 70px 1fr; }
   .part { margin-top: 40px; }
   .plans { grid-template-columns: 1fr; gap: 10px; }
   .features { grid-template-columns: 1fr; }
