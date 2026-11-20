@@ -76,7 +76,6 @@ export default function OfferPage() {
   const [term, setTerm] = useState<Term>('quarterly')
   const [extras, setExtras] = useState<Extra[]>(DEFAULT_EXTRAS)
   const [discounts, setDiscounts] = useState<Discount[]>([])
-  const [editing, setEditing] = useState(false)
 
   const [studio, setStudio] = useState('')
   const [contact, setContact] = useState('')
@@ -145,22 +144,13 @@ export default function OfferPage() {
   const addDiscount = () =>
     setDiscounts(ds => [...ds, { id: uid(), label: 'Discount', mode: 'pct', value: 10, scope: 'once' }])
 
-  const visibleExtras = extras.filter(e => editing || e.status !== 'removed')
+  const visibleExtras = extras
   const kindWord = (k: Kind) => (k === 'once' ? 'One-off' : 'Recurring')
   const monthsWord = plan.months === 1 ? 'first month' : `first ${plan.months} months`
 
   return (
     <div className="offer">
       <style>{CSS}</style>
-
-      <div className="bar no-print">
-        <div className="bar-actions">
-          <button className={`text-btn ${editing ? 'on' : ''}`} onClick={() => setEditing(e => !e)} aria-pressed={editing}>
-            {editing ? 'Done' : 'Adjust'}
-          </button>
-          <button className="text-btn" onClick={() => window.print()}>Print</button>
-        </div>
-      </div>
 
       {/* ── Sheet 1: invoice ─────────────────────────────── */}
       <article className="sheet">
@@ -257,9 +247,6 @@ export default function OfferPage() {
         {/* Quote */}
         <section className="part" id="quote">
 
-          {editing && (
-            <p className="edit-note no-print">Editing. Charge, waive or remove lines, change amounts, or add a discount or charge.</p>
-          )}
 
           <table className="lines">
             <thead>
@@ -287,47 +274,49 @@ export default function OfferPage() {
               {visibleExtras.map(x => (
                 <tr key={x.id} className={x.status === 'removed' ? 'removed' : ''}>
                   <td>
-                    {editing && x.custom ? (
-                      <input className="ctl ctl-wide" value={x.label} onChange={e => updateExtra(x.id, { label: e.target.value })} aria-label="Item description" />
+                    {x.custom ? (
+                      <>
+                        <input className="ctl ctl-wide no-print" value={x.label} onChange={e => updateExtra(x.id, { label: e.target.value })} aria-label="Item description" />
+                        <div className="l-main print-only">{x.label}</div>
+                      </>
                     ) : (
                       <div className="l-main">{x.label}</div>
                     )}
-                    {!editing && (
-                      <div className="l-sub">{x.status === 'waived' ? 'Included for founding studios' : kindWord(x.kind)}</div>
-                    )}
-                    {editing && (
-                      <div className="ctls no-print">
-                        <div className="seg" role="group" aria-label="Charge status">
-                          {(['charge', 'waived', 'removed'] as Status[]).map(s => (
-                            <button key={s} className={x.status === s ? 'on' : ''} onClick={() => updateExtra(x.id, { status: s })}>
-                              {s === 'charge' ? 'Charge' : s === 'waived' ? 'Waive' : 'Remove'}
-                            </button>
-                          ))}
-                        </div>
-                        {x.custom && (
-                          <>
-                            <select className="ctl" value={x.kind} onChange={e => updateExtra(x.id, { kind: e.target.value as Kind })} aria-label="Charge type">
-                              <option value="once">One-off</option>
-                              <option value="recurring">Recurring</option>
-                            </select>
-                            <button className="link-btn" onClick={() => deleteExtra(x.id)}>Delete</button>
-                          </>
-                        )}
+                    <div className="l-sub">
+                      {x.status === 'waived' ? 'Included for founding studios' : x.status === 'removed' ? 'Removed' : kindWord(x.kind)}
+                    </div>
+                    <div className="ctls no-print">
+                      <div className="seg" role="group" aria-label="Charge status">
+                        {(['charge', 'waived', 'removed'] as Status[]).map(st => (
+                          <button key={st} className={x.status === st ? 'on' : ''} onClick={() => updateExtra(x.id, { status: st })}>
+                            {st === 'charge' ? 'Charge' : st === 'waived' ? 'Waive' : 'Remove'}
+                          </button>
+                        ))}
                       </div>
-                    )}
+                      {x.custom && (
+                        <>
+                          <select className="ctl" value={x.kind} onChange={e => updateExtra(x.id, { kind: e.target.value as Kind })} aria-label="Charge type">
+                            <option value="once">One-off</option>
+                            <option value="recurring">Recurring</option>
+                          </select>
+                          <button className="link-btn" onClick={() => deleteExtra(x.id)}>Delete</button>
+                        </>
+                      )}
+                    </div>
                   </td>
                   <td className="amt num">
-                    {editing ? (
+                    <span className="ctl-money no-print">
+                      <span>£</span>
                       <input
                         type="number" min={0} step="0.01" className="ctl ctl-amt num" value={x.amount}
                         onChange={e => updateExtra(x.id, { amount: Math.max(0, Number(e.target.value) || 0) })}
-                        aria-label="Amount"
+                        aria-label={`${x.label} amount`}
                       />
-                    ) : x.status === 'waived' ? (
-                      <><s className="struck">{gbp(x.amount)}</s> {gbp(0)}</>
-                    ) : (
-                      gbp(x.amount)
-                    )}
+                    </span>
+                    {x.status === 'waived' && <div className="amt-note no-print">Waived · {gbp(0)}</div>}
+                    <span className="print-only">
+                      {x.status === 'waived' ? <><s className="struck">{gbp(x.amount)}</s> {gbp(0)}</> : gbp(x.amount)}
+                    </span>
                   </td>
                 </tr>
               ))}
@@ -335,37 +324,30 @@ export default function OfferPage() {
               {discounts.map(d => (
                 <tr key={d.id}>
                   <td>
-                    {editing ? (
-                      <>
-                        <input className="ctl ctl-wide" value={d.label} onChange={e => updateDiscount(d.id, { label: e.target.value })} aria-label="Discount name" />
-                        <div className="ctls no-print">
-                          <input
-                            type="number" min={0} step="0.01" className="ctl ctl-amt num" value={d.value}
-                            onChange={e => {
-                              const v = Math.max(0, Number(e.target.value) || 0)
-                              updateDiscount(d.id, { value: d.mode === 'pct' ? Math.min(v, 100) : v })
-                            }}
-                            aria-label="Discount value"
-                          />
-                          <div className="seg" role="group" aria-label="Discount type">
-                            <button className={d.mode === 'pct' ? 'on' : ''} onClick={() => updateDiscount(d.id, { mode: 'pct', value: Math.min(d.value, 100) })}>%</button>
-                            <button className={d.mode === 'fixed' ? 'on' : ''} onClick={() => updateDiscount(d.id, { mode: 'fixed' })}>£</button>
-                          </div>
-                          <select className="ctl" value={d.scope} onChange={e => updateDiscount(d.id, { scope: e.target.value as Kind })} aria-label="Applies to">
-                            <option value="once">First payment only</option>
-                            <option value="recurring">Every payment</option>
-                          </select>
-                          <button className="link-btn" onClick={() => deleteDiscount(d.id)}>Delete</button>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="l-main">{d.label}</div>
-                        <div className="l-sub">
-                          {`${d.mode === 'pct' ? `${d.value}%` : gbp(d.value)} off ${d.scope === 'once' ? 'the first payment' : 'every payment'}`}
-                        </div>
-                      </>
-                    )}
+                    <input className="ctl ctl-wide no-print" value={d.label} onChange={e => updateDiscount(d.id, { label: e.target.value })} aria-label="Discount name" />
+                    <div className="l-main print-only">{d.label}</div>
+                    <div className="l-sub">
+                      {`${d.mode === 'pct' ? `${d.value}%` : gbp(d.value)} off ${d.scope === 'once' ? 'the first payment' : 'every payment'}`}
+                    </div>
+                    <div className="ctls no-print">
+                      <input
+                        type="number" min={0} step="0.01" className="ctl ctl-amt num" value={d.value}
+                        onChange={e => {
+                          const v = Math.max(0, Number(e.target.value) || 0)
+                          updateDiscount(d.id, { value: d.mode === 'pct' ? Math.min(v, 100) : v })
+                        }}
+                        aria-label="Discount value"
+                      />
+                      <div className="seg" role="group" aria-label="Discount type">
+                        <button className={d.mode === 'pct' ? 'on' : ''} onClick={() => updateDiscount(d.id, { mode: 'pct', value: Math.min(d.value, 100) })}>%</button>
+                        <button className={d.mode === 'fixed' ? 'on' : ''} onClick={() => updateDiscount(d.id, { mode: 'fixed' })}>£</button>
+                      </div>
+                      <select className="ctl" value={d.scope} onChange={e => updateDiscount(d.id, { scope: e.target.value as Kind })} aria-label="Applies to">
+                        <option value="once">First payment only</option>
+                        <option value="recurring">Every payment</option>
+                      </select>
+                      <button className="link-btn" onClick={() => deleteDiscount(d.id)}>Delete</button>
+                    </div>
                   </td>
                   <td className="amt num">−{gbp(totals.discAmounts[d.id] ?? 0)}</td>
                 </tr>
@@ -373,12 +355,10 @@ export default function OfferPage() {
             </tbody>
           </table>
 
-          {editing && (
-            <div className="add no-print">
-              <button className="link-btn" onClick={addDiscount}>+ Add discount</button>
-              <button className="link-btn" onClick={addCharge}>+ Add charge</button>
-            </div>
-          )}
+          <div className="add no-print">
+            <button className="add-btn" onClick={addDiscount}>+ Add discount</button>
+            <button className="add-btn" onClick={addCharge}>+ Add charge</button>
+          </div>
 
           <div className="summary">
             <div className="summary-note">
@@ -438,6 +418,10 @@ export default function OfferPage() {
         </div>
       </article>
 
+      <div className="print-wrap no-print">
+        <button className="print-btn" onClick={() => window.print()}>Print invoice</button>
+      </div>
+
       <footer className="foot no-print">© {new Date().getFullYear()} DNI Ltd · Registered in England &amp; Wales, no. 15630271</footer>
     </div>
   )
@@ -492,22 +476,13 @@ const CSS = `
     radial-gradient(1200px 500px at 50% -200px, #ffffff 0%, transparent 70%),
     var(--bg);
   color: var(--text); font-family: var(--sans);
-  min-height: 100vh; padding: 0 16px 56px; -webkit-font-smoothing: antialiased;
+  min-height: 100vh; padding: 40px 16px 56px; -webkit-font-smoothing: antialiased;
 }
 body { background: #eceef1; }
 .offer .num { font-variant-numeric: tabular-nums; }
 .offer button { font-family: inherit; }
 .offer :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
-/* Top bar */
-.bar { max-width: 860px; margin: 0 auto; display: flex; justify-content: flex-end; padding: 20px 0 14px; }
-.bar-actions { display: flex; gap: 6px; }
-.text-btn {
-  border: 1px solid transparent; background: transparent; color: var(--muted); font-size: 13px; font-weight: 500;
-  padding: 7px 14px; border-radius: 999px; cursor: pointer; transition: all .15s ease;
-}
-.text-btn:hover { color: var(--ink); background: #fff; border-color: var(--line); }
-.text-btn.on { background: var(--ink); color: #fff; border-color: var(--ink); }
 
 /* Sheet */
 .sheet {
@@ -551,27 +526,27 @@ body { background: #eceef1; }
 .label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 
 /* Billed to / details panels */
-.parties { display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px; margin-top: 40px; }
+.parties { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; margin-top: 32px; align-items: start; }
 .panel {
-  border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px 10px;
+  border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px 8px;
   background: linear-gradient(180deg, #ffffff, #fbfbfc);
 }
-.panel .label { margin-bottom: 6px; }
+.panel .label { margin-bottom: 2px; }
 .p-row {
-  display: grid; grid-template-columns: 84px 1fr; align-items: center; gap: 12px;
-  padding: 8px 0; border-top: 1px solid var(--line-soft); min-height: 40px;
+  display: grid; grid-template-columns: 76px 1fr; align-items: center; gap: 10px;
+  padding: 4px 0; border-top: 1px solid var(--line-soft); min-height: 32px;
 }
 .p-row:first-child { border-top: none; }
-.p-row dt { font-size: 12.5px; color: var(--faint); }
-.p-row dd { font-size: 14px; color: var(--ink); min-width: 0; }
+.p-row dt { font-size: 12px; color: var(--faint); }
+.p-row dd { font-size: 13.5px; color: var(--ink); min-width: 0; }
 .p-split { display: grid; grid-template-columns: 1fr 100px; gap: 10px; }
 .p-input {
   width: 100%; border: 1px solid transparent; background: transparent; border-radius: 8px;
-  font: inherit; font-size: 14px; color: var(--ink); padding: 5px 8px; margin: -5px -8px;
+  font: inherit; font-size: 13.5px; color: var(--ink); padding: 4px 8px; margin: -4px -8px;
   width: calc(100% + 16px); transition: background .15s ease, border-color .15s ease;
 }
 .p-split .p-input { width: calc(100% + 16px); }
-.p-input.strong { font-weight: 600; font-size: 15px; }
+.p-input.strong { font-weight: 600; font-size: 14.5px; }
 .p-input::placeholder { color: #c2c6cc; font-weight: 400; }
 .p-input:hover { background: #f5f6f8; }
 .p-input:focus { outline: none; background: #fff; border-color: #c9cdd3; box-shadow: 0 0 0 3px rgba(17,19,24,.06); }
@@ -614,7 +589,6 @@ body { background: #eceef1; }
 .f-det { font-size: 13px; color: var(--muted); }
 
 /* Line items */
-.edit-note { font-size: 13px; color: var(--muted); background: #f5f6f8; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
 .lines { width: 100%; border-collapse: collapse; }
 .lines th {
   font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint);
@@ -640,7 +614,6 @@ body { background: #eceef1; }
 .ctl-amt { width: 96px; text-align: right; }
 .link-btn { border: none; background: transparent; color: var(--muted); font-size: 13px; cursor: pointer; padding: 6px 4px; }
 .link-btn:hover { color: var(--ink); text-decoration: underline; }
-.add { display: flex; gap: 16px; padding: 12px 0 0; }
 
 /* Summary */
 .summary { display: grid; grid-template-columns: 1fr 340px; gap: 32px; align-items: end; margin-top: 28px; }
@@ -678,6 +651,27 @@ body { background: #eceef1; }
 }
 .cta:hover { transform: translateY(-1px); filter: brightness(1.04); }
 
+
+/* Always-on editing helpers */
+.print-only { display: none; }
+.amt-note { font-size: 12px; color: #2f7d4f; margin-top: 6px; font-weight: 500; }
+.ctl-money { display: inline-flex; align-items: center; gap: 6px; color: var(--faint); }
+.add { display: flex; gap: 10px; padding: 16px 0 0; }
+.add-btn {
+  border: 1px dashed #cfd2d7; background: #fafbfc; color: var(--muted); font-size: 13px; font-weight: 500;
+  padding: 8px 14px; border-radius: 10px; cursor: pointer; transition: all .15s ease;
+}
+.add-btn:hover { border-style: solid; border-color: var(--ink); color: var(--ink); background: #fff; }
+.print-wrap { max-width: 860px; margin: 28px auto 0; display: flex; justify-content: center; }
+.print-btn {
+  border: none; border-radius: 12px; cursor: pointer; font-size: 14.5px; font-weight: 600; letter-spacing: .02em;
+  color: #eef0f2; padding: 14px 34px;
+  background: radial-gradient(140% 160% at 0% 0%, #30343c 0%, var(--steel-1) 40%, var(--steel-2) 100%);
+  box-shadow: 0 14px 30px -16px rgba(17,19,24,.7), inset 0 1px 0 rgba(255,255,255,.08);
+  transition: transform .15s ease;
+}
+.print-btn:hover { transform: translateY(-1px); }
+
 /* Acceptance */
 .agree { font-size: 13px; line-height: 1.6; color: var(--muted); margin: 4px 0 48px; }
 .agree strong { color: var(--ink); font-weight: 600; }
@@ -703,8 +697,7 @@ body { background: #eceef1; }
 
 /* Small screens */
 @media (max-width: 760px) {
-  .offer { padding: 0 10px 32px; }
-  .bar { padding: 10px 0; }
+  .offer { padding: 14px 10px 32px; }
   .sheet { border-radius: 14px; }
   .letterhead { flex-direction: column; align-items: flex-start; padding: 28px 22px 26px; gap: 22px; }
   .lh-title { text-align: left; }
@@ -712,7 +705,7 @@ body { background: #eceef1; }
   .sheet-body { padding: 0 20px 40px; }
   .parties { grid-template-columns: 1fr; margin-top: 28px; }
   .panel { padding: 16px 16px 8px; }
-  .p-row { grid-template-columns: 74px 1fr; }
+  .p-row { grid-template-columns: 70px 1fr; }
   .part { margin-top: 40px; }
   .plans { grid-template-columns: 1fr; gap: 10px; }
   .features { grid-template-columns: 1fr; }
@@ -736,6 +729,8 @@ body { background: #eceef1; }
   .lines tr.removed { display: none; }
   .p-input::placeholder { color: transparent; }
   .letterhead, .sum-card, .plan.on { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .print-only { display: inline; }
+  div.print-only { display: block; }
   .terms { break-before: page; }
 }
 `
