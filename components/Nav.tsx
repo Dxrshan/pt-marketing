@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import BrandMark from './BrandMark'
+import BrandLogo from './BrandLogo'
 
 const NAV_LINKS = [
   { label: 'Features', href: '#features' },
@@ -67,14 +67,8 @@ export default function Nav() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 68 }}>
             {/* Logo */}
             <a href="#" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
-              <BrandMark height={30} />
-              <span style={{
-                fontWeight: 700, fontSize: 17, letterSpacing: '-0.3px',
-                background: 'linear-gradient(135deg, #ffffff, #93c5fd)',
-                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-              }}>
-                DNI Studios
-              </span>
+              <BrandLogo height={38} className="logo-wide" />
+              <BrandLogo variant="mark" height={34} className="logo-narrow" />
             </a>
 
             {/* Desktop nav links */}

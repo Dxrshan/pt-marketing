@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
+import BrandLogo from '../../components/BrandLogo'
 
 /* ─── Pricing data ─────────────────────────────────────────────────────── */
 
@@ -46,11 +47,6 @@ const fmtDate = (d: Date) =>
   d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
 
 /* ─── Small pieces ─────────────────────────────────────────────────────── */
-
-function Logo() {
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img className="logo-img" src="/dni-studios-logo.webp" alt="DNI Studios" width={600} height={381} />
-}
 
 /** Eases a number towards its new value so the total glides rather than jumps. */
 function useTween(value: number, ms = 450) {
@@ -175,7 +171,7 @@ export default function OfferPage() {
       <article className="sheet">
         <header className="head">
           <div>
-            <Logo />
+            <BrandLogo variant="stacked" height={118} className="on-light" />
             <p className="from">
               DNI Ltd, trading as DNI Analytics<br />
               78a Deacon Road, London NW2 5QJ<br />
@@ -482,7 +478,6 @@ body { background: #f3f1ec; }
 .offer :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
 /* Logo */
-.logo-img { display: block; width: 132px; height: auto; }
 
 /* Top bar */
 .bar { max-width: 820px; margin: 0 auto; display: flex; align-items: center; justify-content: flex-end; padding: 18px 0; }
@@ -503,7 +498,7 @@ body { background: #f3f1ec; }
 .sheet + .sheet { margin-top: 24px; }
 
 .head { display: flex; justify-content: space-between; gap: 32px; }
-.from { font-size: 12.5px; line-height: 1.6; color: var(--muted); margin-top: 16px; }
+.from { font-size: 12.5px; line-height: 1.6; color: var(--muted); margin-top: 22px; }
 .head-right { text-align: right; }
 .doc-title { font-family: var(--serif); font-weight: 400; font-size: 40px; line-height: 1; color: var(--ink); letter-spacing: -.01em; }
 .doc-meta { display: grid; grid-template-columns: auto auto; gap: 4px 16px; margin-top: 18px; font-size: 13px; justify-content: end; }
@@ -634,7 +629,6 @@ body { background: #f3f1ec; }
   .sheet { padding: 32px 22px 40px; }
   .head { flex-direction: column; gap: 28px; }
   .head-right { text-align: left; }
-  .logo-img { width: 112px; }
   .doc-meta { justify-content: start; }
   .doc-meta dd { text-align: left; }
   .inline-input { text-align: left; }
