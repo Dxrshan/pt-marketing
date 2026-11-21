@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <LegalPage title="Data Processing Agreement" updated="18 October 2026" current="/legal/dpa">
+    <LegalPage title="Data Processing Agreement" updated="21 November 2026" current="/legal/dpa">
       <DpaContent />
     </LegalPage>
   )

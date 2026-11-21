@@ -34,7 +34,8 @@ export default function TermsOfServiceContent() {
         <li>Fees, billing frequency and any promotional rate are those shown when you subscribe.</li>
         <li>Fees are stated <strong>exclusive of VAT</strong>, which is added where applicable.</li>
         <li>Subscriptions <strong>renew automatically</strong> at the end of each term unless cancelled before the renewal date.</li>
-        <li>You may cancel at any time, effective at the end of your current paid term. <strong>Part-used periods are not refunded</strong> except where the law requires it.</li>
+        <li><strong>30-day money-back guarantee.</strong> If you cancel within 30 days of your first payment, we will refund that first payment in full. No reason is needed; email us to request it.</li>
+        <li>After those first 30 days you may cancel at any time, effective at the end of your current paid term. <strong>Part-used periods are not refunded</strong> except where the law requires it.</li>
         <li>We may change our prices on <strong>30 days&apos; written notice</strong>. A price change takes effect at your next renewal, and you may cancel before then if you do not accept it.</li>
         <li>If a payment fails we may suspend access until it is resolved. Data is retained during suspension in accordance with section 12.</li>
       </ul>
@@ -78,7 +79,7 @@ export default function TermsOfServiceContent() {
       <p>You acknowledge and agree that:</p>
       <ul>
         <li><strong>Training and nutrition programmes are created by trainers, not by us.</strong> We do not review, approve, endorse or verify any programme, workout, diet plan, target or instruction recorded in the Service, and we take no responsibility for them.</li>
-        <li><strong>AI Coach responses are generated automatically and may be wrong.</strong> They are general information only, produced by a language model without knowledge of your medical history. They are not a substitute for advice from a doctor, registered dietitian, physiotherapist or qualified trainer, and must never be relied on as such.</li>
+        <li><strong>AI Coach and AI assistant responses are generated automatically and may be wrong.</strong> They are general information only, produced by a language model without knowledge of your medical history. They are not a substitute for advice from a doctor, registered dietitian, physiotherapist or qualified trainer, and must never be relied on as such.</li>
         <li><strong>Calorie, macronutrient and nutritional figures are estimates</strong>, drawn in part from third-party databases we do not control, and may be inaccurate.</li>
         <li><strong>Exercise carries inherent risk of injury.</strong> You are responsible for exercising safely and within your capabilities.</li>
         <li><strong>Always consult a qualified healthcare professional</strong> before starting or changing any exercise or nutrition programme, particularly if you are pregnant, have an injury, or have any medical condition.</li>

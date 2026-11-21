@@ -92,14 +92,14 @@ export default function PrivacyPolicyContent() {
       <p>Where we rely on consent, you can withdraw it at any time. Withdrawing consent does not affect processing that already took place.</p>
 
       <h2>5. Artificial intelligence features</h2>
-      <p>The app includes an <strong>AI Coach</strong>. When you use it, the content of your message and relevant context from your account are sent to <strong>Anthropic</strong>, our AI provider, to generate a response.</p>
+      <p>The app includes AI features: the <strong>AI Coach</strong> for clients and the <strong>AI assistant</strong> for studio staff. When you use them, the content of your message and relevant context from your account are sent to <strong>Anthropic</strong>, our AI provider, to generate a response.</p>
       <ul>
         <li>Anthropic acts as our sub-processor and is contractually restricted in what it may do with the data.</li>
         <li><strong>Your data is not used to train AI models.</strong></li>
         <li>AI output is generated automatically and is <strong>not medical, nutritional or professional advice.</strong> See our <a href="/legal/terms-of-service">Terms of Service</a>.</li>
         <li>No decision producing legal or similarly significant effects is made about you by automated means alone.</li>
       </ul>
-      <p>If you would rather not have your information sent to an AI provider, simply do not use the AI Coach feature. The rest of the app works without it.</p>
+      <p>If you would rather not have your information sent to an AI provider, simply do not use the AI features. The rest of the app works without them.</p>
 
       <h2>6. Who we share data with</h2>
       <p>We do not sell personal data, and we never have. We share it only with service providers who help us run the Service, each bound by a contract that limits them to our instructions:</p>
