@@ -436,7 +436,7 @@ const CLAUSES = [
   ]},
   { num: '2.', title: 'Term & Cancellation', paras: [
     'This is a rolling agreement with no fixed minimum term beyond the billing cycle selected. You may cancel at any time by providing 14 days\' written notice. Cancellation takes effect at the end of the then-current billing period.',
-    'No refunds are issued for partial billing periods. Founding price status is lost if a subscription lapses for more than 30 consecutive days and is later reinstated.',
+    'Your first payment is covered by a 30-day money-back guarantee: cancel within 30 days of it and we will refund it in full, no questions asked. After that, no refunds are issued for partial billing periods. Founding price status is lost if a subscription lapses for more than 30 consecutive days and is later reinstated.',
   ]},
   { num: '3.', title: 'Data & Privacy', paras: [
     'You retain ownership of all client and business data entered into the Service. We process this data solely to provide the Service and will not sell or share it with third parties for marketing purposes.',

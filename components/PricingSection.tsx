@@ -115,7 +115,7 @@ export default function PricingSection({ bare = false }: { bare?: boolean }) {
 
         <div className="guarantee-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginTop: 18 }}>
           {[
-            ['shield', '30-day money-back', 'Doesn’t save you hours every week? Full refund, no questions.'],
+            ['shield', '30-day money-back', 'Not the right fit within 30 days? Full refund of your first payment, no questions.'],
             ['lock', 'Price locked forever', 'Founding pricing is only for the first 50 studios. After that, it goes up.'],
           ].map(([icon, t, d], i) => (
             <Reveal key={t} delay={0.1 + i * 0.08}>

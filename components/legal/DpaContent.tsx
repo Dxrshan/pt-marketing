@@ -24,7 +24,7 @@ export default function DpaContent() {
         <li>Storing media you or your clients upload — progress photos, form-check video, voice notes</li>
         <li>Carrying messages between your staff and your clients</li>
         <li>Recording payment status (never full card numbers)</li>
-        <li>Generating AI Coach responses, where you enable that feature</li>
+        <li>Generating AI Coach and AI assistant responses, where those features are used</li>
         <li>Sending transactional email and push notifications</li>
       </ul>
 
@@ -78,7 +78,7 @@ export default function DpaContent() {
           <tr><td>MongoDB Atlas</td><td>Database hosting</td><td>EU / UK</td></tr>
           <tr><td>Render</td><td>Application hosting</td><td>EU / US</td></tr>
           <tr><td>Vercel</td><td>Marketing site hosting</td><td>Global edge</td></tr>
-          <tr><td>Anthropic</td><td>AI Coach responses</td><td>US</td></tr>
+          <tr><td>Anthropic</td><td>AI Coach and AI assistant responses</td><td>US</td></tr>
           <tr><td>PostHog</td><td>Product analytics</td><td>EU</td></tr>
           <tr><td>Resend</td><td>Transactional email</td><td>EU / US</td></tr>
           <tr><td>Square</td><td>Card payments, where you connect your own account</td><td>US / EU</td></tr>
