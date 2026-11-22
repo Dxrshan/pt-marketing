@@ -258,46 +258,6 @@ export default function OfferPage() {
           </section>
         </div>
 
-        {/* Billing */}
-        <section className="part selection" id="plan">
-          <h2 className="label">Billing</h2>
-          <div className="plans" role="radiogroup" aria-label="Billing term">
-            {(Object.keys(PLANS) as Term[]).map(t => {
-              const p = PLANS[t]
-              const on = term === t
-              return (
-                <button key={t} role="radio" aria-checked={on} className={`plan ${on ? 'on' : ''}`} onClick={() => setTerm(t)}>
-                  {p.tag && <span className={`plan-tag ${t}`}>{p.tag}</span>}
-                  <span className="radio" aria-hidden="true" />
-                  <span className="plan-name">{p.label}</span>
-                  <span className="plan-price num">
-                    {p.rate < LIST_MONTHLY && <s className="plan-was">£{LIST_MONTHLY}</s>}
-                    <strong>£{p.rate}</strong><span className="plan-per">/mo</span>
-                  </span>
-                  <span className="plan-term">{p.term}</span>
-                  <span className="plan-foot">
-                    {p.off && <span className="plan-save">{p.off}</span>}
-                    {p.rate < LIST_MONTHLY
-                      ? <span className="plan-keep">Keep £{yearlySaving(p.rate)} a year</span>
-                      : <span className="plan-keep muted">{p.perk}</span>}
-                  </span>
-                  {p.rate < LIST_MONTHLY && p.perk && <span className="plan-perk">{p.perk}</span>}
-                </button>
-              )
-            })}
-          </div>
-          {term !== 'annual' && (
-            <button type="button" className="nudge no-print" onClick={() => setTerm('annual')}>
-              <span className="nudge-dot" aria-hidden="true" />
-              <span>
-                You&rsquo;re leaving <strong>£{yearlySaving(PLANS.annual.rate) - yearlySaving(plan.rate)} a year</strong> on the table.
-                {' '}Switch to Annual and pay £{PLANS.annual.rate}/mo instead of £{plan.rate}.
-              </span>
-              <span className="nudge-go">Switch &rarr;</span>
-            </button>
-          )}
-        </section>
-
         {/* Included */}
         <section className="part selection" id="included">
           <h2 className="label">Included in every plan</h2>
@@ -339,6 +299,46 @@ export default function OfferPage() {
               ))}
             </div>
           </div>
+        </section>
+
+        {/* Billing */}
+        <section className="part selection" id="plan">
+          <h2 className="label">Billing</h2>
+          <div className="plans" role="radiogroup" aria-label="Billing term">
+            {(Object.keys(PLANS) as Term[]).map(t => {
+              const p = PLANS[t]
+              const on = term === t
+              return (
+                <button key={t} role="radio" aria-checked={on} className={`plan ${on ? 'on' : ''}`} onClick={() => setTerm(t)}>
+                  {p.tag && <span className={`plan-tag ${t}`}>{p.tag}</span>}
+                  <span className="radio" aria-hidden="true" />
+                  <span className="plan-name">{p.label}</span>
+                  <span className="plan-price num">
+                    {p.rate < LIST_MONTHLY && <s className="plan-was">£{LIST_MONTHLY}</s>}
+                    <strong>£{p.rate}</strong><span className="plan-per">/mo</span>
+                  </span>
+                  <span className="plan-term">{p.term}</span>
+                  <span className="plan-foot">
+                    {p.off && <span className="plan-save">{p.off}</span>}
+                    {p.rate < LIST_MONTHLY
+                      ? <span className="plan-keep">Keep £{yearlySaving(p.rate)} a year</span>
+                      : <span className="plan-keep muted">{p.perk}</span>}
+                  </span>
+                  {p.rate < LIST_MONTHLY && p.perk && <span className="plan-perk">{p.perk}</span>}
+                </button>
+              )
+            })}
+          </div>
+          {term !== 'annual' && (
+            <button type="button" className="nudge no-print" onClick={() => setTerm('annual')}>
+              <span className="nudge-dot" aria-hidden="true" />
+              <span>
+                You&rsquo;re leaving <strong>£{yearlySaving(PLANS.annual.rate) - yearlySaving(plan.rate)} a year</strong> on the table.
+                {' '}Switch to Annual and pay £{PLANS.annual.rate}/mo instead of £{plan.rate}.
+              </span>
+              <span className="nudge-go">Switch &rarr;</span>
+            </button>
+          )}
         </section>
 
         {/* Quote */}
