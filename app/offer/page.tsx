@@ -362,24 +362,15 @@ export default function OfferPage() {
                     <div className="l-sub">
                       {x.status === 'waived' ? 'Free for founding studios only' : x.status === 'removed' ? 'Removed' : kindWord(x.kind)}
                     </div>
-                    <div className="ctls no-print">
-                      <div className="seg" role="group" aria-label="Charge status">
-                        {(['charge', 'waived', 'removed'] as Status[]).map(st => (
-                          <button key={st} className={x.status === st ? 'on' : ''} onClick={() => updateExtra(x.id, { status: st })}>
-                            {st === 'charge' ? 'Charge' : st === 'waived' ? 'Waive' : 'Remove'}
-                          </button>
-                        ))}
+                    {x.custom && (
+                      <div className="ctls no-print">
+                        <select className="ctl" value={x.kind} onChange={e => updateExtra(x.id, { kind: e.target.value as Kind })} aria-label="Charge type">
+                          <option value="once">One-off</option>
+                          <option value="recurring">Recurring</option>
+                        </select>
+                        <button className="link-btn" onClick={() => deleteExtra(x.id)}>Delete</button>
                       </div>
-                      {x.custom && (
-                        <>
-                          <select className="ctl" value={x.kind} onChange={e => updateExtra(x.id, { kind: e.target.value as Kind })} aria-label="Charge type">
-                            <option value="once">One-off</option>
-                            <option value="recurring">Recurring</option>
-                          </select>
-                          <button className="link-btn" onClick={() => deleteExtra(x.id)}>Delete</button>
-                        </>
-                      )}
-                    </div>
+                    )}
                   </td>
                   <td className="amt num">
                     <span className="ctl-money no-print">
