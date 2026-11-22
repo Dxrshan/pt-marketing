@@ -417,3 +417,14 @@ html.lenis, html.lenis body { height: auto; }
 
 .footer-link { font-size: 14.5px; color: rgba(255,255,255,0.55); text-decoration: none; transition: color .2s ease; }
 .footer-link:hover { color: #fff; }
+
+/* Hero entrance — plain CSS so it starts on first paint instead of waiting for JS. */
+.hero-in { animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); animation-fill-mode: both; }
+.hero-in-mark { animation-name: hero-mark; animation-duration: 1.6s; }
+.hero-in-eyebrow { animation-name: hero-eyebrow; animation-duration: 1.6s; animation-delay: .5s; letter-spacing: 0.32em; }
+.hero-in-line { animation-name: hero-line; animation-duration: 1.3s; }
+.hero-in-cta { animation-name: hero-cta; animation-duration: 1s; animation-delay: 1.35s; }
+@keyframes hero-mark { from { opacity: 0; transform: scale(0.7); filter: blur(18px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes hero-eyebrow { from { opacity: 0; letter-spacing: 0.6em; } to { opacity: 1; letter-spacing: 0.32em; } }
+@keyframes hero-line { from { opacity: 0; transform: translateY(40px); filter: blur(14px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes hero-cta { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }

@@ -70,10 +70,10 @@ function InteractiveMark({ height }: { height: number }) {
   return (
     <div style={{ perspective: 900 }}>
       <motion.div style={{ rotateX, rotateY, transformStyle: 'preserve-3d', position: 'relative', width, height }}>
-        <BrandLogo variant="mark" height={height} alt="DNI Studios" />
+        <BrandLogo variant="mark" height={height} alt="DNI Studios" priority />
         <motion.div aria-hidden="true" style={{
           position: 'absolute', inset: 0, pointerEvents: 'none', backgroundImage: shine, mixBlendMode: 'overlay',
-          WebkitMask: 'url(/logo-mark-clear.webp?v=4) center / contain no-repeat', mask: 'url(/logo-mark-clear.webp?v=4) center / contain no-repeat',
+          WebkitMask: 'url(/logo-mark-clear.webp?v=5) center / contain no-repeat', mask: 'url(/logo-mark-clear.webp?v=5) center / contain no-repeat',
         }} />
       </motion.div>
     </div>
@@ -135,31 +135,29 @@ export function CineHero() {
         }} />
 
         <motion.div style={{ scale: markScale, opacity: markOpacity, position: 'relative', zIndex: 1 }}>
-          <motion.div initial={{ opacity: 0, scale: 0.7, filter: 'blur(18px)' }} animate={{ opacity: 1, scale: 1, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }} transition={{ duration: 1.6, ease: EASE }}>
+          <div className="hero-in hero-in-mark">
             <div style={{ position: 'absolute', inset: '-30%', borderRadius: '50%', background: 'conic-gradient(from 0deg, rgba(47,123,255,0.45), rgba(139,92,255,0.45), rgba(255,79,163,0.4), rgba(255,138,61,0.38), rgba(47,123,255,0.45))', filter: 'blur(60px)', opacity: 0.8 }} />
             <InteractiveMark height={markH} />
-          </motion.div>
+          </div>
         </motion.div>
 
         <motion.div style={{ opacity: textOpacity, y: textY, scale: textScale, position: 'relative', zIndex: 2, textAlign: 'center', padding: '0 20px', marginTop: 34 }}>
-          <motion.div initial={{ opacity: 0, letterSpacing: '0.6em' }} animate={{ opacity: 1, letterSpacing: '0.32em' }} transition={{ duration: 1.6, delay: 0.5, ease: EASE }}
-            className="mono" style={{ fontSize: 13, fontWeight: 500, textTransform: 'uppercase', color: 'var(--steel-3)' }}>
+          <div className="mono hero-in hero-in-eyebrow" style={{ fontSize: 13, fontWeight: 500, textTransform: 'uppercase', color: 'var(--steel-3)' }}>
             Studio software for personal trainers
-          </motion.div>
+          </div>
           <h1 style={{ fontSize: 'clamp(52px, 9.5vw, 150px)', fontWeight: 800, letterSpacing: '-0.055em', lineHeight: 0.92, marginTop: 18 }}>
-            <motion.span className="steel-text" style={{ display: 'block' }} initial={{ opacity: 0, y: 40, filter: 'blur(14px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }} transition={{ duration: 1.3, delay: 0.7, ease: EASE }}>
+            <span className="steel-text hero-in hero-in-line" style={{ display: 'block', animationDelay: '.7s' }}>
               Run your studio.
-            </motion.span>
-            <motion.span className="spectrum-text" style={{ display: 'block' }} initial={{ opacity: 0, y: 40, filter: 'blur(14px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }} transition={{ duration: 1.3, delay: 0.95, ease: EASE }}>
+            </span>
+            <span className="spectrum-text hero-in hero-in-line" style={{ display: 'block', animationDelay: '.95s' }}>
               Beautifully.
-            </motion.span>
+            </span>
           </h1>
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 1.35, ease: EASE }}
-            style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 40 }}>
+          <div className="hero-in hero-in-cta" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 40 }}>
             <a href="#waitlist" className="btn-spectrum magnetic" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 30px', borderRadius: 999, fontSize: 16, textDecoration: 'none' }}>
               Start free trial <Icon name="arrow" size={17} />
             </a>
-          </motion.div>
+          </div>
         </motion.div>
 
         <motion.div className="scroll-hint" style={{ opacity: textOpacity, position: 'absolute', bottom: 18, left: '50%', x: '-50%', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, fontSize: 11, letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--steel-4)' }}>
