@@ -512,7 +512,6 @@ export default function OfferPage() {
               <div className="sign-line signed">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/signature.png" alt="Signed for DNI Studios" className="sign-img" />
-                {issued && <span className="sign-date">{issued}</span>}
               </div>
               <div className="sign-label">For DNI Studios</div>
             </div>
@@ -900,7 +899,7 @@ body { background: #eceef1; }
 .foot { max-width: 860px; margin: 28px auto 0; text-align: center; font-size: 12px; color: var(--faint); }
 
 /* Small screens */
-@media (max-width: 760px) {
+@media screen and (max-width: 760px) {
   .offer { padding: 14px 10px 32px; }
   .sheet { border-radius: 14px; }
   .letterhead { flex-direction: column; align-items: flex-start; padding: 28px 22px 26px; gap: 22px; }
@@ -923,7 +922,7 @@ body { background: #eceef1; }
   .clauses { columns: 1; }
 }
 
-@media (max-width: 480px) {
+@media screen and (max-width: 480px) {
   .features { grid-template-columns: 1fr; }
   .features > li { display: grid; grid-template-columns: 46px 1fr; column-gap: 16px; row-gap: 3px; padding: 18px 20px; }
   .f-top { grid-row: span 2; margin: 0; }
@@ -946,5 +945,14 @@ body { background: #eceef1; }
   .print-only { display: inline; }
   div.print-only { display: block; }
   .terms { break-before: page; }
+  @page { size: A4; margin: 12mm; }
+  #included.selection { display: block !important; }
+  .sheet { zoom: .78; }
+  .features > li, .sum-card, .bank, .signs, .parties .panel, .lines tr, .inc-head, .inc-extras, .summary, #signup { break-inside: avoid; }
+  .part { margin-top: 32px; }
+  .p-input { border-color: transparent !important; box-shadow: none !important; background: transparent !important; }
+  .inc, .bank, .f-icon, .f-points li::before { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .inc { box-shadow: none; }
+  .features > li:hover { background: #fff; }
 }
 `
