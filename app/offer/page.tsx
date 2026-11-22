@@ -1003,7 +1003,10 @@ body { background: #eceef1; }
   .terms { break-before: page; }
   @page { size: A4; margin: 12mm; }
   #included.selection { display: block !important; }
-  .sheet { zoom: .78; }
+  .sheet { zoom: .72; }
+  #quote { break-before: page; }
+  .letterhead { padding-top: 28px; padding-bottom: 28px; }
+  .sheet-foot { break-inside: avoid; }
   .features > li, .sum-card, .bcard, .signs, .parties .panel, .lines tr, .inc-head, .inc-extras, .summary, #signup { break-inside: avoid; }
   .part { margin-top: 32px; }
   .p-input { border-color: transparent !important; box-shadow: none !important; background: transparent !important; }
