@@ -250,12 +250,6 @@ export default function OfferPage() {
             <h1 className="doc-title">Invoice</h1>
             <div className="lh-sub">Founding studio offer</div>
           </div>
-          <div className="lh-meta num">
-            <div><span>Invoice no.</span><b className="mono">{ref || autoRef || '—'}</b></div>
-            <div><span>Issued</span><b>{issued || '—'}</b></div>
-            <div><span>{studio ? 'Billed to' : 'Plan'}</span><b>{studio || plan.label}</b></div>
-            <div className="lh-due"><span>Amount due</span><b>{gbp(totals.dueToday)}</b></div>
-          </div>
         </header>
 
         <div className="sheet-body">
@@ -682,7 +676,6 @@ body { background: #eceef1; }
   background: linear-gradient(90deg, #5c626b, #f2f4f7 30%, #8a9099 50%, #e4e7eb 70%, #5c626b);
 }
 .letterhead > * { position: relative; }
-.letterhead { flex-wrap: wrap; row-gap: 30px; }
 .lh-meta { flex-basis: 100%; display: grid; grid-template-columns: 1.1fr 1fr 1.2fr auto; gap: 24px; align-items: end;
   padding-top: 22px; border-top: 1px solid rgba(255,255,255,.09); }
 .lh-meta span { display: block; font-size: 10px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #7d838c; margin-bottom: 6px; }
