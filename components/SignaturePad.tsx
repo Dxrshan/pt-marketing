@@ -200,11 +200,11 @@ export default function SignaturePad({ open, onClose, onSign, signer, reference 
               <div className="sp-tools">
                 <button type="button" className="sp-btn ghost" onClick={undo} disabled={!count}>
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 14L4 9l5-5" /><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11" /></svg>
-                  Undo
+                  Undo stroke
                 </button>
                 <button type="button" className="sp-btn ghost" onClick={clear} disabled={!count}>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 3v5h5" /></svg>
-                  Redo signature
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 21h10" /><path d="M5.5 14.5l8-8 5 5-8 8H8z" /><path d="M10.5 9.5l5 5" /></svg>
+                  Clear
                 </button>
               </div>
               <motion.button type="button" className="sp-btn primary" onClick={confirm} disabled={!count || !agreed}
