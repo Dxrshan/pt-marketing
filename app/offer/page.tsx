@@ -9,7 +9,7 @@ import SignaturePad, { SIGNATURE_PAD_CSS } from '../../components/SignaturePad'
 const LIST_MONTHLY = 69
 
 const PLANS = {
-  monthly:   { label: 'Monthly',   months: 1,  rate: 69, off: null,      tag: null,           perk: 'Full price, maximum flexibility', term: 'Rolling, cancel anytime', period: 'per month' },
+  monthly:   { label: 'Monthly',   months: 1,  rate: 69, off: null,      tag: null,           perk: 'Full price, maximum flexibility', term: 'Rolling monthly, no lock-in', period: 'per month' },
   quarterly: { label: 'Quarterly', months: 3,  rate: 59, off: '14% OFF', tag: 'Most popular', perk: null,                             term: 'Billed every 3 months',   period: 'every 3 months' },
   annual:    { label: 'Annual',    months: 12, rate: 49, off: '29% OFF', tag: 'Best value',   perk: 'Over 3 months free',             term: 'Billed once a year',      period: 'per year' },
 } as const
@@ -393,7 +393,7 @@ export default function OfferPage() {
               {EXTRAS.map(x => <span key={x} className="inc-pill">{x}</span>)}
             </div>
             <div className="inc-foot">
-              {['No tiers', 'No add-ons', 'No per-seat fees', 'Every update included'].map(t => (
+              {['No tiers', 'No paid feature add-ons', 'No per-seat fees', 'Every update included'].map(t => (
                 <span key={t}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>{t}</span>
               ))}
             </div>
@@ -516,7 +516,7 @@ export default function OfferPage() {
                 </div>
               </div>
               <h3>Payment terms</h3>
-              <p>Due on acceptance. Covered by a 30-day money-back guarantee, and your rate stays fixed for as long as you stay subscribed.</p>
+              <p>Due on acceptance. Your subscription is covered by a 30-day money-back guarantee, and your rate stays fixed for as long as you stay subscribed.</p>
               <p className="fair-use">Unlimited clients and trainers. Photo, video and voice-note uploads are subject to a fair-use storage policy; we will contact you before any limit affects your account.</p>
             </div>
             <div className="sum-card num">
@@ -549,7 +549,7 @@ export default function OfferPage() {
               <button className="cta no-print" onClick={() => setSignOpen(true)}>
                 Lock in my founding rate
               </button>
-              <div className="cta-trust no-print">30-day money-back guarantee &middot; Rate fixed while you stay</div>
+              <div className="cta-trust no-print">30-day money-back guarantee on your subscription &middot; Rate fixed while you stay</div>
             </div>
           </div>
           </div>
