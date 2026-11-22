@@ -8,21 +8,33 @@ import BrandLogo from '../../components/BrandLogo'
 const LIST_MONTHLY = 69
 
 const PLANS = {
-  monthly:   { label: 'Monthly',   months: 1,  rate: 69, save: null,       term: 'Rolling, cancel anytime', period: 'per month' },
-  quarterly: { label: 'Quarterly', months: 3,  rate: 59, save: 'Save 14%', term: 'Billed every 3 months',   period: 'every 3 months' },
-  annual:    { label: 'Annual',    months: 12, rate: 49, save: 'Save 29%', term: 'Billed once a year',      period: 'per year' },
+  monthly:   { label: 'Monthly',   months: 1,  rate: 69, off: null,      tag: null,           perk: 'Full price, maximum flexibility', term: 'Rolling, cancel anytime', period: 'per month' },
+  quarterly: { label: 'Quarterly', months: 3,  rate: 59, off: '14% OFF', tag: 'Most popular', perk: null,                             term: 'Billed every 3 months',   period: 'every 3 months' },
+  annual:    { label: 'Annual',    months: 12, rate: 49, off: '29% OFF', tag: 'Best value',   perk: 'Over 3 months free',             term: 'Billed once a year',      period: 'per year' },
 } as const
 
 type Term = keyof typeof PLANS
 
-const FEATURES: [string, string][] = [
-  ['Scheduling & calendar',        'Book, reschedule and track every session'],
-  ['Client tracking & progress',   'Goals, metrics, workout logs and trends'],
-  ['Payments & invoicing',         'See who has paid at a glance'],
-  ['Lead pipeline (CRM)',          'From enquiry to signed client'],
-  ['Performance analytics',        'Adherence and trends in one place'],
-  ['Unlimited trainers & clients', 'No per-seat fees, ever'],
+// What a plan keeps in the studio's pocket over a year, against monthly.
+const yearlySaving = (rate: number) => (LIST_MONTHLY - rate) * 12
+
+const FEATURES: { name: string; detail: string; icon: keyof typeof FEATURE_ICONS; tone: string }[] = [
+  { name: 'Scheduling & calendar',        detail: 'Book, reschedule and track every session', icon: 'calendar', tone: '#2f7bff' },
+  { name: 'Client tracking & progress',   detail: 'Goals, metrics, workout logs and trends',  icon: 'trend',    tone: '#8b5cff' },
+  { name: 'Payments & invoicing',         detail: 'See who has paid at a glance',             icon: 'card',     tone: '#16a37b' },
+  { name: 'Lead pipeline (CRM)',          detail: 'From enquiry to signed client',            icon: 'funnel',   tone: '#ff4fa3' },
+  { name: 'Performance analytics',        detail: 'Adherence and trends in one place',        icon: 'chart',    tone: '#ff8a3d' },
+  { name: 'Unlimited trainers & clients', detail: 'No per-seat fees, ever',                   icon: 'users',    tone: '#111318' },
 ]
+
+const FEATURE_ICONS = {
+  calendar: <><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" /><path d="M8 3v4M16 3v4M3.5 10h17M8 14h3" /></>,
+  trend:    <><path d="M3 17l6-6 4 4 8-8" /><path d="M15 7h6v6" /></>,
+  card:     <><rect x="2.5" y="5" width="19" height="14" rx="2.5" /><path d="M2.5 10h19M6.5 15h3" /></>,
+  funnel:   <path d="M3.5 4.5h17l-6.5 8v6l-4 2v-8z" />,
+  chart:    <><path d="M4 20V10M10 20V4M16 20v-7M21 20H3" /></>,
+  users:    <><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6" /><path d="M16 4.7a3.5 3.5 0 0 1 0 6.6M18.5 14.8c1.8.9 3 2.9 3 5.2" /></>,
+}
 
 /* ─── Quote line model ─────────────────────────────────────────────────── */
 
@@ -156,6 +168,7 @@ export default function OfferPage() {
       listSub, termSaving, onceExtras, discAmounts, recurringTotal,
       dueToday: Math.max(firstBase - onceDisc, 0),
       subtotal: listSub + recurringExtras + onceExtras,
+      waivedValue: extras.filter(e => e.status === 'waived').reduce((s, e) => s + e.amount, 0),
       discountTotal: termSaving + recurringDisc + onceDisc,
     }
   }, [plan, extras, discounts])
@@ -257,27 +270,55 @@ export default function OfferPage() {
               const on = term === t
               return (
                 <button key={t} role="radio" aria-checked={on} className={`plan ${on ? 'on' : ''}`} onClick={() => setTerm(t)}>
+                  {p.tag && <span className={`plan-tag ${t}`}>{p.tag}</span>}
                   <span className="radio" aria-hidden="true" />
                   <span className="plan-name">{p.label}</span>
+                  <span className="plan-price num">
+                    {p.rate < LIST_MONTHLY && <s className="plan-was">£{LIST_MONTHLY}</s>}
+                    <strong>£{p.rate}</strong><span className="plan-per">/mo</span>
+                  </span>
                   <span className="plan-term">{p.term}</span>
-                  {p.save && <span className="plan-save">{p.save}</span>}
+                  <span className="plan-foot">
+                    {p.off && <span className="plan-save">{p.off}</span>}
+                    {p.rate < LIST_MONTHLY
+                      ? <span className="plan-keep">Keep £{yearlySaving(p.rate)} a year</span>
+                      : <span className="plan-keep muted">{p.perk}</span>}
+                  </span>
+                  {p.rate < LIST_MONTHLY && p.perk && <span className="plan-perk">{p.perk}</span>}
                 </button>
               )
             })}
           </div>
+          {term !== 'annual' && (
+            <button type="button" className="nudge no-print" onClick={() => setTerm('annual')}>
+              <span className="nudge-dot" aria-hidden="true" />
+              <span>
+                You&rsquo;re leaving <strong>£{yearlySaving(PLANS.annual.rate) - yearlySaving(plan.rate)} a year</strong> on the table.
+                {' '}Switch to Annual and pay £{PLANS.annual.rate}/mo instead of £{plan.rate}.
+              </span>
+              <span className="nudge-go">Switch &rarr;</span>
+            </button>
+          )}
         </section>
 
         {/* Included */}
         <section className="part selection" id="included">
           <h2 className="label">Included in every plan</h2>
           <ul className="features">
-            {FEATURES.map(([name, detail]) => (
-              <li key={name}>
-                <span className="f-name">{name}</span>
-                <span className="f-det">{detail}</span>
+            {FEATURES.map(f => (
+              <li key={f.name} style={{ ['--tone' as string]: f.tone }}>
+                <span className="f-icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">{FEATURE_ICONS[f.icon]}</svg>
+                </span>
+                <span className="f-check" aria-hidden="true">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3.2} strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+                </span>
+                <span className="f-name">{f.name}</span>
+                <span className="f-det">{f.detail}</span>
               </li>
             ))}
           </ul>
+          <p className="f-foot">Every feature, on every plan. No tiers, no add-ons, no surprises.</p>
         </section>
 
         {/* Quote */}
@@ -319,7 +360,7 @@ export default function OfferPage() {
                       <div className="l-main">{x.label}</div>
                     )}
                     <div className="l-sub">
-                      {x.status === 'waived' ? 'Included for founding studios' : x.status === 'removed' ? 'Removed' : kindWord(x.kind)}
+                      {x.status === 'waived' ? 'Free for founding studios only' : x.status === 'removed' ? 'Removed' : kindWord(x.kind)}
                     </div>
                     <div className="ctls no-print">
                       <div className="seg" role="group" aria-label="Charge status">
@@ -349,9 +390,9 @@ export default function OfferPage() {
                         aria-label={`${x.label} amount`}
                       />
                     </span>
-                    {x.status === 'waived' && <div className="amt-note no-print">Waived · {gbp(0)}</div>}
+                    {x.status === 'waived' && <div className="amt-note no-print"><s>{gbp(x.amount)}</s> FREE</div>}
                     <span className="print-only">
-                      {x.status === 'waived' ? <><s className="struck">{gbp(x.amount)}</s> {gbp(0)}</> : gbp(x.amount)}
+                      {x.status === 'waived' ? <><s className="struck">{gbp(x.amount)}</s> FREE</> : gbp(x.amount)}
                     </span>
                   </td>
                 </tr>
@@ -415,9 +456,16 @@ export default function OfferPage() {
                 <span>Then <strong>{gbp(totals.recurringTotal)}</strong> {plan.period}</span>
                 {plan.months > 1 && <span className="t-then-sub">{`${gbp(totals.recurringTotal / plan.months)} a month`}</span>}
               </div>
+              {totals.discountTotal + totals.waivedValue > 0 && (
+                <div className="t-saved">
+                  <span>You&rsquo;re saving</span>
+                  <strong>{gbp(totals.discountTotal + totals.waivedValue)}</strong>
+                </div>
+              )}
               <button className="cta no-print" onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}>
-                Accept invoice
+                Lock in my founding rate
               </button>
+              <div className="cta-trust no-print">30-day money-back guarantee &middot; Rate fixed while you stay</div>
             </div>
           </div>
         </section>
@@ -613,21 +661,65 @@ body { background: #eceef1; }
 .plan.on .radio { border-color: #e8eaee; background: radial-gradient(#e8eaee 0 3.5px, transparent 4px); }
 .plan-name { font-size: 15px; font-weight: 600; color: var(--ink); }
 .plan-term { font-size: 13px; color: var(--muted); }
-.plan-save { font-size: 12px; font-weight: 600; margin-top: 8px; color: var(--ink); background: #f1f2f4; border-radius: 999px; padding: 3px 9px; }
-.plan.on .plan-name { color: #fff; }
-.plan.on .plan-term { color: #9ba1aa; }
-.plan.on .plan-save { color: var(--ink); background: linear-gradient(180deg, #f4f5f7, #c9cdd3); }
+.plan-price { display: flex; align-items: baseline; gap: 6px; margin-top: 6px; color: var(--ink); }
+.plan-price strong { font-size: 30px; font-weight: 700; letter-spacing: -.03em; line-height: 1; }
+.plan-per { font-size: 13px; color: var(--muted); }
+.plan-was { font-size: 15px; color: var(--faint); text-decoration-color: #e5484d; text-decoration-thickness: 2px; }
+.plan-foot { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.plan-save { font-size: 11.5px; font-weight: 800; letter-spacing: .04em; color: #fff; background: linear-gradient(180deg, #2fbf71, #16a35a); border-radius: 6px; padding: 3px 8px; box-shadow: 0 4px 10px -4px rgba(22,163,90,.6); }
+.plan-keep { font-size: 12.5px; font-weight: 600; color: #16a35a; }
+.plan-keep.muted { color: var(--faint); font-weight: 500; }
+.plan-perk { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.plan-tag { position: absolute; top: -10px; right: 14px; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; color: #fff; background: #111318; box-shadow: 0 6px 14px -6px rgba(17,19,24,.6); }
+.plan-tag.annual { background: linear-gradient(90deg, #ff8a3d, #ff4fa3); box-shadow: 0 6px 14px -6px rgba(255,79,163,.7); }
+.plan.on .plan-tag.quarterly { background: linear-gradient(90deg, #2f7bff, #8b5cff); }
+.plan.on .plan-name, .plan.on .plan-price { color: #fff; }
+.plan.on .plan-term, .plan.on .plan-per, .plan.on .plan-perk { color: #9ba1aa; }
+.plan.on .plan-was { color: #7d838c; }
+.plan.on .plan-keep { color: #5be39a; }
+.plan.on .plan-keep.muted { color: #9ba1aa; }
+.plans { padding-top: 10px; }
+.nudge {
+  margin-top: 14px; width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer;
+  font: inherit; font-size: 13.5px; color: #7a4a12; padding: 12px 16px; border-radius: 12px;
+  background: linear-gradient(90deg, #fff7ec, #fff1f6); border: 1px solid #ffd9b3; transition: transform .15s ease, box-shadow .2s ease;
+}
+.nudge:hover { transform: translateY(-1px); box-shadow: 0 10px 24px -14px rgba(255,138,61,.7); }
+.nudge strong { color: #c2410c; }
+.nudge-dot { width: 8px; height: 8px; flex-shrink: 0; border-radius: 50%; background: #ff8a3d; box-shadow: 0 0 0 4px rgba(255,138,61,.2); animation: nudge-pulse 1.8s ease-in-out infinite; }
+.nudge-go { margin-left: auto; flex-shrink: 0; font-weight: 700; color: #c2410c; }
+@keyframes nudge-pulse { 50% { box-shadow: 0 0 0 7px rgba(255,138,61,0); } }
 
 /* Features */
-.features { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
-.features li { display: grid; grid-template-columns: 18px 1fr; column-gap: 10px; padding: 12px 0; border-top: 1px solid var(--line-soft); }
-.features li::before {
-  content: ""; grid-row: span 2; width: 14px; height: 14px; margin-top: 3px; border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #ffffff, #b7bcc4 55%, #6e747d);
-  box-shadow: 0 1px 2px rgba(0,0,0,.2);
+.features { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.features li {
+  position: relative; display: flex; flex-direction: column; gap: 4px; padding: 18px 18px 18px;
+  background: linear-gradient(180deg, #fff, #fafbfc); border: 1px solid var(--line); border-radius: 14px;
+  overflow: hidden; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
-.f-name { font-size: 14px; font-weight: 500; color: var(--ink); }
-.f-det { font-size: 13px; color: var(--muted); }
+.features li::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 3px;
+  background: linear-gradient(90deg, var(--tone), color-mix(in srgb, var(--tone) 30%, transparent));
+}
+.features li::after {
+  content: ""; position: absolute; width: 140px; height: 140px; right: -60px; top: -60px; border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--tone) 12%, transparent), transparent 70%); pointer-events: none;
+}
+.features li:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--tone) 35%, var(--line)); box-shadow: 0 14px 30px -18px color-mix(in srgb, var(--tone) 60%, transparent); }
+.f-icon {
+  width: 40px; height: 40px; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px;
+  color: #fff; background: linear-gradient(150deg, color-mix(in srgb, var(--tone) 70%, #fff), var(--tone));
+  box-shadow: 0 6px 14px -6px var(--tone), inset 0 1px 0 rgba(255,255,255,.35);
+}
+.f-check {
+  position: absolute; top: 16px; right: 16px; width: 20px; height: 20px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--tone); background: color-mix(in srgb, var(--tone) 12%, #fff); border: 1px solid color-mix(in srgb, var(--tone) 25%, transparent);
+}
+.f-name { font-size: 14.5px; font-weight: 600; color: var(--ink); letter-spacing: -.01em; }
+.f-det { font-size: 13px; color: var(--muted); line-height: 1.45; }
+.f-foot { margin-top: 14px; font-size: 12.5px; color: var(--faint); text-align: center; }
 
 /* Line items */
 .lines { width: 100%; border-collapse: collapse; }
@@ -695,7 +787,11 @@ body { background: #eceef1; }
 
 /* Always-on editing helpers */
 .print-only { display: none; }
-.amt-note { font-size: 12px; color: #2f7d4f; margin-top: 6px; font-weight: 500; }
+.amt-note { font-size: 12px; color: #16a35a; margin-top: 6px; font-weight: 800; letter-spacing: .04em; }
+.amt-note s { color: var(--faint); font-weight: 500; margin-right: 4px; letter-spacing: 0; }
+.t-saved { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding: 10px 12px; border-radius: 10px; background: rgba(91,227,154,.1); border: 1px solid rgba(91,227,154,.25); font-size: 13px; color: #a7f0c8; }
+.t-saved strong { color: #5be39a; font-size: 15px; }
+.cta-trust { margin-top: 10px; text-align: center; font-size: 11.5px; color: #8d939c; }
 .ctl-money { display: inline-flex; align-items: center; gap: 6px; color: var(--faint); }
 .add { display: flex; gap: 10px; padding: 16px 0 0; }
 .add-btn {
@@ -748,8 +844,8 @@ body { background: #eceef1; }
   .panel { padding: 16px 16px 8px; }
   .p-row { grid-template-columns: 70px 1fr; }
   .part { margin-top: 40px; }
-  .plans { grid-template-columns: 1fr; gap: 10px; }
-  .features { grid-template-columns: 1fr; }
+  .plans { grid-template-columns: 1fr; gap: 18px; }
+  .features { grid-template-columns: 1fr 1fr; }
   .summary { grid-template-columns: 1fr; gap: 20px; }
   .signs { grid-template-columns: 1fr; gap: 24px; }
   .sheet-foot { padding: 16px 20px; flex-direction: column; gap: 4px; }
@@ -757,6 +853,7 @@ body { background: #eceef1; }
   .clauses { columns: 1; }
 }
 
+@media (max-width: 480px) { .features { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) {
   .offer *, .offer *::before, .offer *::after { transition: none !important; }
 }
