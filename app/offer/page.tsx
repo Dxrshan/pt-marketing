@@ -43,6 +43,32 @@ const gbp = (n: number) =>
 
 const uid = () => Math.random().toString(36).slice(2, 9)
 
+/* Invoice number: DNI-<studio code>-<YYMMDD>-<plan><fingerprint>
+   e.g. DNI-IRN-261122-Q7KX3. The studio code comes from the name, the
+   fingerprint is a short hash of the client's details, so the same client
+   on the same day and plan always gets the same number. */
+const CROCKFORD = '0123456789ABCDEFGHJKMNPQRSTVWXYZ'
+function fingerprint(text: string, len = 4) {
+  let h = 0x811c9dc5
+  for (let i = 0; i < text.length; i++) { h ^= text.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0 }
+  let out = ''
+  for (let i = 0; i < len; i++) { out += CROCKFORD[h & 31]; h >>>= 5 }
+  return out
+}
+function studioCode(name: string) {
+  const words = name.toUpperCase().replace(/[^A-Z0-9 ]/g, ' ').split(/\s+/).filter(Boolean)
+  if (!words.length) return 'NEW'
+  const code = words.length >= 3 ? words.map(w => w[0]).join('') : words[0]
+  return (code + (words[1] ?? '') + 'XXX').slice(0, 3)
+}
+function invoiceNumber(f: { studio: string; contact: string; email: string; postcode: string; term: Term; date: Date | null }) {
+  const d = f.date ?? new Date(0)
+  const ymd = String(d.getFullYear()).slice(2) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0')
+  const norm = (v: string) => v.trim().toLowerCase().replace(/\s+/g, '')
+  const seed = [f.studio, f.contact, f.email, f.postcode, ymd, f.term].map(norm).join('|')
+  return `DNI-${studioCode(f.studio)}-${ymd}-${f.term[0].toUpperCase()}${fingerprint(seed)}`
+}
+
 const fmtDate = (d: Date) =>
   d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
 
@@ -80,14 +106,18 @@ export default function OfferPage() {
   const [studio, setStudio] = useState('')
   const [contact, setContact] = useState('')
   const [ref, setRef] = useState('')
-  const [issued, setIssued] = useState('')
+  const [email, setEmail] = useState('')
+  const [postcode, setPostcode] = useState('')
+  const [issuedAt, setIssuedAt] = useState<Date | null>(null)
+  const issued = issuedAt ? fmtDate(issuedAt) : ''
 
   // Dates are set on the client so server and client render the same markup.
   useEffect(() => {
-    setIssued(fmtDate(new Date()))
+    setIssuedAt(new Date())
   }, [])
 
   const plan = PLANS[term]
+  const autoRef = issuedAt ? invoiceNumber({ studio, contact, email, postcode, term, date: issuedAt }) : ''
 
   const totals = useMemo(() => {
     const listSub = LIST_MONTHLY * plan.months
@@ -183,12 +213,12 @@ export default function OfferPage() {
                 <dt><label htmlFor="bt-city">City</label></dt>
                 <dd className="p-split">
                   <input id="bt-city" className="p-input" placeholder="City" autoComplete="address-level2" />
-                  <input className="p-input" placeholder="Postcode" autoComplete="postal-code" aria-label="Postcode" />
+                  <input className="p-input" placeholder="Postcode" autoComplete="postal-code" aria-label="Postcode" value={postcode} onChange={e => setPostcode(e.target.value)} />
                 </dd>
               </div>
               <div className="p-row">
                 <dt><label htmlFor="bt-email">Email</label></dt>
-                <dd><input id="bt-email" className="p-input" type="email" placeholder="name@studio.com" autoComplete="email" /></dd>
+                <dd><input id="bt-email" className="p-input" type="email" placeholder="name@studio.com" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} /></dd>
               </div>
               <div className="p-row">
                 <dt><label htmlFor="bt-phone">Phone</label></dt>
@@ -202,7 +232,13 @@ export default function OfferPage() {
             <dl className="num">
               <div className="p-row">
                 <dt><label htmlFor="inv-ref">Invoice no.</label></dt>
-                <dd><input id="inv-ref" className="p-input" placeholder="DNI-2026-XXX" value={ref} onChange={e => setRef(e.target.value)} /></dd>
+                <dd className="ref-cell">
+                  <input id="inv-ref" className="p-input ref-input" placeholder={autoRef || 'Generating…'} value={ref || autoRef} spellCheck={false}
+                    onChange={e => setRef(e.target.value === autoRef ? '' : e.target.value)} />
+                  {ref
+                    ? <button type="button" className="ref-tag" onClick={() => setRef('')} title="Go back to the generated number">Reset</button>
+                    : <span className="ref-tag auto" title="Built from the studio, date, plan and client details">Auto</span>}
+                </dd>
               </div>
               <div className="p-row"><dt>Issued</dt><dd>{issued || '—'}</dd></div>
               <div className="p-row"><dt>Plan</dt><dd>{plan.label}</dd></div>
@@ -546,6 +582,11 @@ body { background: #eceef1; }
   width: calc(100% + 16px); transition: background .15s ease, border-color .15s ease;
 }
 .p-split .p-input { width: calc(100% + 16px); }
+.ref-cell { display: flex; align-items: center; gap: 4px; }
+.ref-input { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px !important; letter-spacing: -.01em; font-weight: 600; flex: 1; min-width: 0; }
+.ref-tag { flex-shrink: 0; font: inherit; font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 6px; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: var(--faint); cursor: pointer; }
+.ref-tag.auto { cursor: default; color: #2f7bff; border-color: rgba(47,123,255,.25); background: rgba(47,123,255,.06); }
+@media print { .ref-tag { display: none; } }
 .p-input.strong { font-weight: 600; font-size: 14.5px; }
 .p-input::placeholder { color: #c2c6cc; font-weight: 400; }
 .p-input:hover { background: #f5f6f8; }
