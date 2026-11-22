@@ -53,8 +53,11 @@ const DEFAULT_EXTRAS: Extra[] = [
   { id: 'support', label: 'Unlimited edits during your contract', amount: 90,  list: 90, kind: 'once', status: 'charge', custom: false },
 ]
 
-const gbp = (n: number) =>
-  '£' + n.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+// Whole pounds by default (£441); pence only when there are some (£273.60).
+const gbp = (n: number) => {
+  const whole = Math.abs(n - Math.round(n)) < 0.005
+  return '£' + n.toLocaleString('en-GB', { minimumFractionDigits: whole ? 0 : 2, maximumFractionDigits: whole ? 0 : 2 })
+}
 
 const uid = () => Math.random().toString(36).slice(2, 9)
 
