@@ -325,33 +325,200 @@ export function FeatureGallery() {
   )
 }
 
-/* ── 5. Giant numbers ────────────────────────────────────────────────── */
-const NUM_GRADS = ['linear-gradient(180deg,#9cc0ff,#2f7bff)', 'linear-gradient(180deg,#c6b0ff,#8b5cff)', 'linear-gradient(180deg,#ffb3d6,#ff4fa3)', 'linear-gradient(180deg,#ffd08a,#ff8a3d)']
-const NUMBERS = [
-  { to: 10, prefix: '<', suffix: '', unit: 'min', label: 'to set up your studio' },
-  { to: 0, prefix: '£', suffix: '', unit: '', label: 'per-seat fees, ever' },
-  { to: 30, prefix: '', suffix: '', unit: 'days', label: 'free trial, no card' },
-  { to: 1, prefix: '', suffix: '', unit: 'app', label: 'instead of five' },
-]
+/* ── 5. Giant numbers: bento of stat cards, each with a live visual ── */
+const STAT = {
+  blue:   { a: '#9cc0ff', b: '#2f7bff' },
+  violet: { a: '#c6b0ff', b: '#8b5cff' },
+  pink:   { a: '#ffb3d6', b: '#ff4fa3' },
+  amber:  { a: '#ffd08a', b: '#ff8a3d' },
+}
+type StatTone = keyof typeof STAT
+
+function StatCard({ tone, span, delay, num, unit, label, sub, children }: {
+  tone: StatTone; span: number; delay: number; num: ReactNode; unit?: string; label: string; sub: string; children: ReactNode
+}) {
+  const c = STAT[tone]
+  const ref = useRef<HTMLDivElement>(null)
+  const onMove = (e: React.PointerEvent) => {
+    const el = ref.current; if (!el) return
+    const r = el.getBoundingClientRect()
+    el.style.setProperty('--mx', `${e.clientX - r.left}px`)
+    el.style.setProperty('--my', `${e.clientY - r.top}px`)
+  }
+  return (
+    <motion.div ref={ref} onPointerMove={onMove} className="stat-card"
+      initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 1, delay, ease: EASE }}
+      style={{
+        gridColumn: `span ${span}`, position: 'relative', overflow: 'hidden', borderRadius: 32, padding: 'clamp(24px, 2.6vw, 40px)',
+        minHeight: 420, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 28,
+        background: `radial-gradient(120% 80% at 100% 0%, ${c.b}26, transparent 55%), linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.012))`,
+        border: '1px solid rgba(255,255,255,0.08)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08), 0 40px 80px -40px rgba(0,0,0,.9)',
+        ['--glow' as string]: `${c.b}33`,
+      }}>
+      <div aria-hidden="true" style={{ position: 'absolute', top: -1, left: '12%', right: '12%', height: 1, background: `linear-gradient(90deg, transparent, ${c.a}, transparent)`, opacity: 0.7 }} />
+      <div style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 170 }}>{children}</div>
+      <div style={{ position: 'relative' }}>
+        <div className="tint-text" style={{ backgroundImage: `linear-gradient(180deg, ${c.a}, ${c.b})`, fontSize: 'clamp(64px, 7vw, 120px)', fontWeight: 800, letterSpacing: '-0.06em', lineHeight: 0.88, fontVariantNumeric: 'tabular-nums', display: 'flex', alignItems: 'baseline', gap: 10 }}>
+          {num}
+          {unit && <span style={{ fontSize: '0.34em', letterSpacing: '-0.03em' }}>{unit}</span>}
+        </div>
+        <div style={{ fontSize: 'clamp(18px, 1.5vw, 22px)', fontWeight: 600, color: '#eef1f4', marginTop: 14, letterSpacing: '-0.01em' }}>{label}</div>
+        <div style={{ fontSize: 15, color: 'var(--text-muted)', marginTop: 6, maxWidth: 420, lineHeight: 1.5 }}>{sub}</div>
+      </div>
+    </motion.div>
+  )
+}
+
+/* Setup: ring that fills while steps tick off. */
+function SetupVisual() {
+  const steps = ['Brand & logo', 'Services & prices', 'Import clients', 'First booking live']
+  const R = 62, C = 2 * Math.PI * R
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(20px, 3vw, 44px)', width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
+      <div style={{ position: 'relative', width: 150, height: 150 }}>
+        <svg width="150" height="150" viewBox="0 0 150 150" style={{ transform: 'rotate(-90deg)' }}>
+          <defs><linearGradient id="ring-blue" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#9cc0ff" /><stop offset="1" stopColor="#2f7bff" /></linearGradient></defs>
+          <circle cx="75" cy="75" r={R} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="10" />
+          <motion.circle cx="75" cy="75" r={R} fill="none" stroke="url(#ring-blue)" strokeWidth="10" strokeLinecap="round"
+            strokeDasharray={C} initial={{ strokeDashoffset: C }} whileInView={{ strokeDashoffset: C * 0.08 }} viewport={{ once: true }}
+            transition={{ duration: 2.4, delay: 0.3, ease: EASE }} style={{ filter: 'drop-shadow(0 0 10px rgba(47,123,255,.6))' }} />
+        </svg>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <Icon name="timer" size={20} style={{ color: '#9cc0ff' }} />
+          <span className="mono" style={{ fontSize: 22, fontWeight: 600, marginTop: 4, color: '#fff' }}><Counter to={9} prefix="0" suffix=":42" duration={2.4} /></span>
+        </div>
+      </div>
+      <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 10 }}>
+        {steps.map((s, i) => (
+          <motion.li key={s} initial={{ opacity: 0, x: -14 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5 + i * 0.45, ease: EASE }}
+            style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 15, color: '#dfe3e8', padding: '9px 14px 9px 10px', borderRadius: 12, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <span style={{ width: 22, height: 22, borderRadius: '50%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(180deg,#9cc0ff,#2f7bff)', color: '#05101f', boxShadow: '0 0 12px rgba(47,123,255,.5)' }}>
+              <Icon name="check" size={13} stroke={2.6} />
+            </span>
+            {s}
+          </motion.li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+/* Seats: a crowd of trainers, every one of them free. */
+function SeatsVisual() {
+  const people = ['SK', 'JT', 'MR', 'PA', 'LB', 'DW', 'AN', 'CH', 'EF', 'RG', 'OM', 'TS']
+  const hues = ['#8b5cff', '#2f7bff', '#ff4fa3', '#ff8a3d', '#22c39a', '#c6b0ff']
+  return (
+    <div style={{ width: '100%', maxWidth: 360 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 10 }}>
+        {people.map((p, i) => (
+          <motion.span key={p} initial={{ opacity: 0, scale: 0.4 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
+            transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.2 + i * 0.06 }}
+            style={{ aspectRatio: '1', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: '#fff',
+              background: `linear-gradient(160deg, ${hues[i % hues.length]}, ${hues[(i + 2) % hues.length]}88)`, border: '2px solid #0c0d11', boxShadow: '0 6px 16px rgba(0,0,0,.4)' }}>
+            {p}
+          </motion.span>
+        ))}
+      </div>
+      <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 1.1, ease: EASE }}
+        style={{ marginTop: 18, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', borderRadius: 14, background: 'rgba(139,92,255,0.1)', border: '1px solid rgba(139,92,255,0.25)', fontSize: 14 }}>
+        <span style={{ color: 'var(--text-muted)' }}>12 trainers × <s style={{ textDecorationColor: '#ff4fa3' }}>£15</s></span>
+        <span style={{ fontWeight: 700, color: '#c6b0ff' }}>£0 / month</span>
+      </motion.div>
+    </div>
+  )
+}
+
+/* Trial: a month of days lighting up, card not required. */
+function TrialVisual() {
+  return (
+    <div style={{ width: '100%', maxWidth: 340 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: 6 }}>
+        {Array.from({ length: 30 }, (_, i) => (
+          <motion.span key={i} initial={{ opacity: 0.15, scale: 0.7 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.2 + i * 0.045 }}
+            style={{ aspectRatio: '1', borderRadius: 6, fontSize: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', color: i === 29 ? '#fff' : 'rgba(255,255,255,.55)',
+              background: i === 29 ? 'linear-gradient(180deg,#ffb3d6,#ff4fa3)' : `rgba(255,79,163,${0.12 + (i / 29) * 0.35})`,
+              boxShadow: i === 29 ? '0 0 18px rgba(255,79,163,.8)' : undefined }}>
+            {i + 1}
+          </motion.span>
+        ))}
+      </div>
+      <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 1.6, ease: EASE }}
+        style={{ marginTop: 18, display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', borderRadius: 14, background: 'rgba(255,79,163,0.08)', border: '1px solid rgba(255,79,163,0.22)', fontSize: 14, color: '#f3d7e5' }}>
+        <span style={{ position: 'relative', display: 'inline-flex', color: '#ffb3d6' }}>
+          <Icon name="card" size={20} />
+          <span style={{ position: 'absolute', left: -2, right: -2, top: '50%', height: 2, background: '#ff4fa3', transform: 'rotate(-30deg)', borderRadius: 2 }} />
+        </span>
+        No card. Nothing to cancel.
+      </motion.div>
+    </div>
+  )
+}
+
+/* One app: five scattered tools pull into one tile. */
+function OneAppVisual() {
+  const tools = [
+    { n: 'chat', x: -125, y: -30 }, { n: 'sheet', x: -78, y: 62 }, { n: 'calendar', x: 0, y: -82 },
+    { n: 'bank', x: 78, y: 62 }, { n: 'note', x: 125, y: -30 },
+  ]
+  return (
+    <div style={{ position: 'relative', width: '100%', height: 200 }}>
+      {tools.map((t, i) => (
+        <motion.div key={t.n} initial={{ x: t.x * 1.25, y: t.y * 1.25, opacity: 1, scale: 1 }} whileInView={{ x: [t.x * 1.25, 0, t.x], y: [t.y * 1.25, 0, t.y], opacity: [1, 0, 0.35], scale: [1, 0.4, 0.7] }} viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 2.2, times: [0, 0.45, 1], delay: 0.6 + i * 0.08, ease: [0.7, 0, 0.3, 1] }}
+          style={{ position: 'absolute', left: '50%', top: '50%', marginLeft: -26, marginTop: -26, width: 52, height: 52, borderRadius: 15, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: '#16181d', border: '1px solid rgba(255,255,255,0.1)', color: '#aab0b9', boxShadow: '0 10px 24px rgba(0,0,0,.5)' }}>
+          <Icon name={t.n} size={22} />
+        </motion.div>
+      ))}
+      <motion.div initial={{ opacity: 0, scale: 0.5 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: '-60px' }}
+        transition={{ type: 'spring', stiffness: 200, damping: 14, delay: 1.5 }}
+        style={{ position: 'absolute', left: '50%', top: '50%', marginLeft: -48, marginTop: -48, width: 96, height: 96, borderRadius: 28, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: 'radial-gradient(circle at 30% 20%, #2a2d34, #101216)', border: '1px solid rgba(255,208,138,0.35)', boxShadow: '0 0 0 8px rgba(255,138,61,0.08), 0 0 60px rgba(255,138,61,.45), 0 20px 40px rgba(0,0,0,.6)' }}>
+        <BrandLogo variant="mark" height={42} />
+      </motion.div>
+    </div>
+  )
+}
 
 export function BigNumbers() {
   return (
-    <section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', padding: '120px 6vw', background: '#050607', position: 'relative' }}>
-      <div className="big-nums" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '4vw', width: '100%', maxWidth: 1400, margin: '0 auto' }}>
-        {NUMBERS.map((n, i) => (
-          <motion.div key={n.label}
-            initial={{ opacity: 0, y: 60, filter: 'blur(12px)' }} whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }} viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 1.1, delay: i * 0.12, ease: EASE }}
-            style={{ borderTop: '1px solid rgba(255,255,255,0.12)', paddingTop: 28 }}>
-            <div className="tint-text" style={{ backgroundImage: NUM_GRADS[i], fontSize: 'clamp(64px, 9vw, 150px)', fontWeight: 800, letterSpacing: '-0.06em', lineHeight: 0.9, fontVariantNumeric: 'tabular-nums' }}>
-              <Counter to={n.to} prefix={n.prefix} suffix={n.suffix} duration={2} />
-              {n.unit && <span style={{ fontSize: '0.32em', letterSpacing: '-0.02em', marginLeft: 8 }}>{n.unit}</span>}
-            </div>
-            <div style={{ fontSize: 'clamp(15px, 1.3vw, 19px)', color: 'var(--text-muted)', marginTop: 16 }}>{n.label}</div>
-          </motion.div>
-        ))}
+    <section style={{ padding: 'clamp(100px, 14vh, 160px) 5vw', background: '#050607', position: 'relative', overflow: 'hidden' }}>
+      <Aurora colors={['rgba(47,123,255,.18)', 'rgba(139,92,255,.16)', 'rgba(255,79,163,.12)', 'rgba(255,138,61,.12)']} style={{ position: 'absolute', opacity: 0.6 }} />
+      <div style={{ position: 'relative', maxWidth: 1320, margin: '0 auto' }}>
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1, ease: EASE }}
+          style={{ textAlign: 'center', marginBottom: 'clamp(48px, 7vh, 80px)' }}>
+          <div className="eyebrow" style={{ justifyContent: 'center' }}>By the numbers</div>
+          <h2 style={{ fontSize: 'clamp(40px, 6vw, 92px)', fontWeight: 800, letterSpacing: '-0.05em', lineHeight: 0.95, marginTop: 18 }}>
+            <span className="steel-text">Less admin.</span><br /><span className="spectrum-text">More training.</span>
+          </h2>
+        </motion.div>
+        <div className="big-nums" style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 20 }}>
+          <StatCard tone="blue" span={7} delay={0} num={<><span style={{ fontSize: '0.8em' }}>&lt;</span><Counter to={10} duration={2} /></>} unit="min"
+            label="to set up your studio" sub="Add your brand, services and clients, then take your first booking before your coffee goes cold.">
+            <SetupVisual />
+          </StatCard>
+          <StatCard tone="violet" span={5} delay={0.1} num={<Counter to={0} prefix="£" />} label="per-seat fees, ever" sub="Unlimited trainers and unlimited clients. Grow the team without growing the bill.">
+            <SeatsVisual />
+          </StatCard>
+          <StatCard tone="pink" span={5} delay={0.1} num={<Counter to={30} duration={2} />} unit="days" label="free trial, no card" sub="Every feature, fully unlocked. If it is not for you, just walk away.">
+            <TrialVisual />
+          </StatCard>
+          <StatCard tone="amber" span={7} delay={0.2} num={<Counter to={1} duration={1.2} />} unit="app" label="instead of five" sub="Bookings, payments, programmes, check-ins and chat, all in one place.">
+            <OneAppVisual />
+          </StatCard>
+        </div>
       </div>
-      <style>{`@media (max-width: 900px) { .big-nums { grid-template-columns: 1fr 1fr !important; gap: 48px 24px !important; } }`}</style>
+      <style>{`
+        .stat-card::after { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .4s;
+          background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), var(--glow), transparent 60%); }
+        .stat-card:hover::after { opacity: 1; }
+        .stat-card { transition: border-color .4s, transform .5s cubic-bezier(.22,1,.36,1); }
+        .stat-card:hover { border-color: rgba(255,255,255,0.16) !important; }
+        @media (max-width: 960px) { .big-nums > .stat-card { grid-column: span 12 !important; min-height: 0 !important; } }
+      `}</style>
     </section>
   )
 }
