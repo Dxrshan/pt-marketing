@@ -422,11 +422,6 @@ export default function OfferPage() {
             </tbody>
           </table>
 
-          <div className="add no-print">
-            <button className="add-btn" onClick={addDiscount}>+ Add discount</button>
-            <button className="add-btn" onClick={addCharge}>+ Add charge</button>
-          </div>
-
           <div className="summary">
             <div className="summary-note">
               <h3>Payment terms</h3>
