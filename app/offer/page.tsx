@@ -467,10 +467,7 @@ export default function OfferPage() {
             </div>
             <div className="sum-card num">
               <div className="b-title">Your bill</div>
-              <div className="b-row"><span>{plan.label} plan <em>{plan.months === 1 ? '1 month' : `${plan.months} months`}</em></span><span>{gbp(totals.listSub)}</span></div>
-              {totals.termSaving > 0 && (
-                <div className="b-row save"><span>{plan.label} saving</span><span>−{gbp(totals.termSaving)}</span></div>
-              )}
+              <div className="b-row"><span>{plan.label} plan <em>{plan.months === 1 ? '1 month' : `${plan.months} months`}</em></span><span>{gbp(plan.rate * plan.months)}</span></div>
               {totals.setupList > 0 && (
                 <div className="b-row"><span>Setup &amp; extras <em>one-off</em></span><span>{gbp(totals.setupList)}</span></div>
               )}
