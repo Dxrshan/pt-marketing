@@ -211,7 +211,6 @@ export default function OfferPage() {
 
   const visibleExtras = extras
   const kindWord = (k: Kind) => (k === 'once' ? 'One-off' : 'Recurring')
-  const monthsWord = plan.months === 1 ? 'first month' : `first ${plan.months} months`
 
   return (
     <div className="offer">
@@ -473,7 +472,6 @@ export default function OfferPage() {
               <p className="fair-use">Unlimited clients and trainers. Photo, video and voice-note uploads are subject to a fair-use storage policy; we will contact you before any limit affects your account.</p>
             </div>
             <div className="sum-card num">
-              <div className="t-row"><span>Subtotal</span><span>{gbp(totals.subtotal + totals.waivedValue)}</span></div>
               {totals.discountTotal > 0 && (
                 <div className="t-row"><span>Discounts</span><span>−{gbp(totals.discountTotal)}</span></div>
               )}
@@ -481,13 +479,7 @@ export default function OfferPage() {
                 <div className="t-row"><span>Founding studio offer</span><span>−{gbp(totals.waivedValue)}</span></div>
               )}
               <div className="t-due">
-                <div className="t-due-label">Due today</div>
                 <div className="t-due-num">{gbp(dueShown)}</div>
-                <div className="t-due-note">{`Covers your ${monthsWord}${totals.onceExtras > 0 ? ' and one-off items' : ''}`}</div>
-              </div>
-              <div className="t-then">
-                <span>Then <strong>{gbp(totals.recurringTotal)}</strong> {plan.period}</span>
-                {plan.months > 1 && <span className="t-then-sub">{`${gbp(totals.recurringTotal / plan.months)} a month`}</span>}
               </div>
               {totals.discountTotal + totals.waivedValue > 0 && (
                 <div className="t-saved">
@@ -835,10 +827,11 @@ body { background: #eceef1; }
 .sum-card > * { position: relative; }
 .t-row { display: flex; justify-content: space-between; font-size: 13.5px; color: #9ba1aa; padding: 3px 0; }
 .t-row span:last-child { color: #e3e6ea; }
+.t-due:first-child { margin-top: 0; padding-top: 0; border-top: none; }
 .t-due { margin-top: 14px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.12); }
 .t-due-label { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #9ba1aa; }
 .t-due-num {
-  font-size: 44px; font-weight: 600; line-height: 1.05; letter-spacing: -.02em; margin-top: 8px;
+  font-size: 44px; font-weight: 600; line-height: 1.05; letter-spacing: -.02em; margin-top: 0;
   background: linear-gradient(180deg, #ffffff 0%, #e2e5e9 45%, #9aa0a8 60%, #eef0f2 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
