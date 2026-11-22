@@ -56,6 +56,7 @@ export default function SignaturePad({ open, onClose, onSign, signer, reference 
   const strokes = useRef<Stroke[]>([])
   const drawing = useRef(false)
   const [count, setCount] = useState(0)
+  const [agreed, setAgreed] = useState(false)
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
 
@@ -86,7 +87,7 @@ export default function SignaturePad({ open, onClose, onSign, signer, reference 
   // Fresh pad each time it opens; Escape closes; page doesn't scroll behind it.
   useEffect(() => {
     if (!open) return
-    strokes.current = []; setCount(0)
+    strokes.current = []; setCount(0); setAgreed(false)
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
@@ -130,7 +131,7 @@ export default function SignaturePad({ open, onClose, onSign, signer, reference 
 
   const confirm = () => {
     const pts = strokes.current.flat()
-    if (!pts.length) return
+    if (!pts.length || !agreed) return
     const pad = 8
     const minX = Math.min(...pts.map(p => p.x)) - pad, minY = Math.min(...pts.map(p => p.y)) - pad
     const maxX = Math.max(...pts.map(p => p.x)) + pad, maxY = Math.max(...pts.map(p => p.y)) + pad
@@ -183,7 +184,17 @@ export default function SignaturePad({ open, onClose, onSign, signer, reference 
               <div className="sp-baseline" aria-hidden="true"><span>&times;</span></div>
             </div>
 
-            <p className="sp-legal">By signing, you accept this invoice and the Terms &amp; Conditions that form part of this agreement.</p>
+            <label className={`sp-agree ${agreed ? 'on' : ''}`}>
+              <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)} />
+              <span className="sp-box" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+              </span>
+              <span>
+                I&rsquo;ve read and agree to the{' '}
+                <a href="#terms" onClick={e => { e.preventDefault(); onClose(); setTimeout(() => document.getElementById('terms')?.scrollIntoView({ behavior: 'smooth' }), 350) }}>Terms &amp; Conditions</a>,
+                {' '}which form part of this agreement.
+              </span>
+            </label>
 
             <footer className="sp-foot">
               <div className="sp-tools">
@@ -196,8 +207,9 @@ export default function SignaturePad({ open, onClose, onSign, signer, reference 
                   Redo signature
                 </button>
               </div>
-              <motion.button type="button" className="sp-btn primary" onClick={confirm} disabled={!count}
-                whileTap={count ? { scale: 0.97 } : undefined}>
+              <motion.button type="button" className="sp-btn primary" onClick={confirm} disabled={!count || !agreed}
+                title={!agreed ? 'Tick the box to agree to the Terms first' : undefined}
+                whileTap={count && agreed ? { scale: 0.97 } : undefined}>
                 Accept &amp; sign
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
               </motion.button>
@@ -247,7 +259,15 @@ export const SIGNATURE_PAD_CSS = `
 .sp-hint { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 10px; color: #a3a8b0; font-size: 15px; pointer-events: none; z-index: 1; }
 .sp-baseline { position: absolute; left: 28px; right: 28px; bottom: 26%; border-bottom: 1.5px dashed #c9cdd3; pointer-events: none; z-index: 1; }
 .sp-baseline span { position: absolute; left: 0; bottom: 4px; font-size: 22px; color: #9a9fa8; line-height: 1; }
-.sp-legal { padding: 12px 28px 0; font-size: 12px; color: #9a9fa8; line-height: 1.5; }
+.sp-agree { display: flex; align-items: flex-start; gap: 12px; margin: 16px 28px 0; padding: 14px 16px; border-radius: 12px; cursor: pointer;
+  font-size: 13.5px; line-height: 1.5; color: #2a2d33; background: #f6f7f9; border: 1px solid #e6e7ea; transition: background .2s ease, border-color .2s ease; }
+.sp-agree.on { background: #effaf4; border-color: rgba(22,163,90,.35); }
+.sp-agree input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.sp-box { flex-shrink: 0; width: 20px; height: 20px; margin-top: 1px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center;
+  border: 1.5px solid #b7bcc4; background: #fff; color: transparent; transition: all .2s cubic-bezier(.22,1,.36,1); }
+.sp-agree.on .sp-box { background: #16a35a; border-color: #16a35a; color: #fff; transform: scale(1.06); }
+.sp-agree input:focus-visible + .sp-box { outline: 2px solid #111318; outline-offset: 2px; }
+.sp-agree a { color: #111318; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
 .sp-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 18px 28px 24px; }
 .sp-tools { display: flex; gap: 8px; }
 .sp-btn { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; border-radius: 12px; padding: 12px 16px; transition: background .2s ease, color .2s ease, opacity .2s ease, box-shadow .2s ease, transform .15s ease; }
@@ -260,7 +280,8 @@ export const SIGNATURE_PAD_CSS = `
 }
 .sp-btn.primary:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 16px 30px -12px rgba(17,19,24,.9), inset 0 1px 0 rgba(255,255,255,.14); }
 @media (max-width: 560px) {
-  .sp-head, .sp-meta, .sp-legal, .sp-foot { padding-left: 18px; padding-right: 18px; }
+  .sp-head, .sp-meta, .sp-foot { padding-left: 18px; padding-right: 18px; }
+  .sp-agree { margin-left: 18px; margin-right: 18px; }
   .sp-pad { margin-left: 18px; margin-right: 18px; }
   .sp-foot { flex-direction: column-reverse; align-items: stretch; }
   .sp-tools { justify-content: space-between; }

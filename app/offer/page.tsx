@@ -140,7 +140,7 @@ function EditableAmount({ value, onChange, label }: { value: number; onChange: (
   }
   return (
     <input autoFocus type="number" min={0} step="0.01" className="amt-input num" defaultValue={value} aria-label={label}
-      onFocus={e => e.target.select()}
+      onFocus={e => { const v = e.target.value; e.target.value = ''; e.target.value = v }}
       onBlur={e => { onChange(Math.max(0, Number(e.target.value) || 0)); setEditing(false) }}
       onKeyDown={e => { if (e.key === 'Enter' || e.key === 'Escape') (e.target as HTMLInputElement).blur() }} />
   )
@@ -862,9 +862,11 @@ body { background: #eceef1; }
 .ctl-amt { width: 96px; text-align: right; }
 .amt-edit { all: unset; cursor: text; font: inherit; color: inherit; font-weight: inherit; }
 .amt-input {
-  width: 90px; text-align: right; font: inherit; font-weight: inherit; color: inherit; padding: 0; margin: 0;
-  border: none; border-bottom: 1px solid var(--ink); background: transparent; outline: none; -moz-appearance: textfield;
+  width: 96px; text-align: right; font: inherit; font-weight: 600; color: var(--ink) !important; -webkit-text-fill-color: var(--ink);
+  padding: 3px 8px; margin: -4px -8px -4px 0; border: 1px solid var(--line) !important; border-radius: 8px; background: #fff !important;
+  box-shadow: 0 0 0 3px rgba(17,19,24,.06) !important; outline: none !important; -moz-appearance: textfield; caret-color: var(--ink);
 }
+.amt-input::selection { background: #d6dae0; color: var(--ink); -webkit-text-fill-color: var(--ink); }
 .amt-input::-webkit-outer-spin-button, .amt-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .link-btn { border: none; background: transparent; color: var(--muted); font-size: 13px; cursor: pointer; padding: 6px 4px; }
 .link-btn:hover { color: var(--ink); text-decoration: underline; }
