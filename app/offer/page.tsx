@@ -506,6 +506,7 @@ export default function OfferPage() {
               <button className="cta no-print" onClick={() => setSignOpen(true)}>
                 Lock in my founding rate
               </button>
+              <div className="cta-trust no-print">30-day money-back guarantee on your subscription</div>
             </div>
           </div>
           </div>
