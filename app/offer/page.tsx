@@ -745,18 +745,25 @@ body { background: #eceef1; }
 }
 .inc > * { position: relative; }
 .inc-head {
-  display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; padding: 26px 28px 22px;
-  background: linear-gradient(180deg, #fafbfc, #fff);
+  position: relative; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; padding: 26px 28px 22px;
+  color: #e8eaee; background: radial-gradient(140% 160% at 0% 0%, #30343c 0%, var(--steel-1) 35%, var(--steel-2) 75%, #0a0b0d 100%);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
-.inc-kicker { font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--faint); }
-.inc-title { margin-top: 8px; font-size: 24px; font-weight: 600; line-height: 1.15; letter-spacing: -.025em; color: var(--ink); }
-.inc-title span { color: #a3a8b0; }
+.inc-head::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .7;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.022) 0 1px, transparent 1px 3px); }
+.inc-head > * { position: relative; }
+.inc-kicker { font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: #8d939c; }
+.inc-title {
+  margin-top: 8px; font-size: 24px; font-weight: 600; line-height: 1.15; letter-spacing: -.025em;
+  background: linear-gradient(180deg, #ffffff 0%, #e2e5e9 50%, #a7adb5 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.inc-title span { background: linear-gradient(180deg, #9aa0a8, #5f656e); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .inc-count { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
 .inc-count strong {
   font-size: 48px; font-weight: 600; line-height: .9; letter-spacing: -.04em;
-  background: linear-gradient(180deg, #3a3e46 0%, #111318 55%, #6b717a 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  background: linear-gradient(180deg, #ffffff 0%, #e2e5e9 45%, #8d939c 62%, #eef0f2 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-.inc-count span { font-size: 11.5px; line-height: 1.4; color: var(--muted); }
+.inc-count span { font-size: 11.5px; line-height: 1.4; color: #9ba1aa; }
 
 .features {
   list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
