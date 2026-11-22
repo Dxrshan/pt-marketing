@@ -49,13 +49,13 @@ const FEATURE_ICONS = {
 type Kind = 'once' | 'recurring'
 type Status = 'charge' | 'waived' | 'removed'
 
-type Extra = { id: string; label: string; amount: number; kind: Kind; status: Status; custom: boolean }
+type Extra = { id: string; label: string; amount: number; list: number; kind: Kind; status: Status; custom: boolean }
 type Discount = { id: string; label: string; mode: 'pct' | 'fixed'; value: number; scope: Kind }
 
 const DEFAULT_EXTRAS: Extra[] = [
-  { id: 'onboard', label: 'Onboarding & data migration',     amount: 99,  kind: 'once', status: 'waived', custom: false },
-  { id: 'call',    label: '1:1 setup call with the team',    amount: 75,  kind: 'once', status: 'waived', custom: false },
-  { id: 'support', label: 'Unlimited edits during your contract', amount: 90,  kind: 'once', status: 'waived', custom: false },
+  { id: 'onboard', label: 'Onboarding & data migration',     amount: 99,  list: 99, kind: 'once', status: 'charge', custom: false },
+  { id: 'call',    label: '1:1 setup call with the team',    amount: 75,  list: 75, kind: 'once', status: 'charge', custom: false },
+  { id: 'support', label: 'Unlimited edits during your contract', amount: 90,  list: 90, kind: 'once', status: 'charge', custom: false },
 ]
 
 const gbp = (n: number) =>
@@ -190,7 +190,7 @@ export default function OfferPage() {
       listSub, termSaving, onceExtras, discAmounts, recurringTotal,
       dueToday: Math.max(firstBase - onceDisc, 0),
       subtotal: listSub + recurringExtras + onceExtras,
-      waivedValue: extras.filter(e => e.status === 'waived').reduce((s, e) => s + e.amount, 0),
+      waivedValue: extras.filter(e => e.status === 'charge').reduce((s, e) => s + Math.max(e.list - e.amount, 0), 0),
       discountTotal: termSaving + recurringDisc + onceDisc,
     }
   }, [plan, extras, discounts])
@@ -201,7 +201,7 @@ export default function OfferPage() {
     setExtras(xs => xs.map(x => (x.id === id ? { ...x, ...patch } : x)))
   const deleteExtra = (id: string) => setExtras(xs => xs.filter(x => x.id !== id))
   const addCharge = () =>
-    setExtras(xs => [...xs, { id: uid(), label: 'Additional item', amount: 0, kind: 'once', status: 'charge', custom: true }])
+    setExtras(xs => [...xs, { id: uid(), label: 'Additional item', amount: 0, list: 0, kind: 'once', status: 'charge', custom: true }])
 
   const updateDiscount = (id: string, patch: Partial<Discount>) =>
     setDiscounts(ds => ds.map(d => (d.id === id ? { ...d, ...patch } : d)))
@@ -398,7 +398,7 @@ export default function OfferPage() {
                       <div className="l-main">{x.label}</div>
                     )}
                     <div className="l-sub">
-                      {x.status === 'waived' ? 'Free for founding studios only' : x.status === 'removed' ? 'Removed' : kindWord(x.kind)}
+                      {x.status === 'removed' ? 'Removed' : x.amount < x.list ? (x.amount === 0 ? 'Waived for your studio' : `Reduced from ${gbp(x.list)} for your studio`) : kindWord(x.kind)}
                     </div>
                     {x.custom && (
                       <div className="ctls no-print">
@@ -415,7 +415,7 @@ export default function OfferPage() {
                       <EditableAmount value={x.amount} label={`${x.label} amount`} onChange={v => updateExtra(x.id, { amount: v })} />
                     </span>
                                         <span className="print-only">
-                      {x.status === 'waived' ? 'Included' : gbp(x.amount)}
+                      {x.amount === 0 && x.list > 0 ? 'Waived' : gbp(x.amount)}
                     </span>
                   </td>
                 </tr>
@@ -476,7 +476,7 @@ export default function OfferPage() {
                 <div className="t-row"><span>Discounts</span><span>−{gbp(totals.discountTotal)}</span></div>
               )}
               {totals.waivedValue > 0 && (
-                <div className="t-row"><span>Founding studio offer</span><span>−{gbp(totals.waivedValue)}</span></div>
+                <div className="t-row"><span>Founding studio discount</span><span>−{gbp(totals.waivedValue)}</span></div>
               )}
               <div className="t-due">
                 <div className="t-due-num">{gbp(dueShown)}</div>
