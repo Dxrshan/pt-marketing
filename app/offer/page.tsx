@@ -19,19 +19,13 @@ type Term = keyof typeof PLANS
 // What a plan keeps in the studio's pocket over a year, against monthly.
 const yearlySaving = (rate: number) => (LIST_MONTHLY - rate) * 12
 
-const FEATURES: { name: string; detail: string; icon: keyof typeof FEATURE_ICONS; points: string[] }[] = [
-  { name: 'Scheduling & calendar', detail: 'Book, reschedule and track every session', icon: 'calendar',
-    points: ['Session booking with double-booking protection', 'Calendar invites sent automatically', 'Email and push reminders'] },
-  { name: 'Client tracking & progress', detail: 'Goals, metrics, workout logs and trends', icon: 'trend',
-    points: ['Workout programmes and session logs', 'Body metrics and progress photos', 'Before / after photo comparison', 'Daily check-ins'] },
-  { name: 'Payments & invoicing', detail: 'See who has paid at a glance', icon: 'card',
-    points: ['Payment status for every client', 'Square card payments and payment links', 'Packages and memberships', 'Payment history per client'] },
-  { name: 'Lead pipeline (CRM)', detail: 'From enquiry to signed client', icon: 'funnel',
-    points: ['Visual enquiry-to-client pipeline', 'Automated follow-up emails'] },
-  { name: 'Performance analytics', detail: 'Adherence and trends in one place', icon: 'chart',
-    points: ['Studio dashboard and KPIs', 'Client adherence and attendance', 'Client at-a-glance summaries', 'Trends over time'] },
-  { name: 'Unlimited trainers & clients', detail: 'No per-seat fees', icon: 'users',
-    points: ['Branded client portal app', '7 roles with custom permissions', 'Unlimited trainer accounts', 'Unlimited client accounts'] },
+const FEATURES: { name: string; detail: string; icon: keyof typeof FEATURE_ICONS }[] = [
+  { name: 'Scheduling & calendar', detail: 'Bookings, calendar invites and automatic reminders', icon: 'calendar' },
+  { name: 'Client tracking & progress', detail: 'Workouts, body metrics and before / after photos', icon: 'trend' },
+  { name: 'Payments & invoicing', detail: 'Card payments, packages and who\'s paid at a glance', icon: 'card' },
+  { name: 'Lead pipeline (CRM)', detail: 'Every enquiry tracked, with automated follow-ups', icon: 'funnel' },
+  { name: 'Performance analytics', detail: 'Adherence, attendance and studio KPIs', icon: 'chart' },
+  { name: 'Unlimited trainers & clients', detail: 'Branded client app, no per-seat fees', icon: 'users' },
 ]
 
 const EXTRAS = ['AI coaching assistant', 'Diet & meal plans', 'Form-check video review', 'Messaging & voice notes', 'Community feed & leaderboard']
@@ -331,19 +325,13 @@ export default function OfferPage() {
               </div>
             </div>
             <ul className="features">
-              {FEATURES.map((f, i) => (
+              {FEATURES.map(f => (
                 <li key={f.name}>
-                  <div className="f-top">
-                    <span className="f-icon" aria-hidden="true">
+                  <span className="f-icon" aria-hidden="true">
                       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#inc-silver)" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">{FEATURE_ICONS[f.icon]}</svg>
-                    </span>
-                    <span className="f-num num">{String(i + 1).padStart(2, '0')}</span>
-                  </div>
+                  </span>
                   <span className="f-name">{f.name}</span>
                   <span className="f-det">{f.detail}</span>
-                  <ul className="f-points">
-                    {f.points.map(pt => <li key={pt}>{pt}</li>)}
-                  </ul>
                 </li>
               ))}
             </ul>
@@ -805,11 +793,12 @@ body { background: #eceef1; }
   list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
   background: var(--line-soft); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft);
 }
-.features > li { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 22px 24px 24px; background: #fff; transition: background .25s ease; }
+.features > li { position: relative; display: grid; grid-template-columns: 40px 1fr; column-gap: 14px; row-gap: 2px; align-items: start; padding: 18px 20px; background: #fff; transition: background .25s ease; }
+.features > li .f-icon { grid-row: span 2; margin: 0; }
 .features > li:hover { background: #fafbfc; }
 .f-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
 .f-icon {
-  width: 42px; height: 42px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center;
   background: radial-gradient(140% 140% at 0% 0%, #3a3e46 0%, var(--steel-1) 45%, var(--steel-2) 100%);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 8px 16px -8px rgba(17,19,24,.55);
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
