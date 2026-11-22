@@ -424,6 +424,16 @@ export default function OfferPage() {
 
           <div className="summary">
             <div className="summary-note">
+              <div className="bank">
+                <h3>Pay by bank transfer</h3>
+                <dl className="num">
+                  <div><dt>Bank</dt><dd>Monzo</dd></div>
+                  <div><dt>Account name</dt><dd>DNI Ltd</dd></div>
+                  <div><dt>Sort code</dt><dd>04-00-03</dd></div>
+                  <div><dt>Account no.</dt><dd>98336645</dd></div>
+                  <div className="bank-ref"><dt>Reference</dt><dd>{ref || autoRef || 'Your invoice number'}</dd></div>
+                </dl>
+              </div>
               <h3>Payment terms</h3>
               <p>Due on acceptance. Covered by a 30-day money-back guarantee, and your rate stays fixed for as long as you stay subscribed.</p>
             </div>
@@ -743,6 +753,12 @@ body { background: #eceef1; }
 /* Summary */
 .summary { display: grid; grid-template-columns: 1fr 340px; gap: 32px; align-items: end; margin-top: 28px; }
 .summary-note h3 { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
+.bank { border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px 10px; margin-bottom: 24px; max-width: 380px; background: #fafbfc; }
+.bank dl > div { display: grid; grid-template-columns: 110px 1fr; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line-soft); font-size: 13.5px; }
+.bank dl > div:first-child { border-top: none; }
+.bank dt { color: var(--faint); font-size: 12.5px; }
+.bank dd { color: var(--ink); font-weight: 600; letter-spacing: .02em; }
+.bank-ref dd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; }
 .summary-note p { font-size: 13px; line-height: 1.65; color: var(--muted); max-width: 300px; }
 .sum-card {
   position: relative; overflow: hidden; border-radius: 16px; padding: 22px 24px 24px; color: #c8ccd2;
