@@ -230,11 +230,6 @@ export default function OfferPage() {
   const addCharge = () =>
     setExtras(xs => [...xs, { id: uid(), label: 'Additional item', amount: 0, list: 0, kind: 'once', status: 'charge', custom: true }])
 
-  const updateDiscount = (id: string, patch: Partial<Discount>) =>
-    setDiscounts(ds => ds.map(d => (d.id === id ? { ...d, ...patch } : d)))
-  const deleteDiscount = (id: string) => setDiscounts(ds => ds.filter(d => d.id !== id))
-  const addDiscount = () =>
-    setDiscounts(ds => [...ds, { id: uid(), label: 'Discount', mode: 'pct', value: 10, scope: 'once' }])
 
   const visibleExtras = extras
   const kindWord = (k: Kind) => (k === 'once' ? 'One-off' : 'Recurring')
@@ -448,37 +443,6 @@ export default function OfferPage() {
                 </tr>
               ))}
 
-              {discounts.map(d => (
-                <tr key={d.id}>
-                  <td>
-                    <input className="ctl ctl-wide no-print" value={d.label} onChange={e => updateDiscount(d.id, { label: e.target.value })} aria-label="Discount name" />
-                    <div className="l-main print-only">{d.label}</div>
-                    <div className="l-sub">
-                      {`${d.mode === 'pct' ? `${d.value}%` : gbp(d.value)} off ${d.scope === 'once' ? 'the first payment' : 'every payment'}`}
-                    </div>
-                    <div className="ctls no-print">
-                      <input
-                        type="number" min={0} step="0.01" className="ctl ctl-amt num" value={d.value}
-                        onChange={e => {
-                          const v = Math.max(0, Number(e.target.value) || 0)
-                          updateDiscount(d.id, { value: d.mode === 'pct' ? Math.min(v, 100) : v })
-                        }}
-                        aria-label="Discount value"
-                      />
-                      <div className="seg" role="group" aria-label="Discount type">
-                        <button className={d.mode === 'pct' ? 'on' : ''} onClick={() => updateDiscount(d.id, { mode: 'pct', value: Math.min(d.value, 100) })}>%</button>
-                        <button className={d.mode === 'fixed' ? 'on' : ''} onClick={() => updateDiscount(d.id, { mode: 'fixed' })}>£</button>
-                      </div>
-                      <select className="ctl" value={d.scope} onChange={e => updateDiscount(d.id, { scope: e.target.value as Kind })} aria-label="Applies to">
-                        <option value="once">First payment only</option>
-                        <option value="recurring">Every payment</option>
-                      </select>
-                      <button className="link-btn" onClick={() => deleteDiscount(d.id)}>Delete</button>
-                    </div>
-                  </td>
-                  <td className="amt num">−{gbp(totals.discAmounts[d.id] ?? 0)}</td>
-                </tr>
-              ))}
             </tbody>
           </table>
 
