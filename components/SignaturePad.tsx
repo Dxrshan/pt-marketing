@@ -10,8 +10,8 @@ type Pt = { x: number; y: number; t: number; w: number }
 type Stroke = Pt[]
 
 const INK = '#111318'
-const MIN_W = 1.4
-const MAX_W = 4.2
+const MIN_W = 2
+const MAX_W = 5
 const EASE = [0.22, 1, 0.36, 1] as const
 
 function widthFor(prev: Pt | undefined, x: number, y: number, t: number) {
@@ -21,14 +21,14 @@ function widthFor(prev: Pt | undefined, x: number, y: number, t: number) {
   return prev.w * 0.65 + target * 0.35 // smooth the width so it never jumps
 }
 
-function drawStroke(ctx: CanvasRenderingContext2D, s: Stroke) {
+function drawStroke(ctx: CanvasRenderingContext2D, s: Stroke, k = 1) {
   if (!s.length) return
   ctx.fillStyle = INK
   ctx.strokeStyle = INK
   ctx.lineCap = 'round'
   ctx.lineJoin = 'round'
   if (s.length === 1) {
-    ctx.beginPath(); ctx.arc(s[0].x, s[0].y, s[0].w / 2, 0, Math.PI * 2); ctx.fill(); return
+    ctx.beginPath(); ctx.arc(s[0].x, s[0].y, (s[0].w * k) / 2, 0, Math.PI * 2); ctx.fill(); return
   }
   for (let i = 1; i < s.length; i++) {
     const a = s[i - 1], b = s[i]
@@ -36,7 +36,7 @@ function drawStroke(ctx: CanvasRenderingContext2D, s: Stroke) {
     // Quadratic segment from the midpoint of the last pair to the midpoint of this one.
     const m1 = { x: (p0.x + a.x) / 2, y: (p0.y + a.y) / 2 }
     const m2 = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
-    ctx.lineWidth = (a.w + b.w) / 2
+    ctx.lineWidth = ((a.w + b.w) / 2) * k
     ctx.beginPath()
     ctx.moveTo(m1.x, m1.y)
     ctx.quadraticCurveTo(a.x, a.y, m2.x, m2.y)
@@ -140,7 +140,10 @@ export default function SignaturePad({ open, onClose, onSign, signer, reference 
     out.width = Math.ceil((maxX - minX) * scale); out.height = Math.ceil((maxY - minY) * scale)
     const ctx = out.getContext('2d')!
     ctx.setTransform(scale, 0, 0, scale, -minX * scale, -minY * scale)
-    strokes.current.forEach(s => drawStroke(ctx, s))
+    // The invoice shows the signature ~84px tall, so a big signature gets shrunk a lot.
+    // Thicken the ink by the same factor so it lands on the line as bold as it was drawn.
+    const shrink = Math.max(1, Math.min((maxY - minY) / 84, (maxX - minX) / 300))
+    strokes.current.forEach(s => drawStroke(ctx, s, Math.min(shrink, 4)))
     onSign(out.toDataURL('image/png'))
   }
 
