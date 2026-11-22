@@ -647,7 +647,7 @@ body { background: #eceef1; }
 .label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 
 /* Billed to / details panels */
-.parties { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; margin-top: 32px; align-items: start; }
+.parties { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; margin-top: 32px; align-items: stretch; }
 .panel {
   border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px 8px;
   background: linear-gradient(180deg, #ffffff, #fbfbfc);
