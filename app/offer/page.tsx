@@ -391,6 +391,13 @@ export default function OfferPage() {
 
         {/* Quote */}
         <section className="part" id="quote">
+          <div className="p2-head print-only" aria-hidden="true">
+            <BrandLogo height={26} />
+            <div className="p2-meta">
+              <span>Invoice <b>{ref || autoRef}</b></span>
+              {studio && <span>{studio}</span>}
+            </div>
+          </div>
 
 
           <table className="lines">
@@ -551,8 +558,11 @@ export default function OfferPage() {
         </div>
 
         <footer className="sheet-foot">
-          <span>Thank you for choosing DNI Studios.</span>
-          <span>dnianalytics.com</span>
+          <div>
+            <div className="sf-thanks">Thank you for choosing DNI Studios.</div>
+            <div className="sf-co">DNI Ltd &middot; Registered in England &amp; Wales, no. 15630271 &middot; 78a Deacon Road, London NW2 5QJ</div>
+          </div>
+          <span className="sf-web">dnianalytics.com</span>
         </footer>
       </article>
 
@@ -822,13 +832,18 @@ body { background: #eceef1; }
 .inc-foot svg { color: #16a35a; }
 
 /* Line items */
-.lines { width: 100%; border-collapse: collapse; }
+.lines { width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
 .lines th {
-  font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint);
-  text-align: left; padding: 0 0 12px; border-bottom: 1px solid var(--ink);
+  font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #c9cdd3;
+  text-align: left; padding: 13px 20px;
+  background: linear-gradient(180deg, #2a2d34 0%, #16181c 100%);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
-.lines td { padding: 15px 0; border-bottom: 1px solid var(--line-soft); vertical-align: top; font-size: 14.5px; }
-.lines .amt { text-align: right; white-space: nowrap; padding-left: 24px; color: var(--ink); font-weight: 500; }
+.lines td { padding: 15px 20px; border-top: 1px solid var(--line-soft); vertical-align: top; font-size: 14.5px; background: #fff; }
+.lines tbody tr:first-child td { border-top: none; }
+.lines tbody tr:nth-child(even) td { background: #fafbfc; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.lines th.amt { color: #c9cdd3; }
+.lines .amt { text-align: right; white-space: nowrap; padding-left: 24px; color: var(--ink); font-weight: 600; }
 .th-title { font: inherit; letter-spacing: inherit; }
 .l-main { color: var(--ink); font-weight: 500; }
 .l-sub { font-size: 13px; color: var(--faint); margin-top: 3px; }
@@ -985,9 +1000,20 @@ body { background: #eceef1; }
 .sign-label { font-size: 12.5px; color: var(--muted); margin-top: 8px; text-align: center; }
 
 .sheet-foot {
-  display: flex; justify-content: space-between; gap: 16px; padding: 18px 56px;
-  border-top: 1px solid var(--line-soft); background: #fafbfc; font-size: 12.5px; color: var(--faint);
+  position: relative; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 56px; color: #9ba1aa; font-size: 12.5px;
+  background: radial-gradient(140% 160% at 0% 0%, #30343c 0%, var(--steel-1) 35%, var(--steel-2) 75%, #0a0b0d 100%);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
+.sheet-foot::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px;
+  background: linear-gradient(90deg, #5c626b, #f2f4f7 30%, #8a9099 50%, #e4e7eb 70%, #5c626b); }
+.sf-thanks { color: #e8eaee; font-weight: 600; font-size: 13.5px; }
+.sf-co { margin-top: 4px; font-size: 11.5px; color: #8d939c; }
+.sf-web { color: #c9cdd3; font-weight: 600; letter-spacing: .04em; white-space: nowrap; }
+.p2-head { align-items: center; justify-content: space-between; gap: 16px; padding: 14px 20px; margin-bottom: 28px; border-radius: 12px; color: #c9cdd3;
+  background: radial-gradient(140% 160% at 0% 0%, #30343c 0%, var(--steel-1) 35%, var(--steel-2) 75%, #0a0b0d 100%);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.p2-meta { display: flex; gap: 18px; font-size: 12px; letter-spacing: .04em; }
+.p2-meta b { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #fff; font-weight: 600; }
 
 /* Terms */
 .terms { padding: 52px 56px 56px; }
@@ -1051,6 +1077,18 @@ body { background: #eceef1; }
   #included.selection { display: block !important; }
   .sheet { zoom: .72; }
   #quote { break-before: page; }
+  .p2-head.print-only { display: flex; }
+  .summary { align-items: start; }
+  .doc-title, .inc-title, .inc-title span, .inc-count strong, .t-due-num {
+    background: none !important; -webkit-background-clip: border-box !important; background-clip: border-box !important;
+    -webkit-text-fill-color: currentColor; filter: none !important;
+  }
+  .doc-title { color: #eef0f2; }
+  .inc-title { color: #ffffff; }
+  .inc-title span { color: #8d939c; }
+  .inc-count strong { color: #ffffff; }
+  .t-due-num { color: #ffffff; }
+  .sheet-foot { break-inside: avoid; }
   .letterhead { padding-top: 28px; padding-bottom: 28px; }
   .sheet-foot { break-inside: avoid; }
   .features > li, .sum-card, .bcard, .signs, .parties .panel, .lines tr, .inc-head, .inc-extras, .summary, #signup { break-inside: avoid; }
