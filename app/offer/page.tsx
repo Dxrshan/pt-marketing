@@ -65,6 +65,11 @@ const uid = () => Math.random().toString(36).slice(2, 9)
    e.g. DNI-ITG7KX. The studio code comes from the name, the
    fingerprint is a short hash of the client's details, so the same client
    on the same day and plan always gets the same number. */
+const UK_CITIES = ['London', 'Birmingham', 'Manchester', 'Leeds', 'Liverpool', 'Sheffield', 'Bristol', 'Newcastle upon Tyne', 'Nottingham', 'Leicester',
+  'Coventry', 'Bradford', 'Cardiff', 'Edinburgh', 'Glasgow', 'Belfast', 'Aberdeen', 'Dundee', 'Southampton', 'Portsmouth', 'Brighton', 'Plymouth',
+  'Reading', 'Oxford', 'Cambridge', 'Milton Keynes', 'Northampton', 'Luton', 'Derby', 'Stoke-on-Trent', 'Wolverhampton', 'Sunderland', 'Hull',
+  'York', 'Norwich', 'Exeter', 'Bath', 'Swansea', 'Preston', 'Bolton', 'Wigan', 'Watford', 'Slough', 'Croydon', 'Harrow', 'Wembley', 'Ilford']
+
 const CROCKFORD = '0123456789ABCDEFGHJKMNPQRSTVWXYZ'
 function fingerprint(text: string, len = 4) {
   let h = 0x811c9dc5
@@ -155,6 +160,36 @@ export default function OfferPage() {
   const [ref, setRef] = useState('')
   const [email, setEmail] = useState('')
   const [postcode, setPostcode] = useState('')
+  const [city, setCity] = useState('')
+  const [locating, setLocating] = useState<'' | 'busy' | 'error'>('')
+
+  // postcodes.io: free UK postcode lookup, no key needed. London postcodes report a
+  // borough (e.g. Brent) as the district, so use the region there instead.
+  const cityOf = (r: { region?: string; admin_district?: string }) => (r.region === 'London' ? 'London' : r.admin_district || r.region || '')
+  const fillFromPostcode = async (pc: string) => {
+    const clean = pc.replace(/\s+/g, '')
+    if (clean.length < 5) return
+    try {
+      const r = await fetch(`https://api.postcodes.io/postcodes/${encodeURIComponent(clean)}`)
+      if (!r.ok) return
+      const { result } = await r.json()
+      if (result) { setPostcode(result.postcode); setCity(c => c || cityOf(result)) }
+    } catch {}
+  }
+  const locateMe = () => {
+    if (!navigator.geolocation) { setLocating('error'); return }
+    setLocating('busy')
+    navigator.geolocation.getCurrentPosition(async pos => {
+      try {
+        const r = await fetch(`https://api.postcodes.io/postcodes?lon=${pos.coords.longitude}&lat=${pos.coords.latitude}&limit=1`)
+        const { result } = await r.json()
+        const hit = result?.[0]
+        if (!hit) throw new Error('no match')
+        setPostcode(hit.postcode); setCity(cityOf(hit))
+        setLocating('')
+      } catch { setLocating('error') }
+    }, () => setLocating('error'), { enableHighAccuracy: true, timeout: 10000 })
+  }
   const [issuedAt, setIssuedAt] = useState<Date | null>(null)
   const issued = issuedAt ? fmtDate(issuedAt) : ''
 
@@ -270,9 +305,18 @@ export default function OfferPage() {
               </div>
               <div className="p-row">
                 <dt><label htmlFor="bt-city">City</label></dt>
-                <dd className="p-split">
-                  <input id="bt-city" className="p-input" placeholder="City" autoComplete="address-level2" />
-                  <input className="p-input" placeholder="Postcode" autoComplete="postal-code" aria-label="Postcode" value={postcode} onChange={e => setPostcode(e.target.value)} />
+                <dd className="p-split loc">
+                  <input id="bt-city" className="p-input" placeholder="City" autoComplete="address-level2" list="uk-cities" value={city} onChange={e => setCity(e.target.value)} />
+                  <input className="p-input" placeholder="Postcode" autoComplete="postal-code" aria-label="Postcode" value={postcode}
+                    onChange={e => setPostcode(e.target.value.toUpperCase())} onBlur={e => fillFromPostcode(e.target.value)} />
+                  <button type="button" className={`loc-btn no-print ${locating}`} onClick={locateMe} disabled={locating === 'busy'}
+                    title={locating === 'error' ? "Couldn't find your location. Check location permissions" : 'Fill city and postcode from your location'}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg>
+                    {locating === 'busy' ? 'Locating…' : locating === 'error' ? 'Try again' : 'Locate me'}
+                  </button>
+                  <datalist id="uk-cities">
+                    {UK_CITIES.map(c => <option key={c} value={c} />)}
+                  </datalist>
                 </dd>
               </div>
               <div className="p-row">
@@ -686,6 +730,14 @@ body { background: #eceef1; }
 .p-row dt { font-size: 12px; color: var(--faint); }
 .p-row dd { font-size: 13.5px; color: var(--ink); min-width: 0; }
 .p-split { display: grid; grid-template-columns: 1fr 100px; gap: 10px; }
+.p-split.loc { grid-template-columns: 1fr 90px auto; align-items: center; }
+.loc-btn { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; font-size: 11.5px; font-weight: 600;
+  color: var(--ink); padding: 4px 9px; border-radius: 999px; border: 1px solid var(--line); background: #fff; transition: background .2s ease, border-color .2s ease; }
+.loc-btn:hover { background: #f4f5f7; border-color: #cfd2d7; }
+.loc-btn.busy { opacity: .6; cursor: wait; }
+.loc-btn.busy svg { animation: loc-pulse 1s ease-in-out infinite; }
+.loc-btn.error { color: #c2410c; border-color: #ffd9b3; }
+@keyframes loc-pulse { 50% { transform: translateY(-2px); } }
 .p-input {
   width: 100%; border: 1px solid transparent; background: transparent; border-radius: 8px;
   font: inherit; font-size: 13.5px; color: var(--ink); padding: 4px 8px; margin: -4px -8px;
