@@ -878,10 +878,10 @@ body { background: #eceef1; }
 .agree strong { color: var(--ink); font-weight: 600; }
 .signs { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
 .sign-line { border-bottom: 1px solid var(--ink); height: 72px; }
-.sign-line.signed { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
-.sign-img { height: 84px; width: auto; margin: 0 0 -10px 12px; transform: rotate(-4deg); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-.sign-date { font-size: 12.5px; color: var(--muted); padding-bottom: 6px; }
-.sign-label { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+.sign-line.signed { position: relative; display: flex; align-items: flex-end; justify-content: center; }
+.sign-img { height: 84px; width: auto; margin: 0 0 -10px; transform: rotate(-4deg); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.sign-date { position: absolute; right: 0; bottom: 6px; font-size: 12.5px; color: var(--muted); }
+.sign-label { font-size: 12.5px; color: var(--muted); margin-top: 8px; text-align: center; }
 
 .sheet-foot {
   display: flex; justify-content: space-between; gap: 16px; padding: 18px 56px;
