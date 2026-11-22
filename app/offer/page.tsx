@@ -61,8 +61,8 @@ const gbp = (n: number) => {
 
 const uid = () => Math.random().toString(36).slice(2, 9)
 
-/* Invoice number: DNI-<studio code>-<YYMMDD>-<plan><fingerprint>
-   e.g. DNI-IRN-261122-Q7KX3. The studio code comes from the name, the
+/* Invoice number: DNI-<studio code><3-char fingerprint>, short enough to type as a bank reference.
+   e.g. DNI-ITG7KX. The studio code comes from the name, the
    fingerprint is a short hash of the client's details, so the same client
    on the same day and plan always gets the same number. */
 const CROCKFORD = '0123456789ABCDEFGHJKMNPQRSTVWXYZ'
@@ -84,7 +84,7 @@ function invoiceNumber(f: { studio: string; contact: string; email: string; post
   const ymd = String(d.getFullYear()).slice(2) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0')
   const norm = (v: string) => v.trim().toLowerCase().replace(/\s+/g, '')
   const seed = [f.studio, f.contact, f.email, f.postcode, ymd, f.term].map(norm).join('|')
-  return `DNI-${studioCode(f.studio)}-${ymd}-${f.term[0].toUpperCase()}${fingerprint(seed)}`
+  return `DNI-${studioCode(f.studio)}${fingerprint(seed, 3)}`
 }
 
 const fmtDate = (d: Date) =>
