@@ -50,7 +50,7 @@ type Discount = { id: string; label: string; mode: 'pct' | 'fixed'; value: numbe
 const DEFAULT_EXTRAS: Extra[] = [
   { id: 'onboard', label: 'Onboarding & data migration',     amount: 99,  list: 99, kind: 'once', status: 'charge', custom: false },
   { id: 'call',    label: '1:1 setup call with the team',    amount: 75,  list: 75, kind: 'once', status: 'charge', custom: false },
-  { id: 'support', label: 'Unlimited edits during your contract', amount: 90,  list: 90, kind: 'once', status: 'charge', custom: false },
+  { id: 'support', label: 'Priority feature requests & custom changes', amount: 90,  list: 90, kind: 'once', status: 'charge', custom: false },
 ]
 
 // Whole pounds by default (£441); pence only when there are some (£273.60).
