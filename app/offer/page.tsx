@@ -116,6 +116,21 @@ function useTween(value: number, ms = 450) {
   return shown
 }
 
+/* Discount in the bill: shows "Add" until set; type 20% or 50. */
+function DiscountField({ amount, current, onSet }: { amount: number; current: string; onSet: (raw: string) => void }) {
+  const [editing, setEditing] = useState(false)
+  if (!editing) {
+    return amount > 0
+      ? <button type="button" className="amt-edit" onClick={() => setEditing(true)} aria-label="Edit discount">−{gbp(amount)}</button>
+      : <button type="button" className="b-add no-print" onClick={() => setEditing(true)}>+ Add</button>
+  }
+  return (
+    <input autoFocus className="b-disc-input" defaultValue={current} placeholder="20% or £50" aria-label="Discount, as a percentage or amount"
+      onBlur={e => { onSet(e.target.value); setEditing(false) }}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === 'Escape') (e.target as HTMLInputElement).blur() }} />
+  )
+}
+
 /* Looks like a plain amount; click it to edit. */
 function EditableAmount({ value, onChange, label }: { value: number; onChange: (v: number) => void; label: string }) {
   const [editing, setEditing] = useState(false)
@@ -191,11 +206,23 @@ export default function OfferPage() {
       dueToday: Math.max(firstBase - onceDisc, 0),
       subtotal: listSub + recurringExtras + onceExtras,
       waivedValue: extras.filter(e => e.status === 'charge').reduce((s, e) => s + Math.max(e.list - e.amount, 0), 0),
+      setupList: charged.reduce((s, e) => s + Math.max(e.list, e.amount), 0),
       discountTotal: termSaving + recurringDisc + onceDisc,
     }
   }, [plan, extras, discounts])
 
   const dueShown = useTween(totals.dueToday)
+
+  // The one negotiable discount in the bill: "20%" or "50" / "£50", off today's payment.
+  const manual = discounts.find(d => d.id === 'manual')
+  const setManual = (raw: string) => {
+    const t = raw.trim().replace(/[£,\s]/g, '')
+    const n = parseFloat(t.replace('%', ''))
+    if (!t || !(n > 0)) { setDiscounts(ds => ds.filter(d => d.id !== 'manual')); return }
+    const isPct = t.endsWith('%')
+    const d: Discount = { id: 'manual', label: 'Discount', mode: isPct ? 'pct' : 'fixed', value: isPct ? Math.min(n, 100) : n, scope: 'once' }
+    setDiscounts(ds => [...ds.filter(x => x.id !== 'manual'), d])
+  }
 
   const updateExtra = (id: string, patch: Partial<Extra>) =>
     setExtras(xs => xs.map(x => (x.id === id ? { ...x, ...patch } : x)))
@@ -472,14 +499,28 @@ export default function OfferPage() {
               <p className="fair-use">Unlimited clients and trainers. Photo, video and voice-note uploads are subject to a fair-use storage policy; we will contact you before any limit affects your account.</p>
             </div>
             <div className="sum-card num">
-              {totals.discountTotal > 0 && (
-                <div className="t-row"><span>Discounts</span><span>−{gbp(totals.discountTotal)}</span></div>
+              <div className="b-title">Your bill</div>
+              <div className="b-row"><span>{plan.label} plan <em>{plan.months === 1 ? '1 month' : `${plan.months} months`}</em></span><span>{gbp(totals.listSub)}</span></div>
+              {totals.termSaving > 0 && (
+                <div className="b-row save"><span>{plan.label} saving</span><span>−{gbp(totals.termSaving)}</span></div>
+              )}
+              {totals.setupList > 0 && (
+                <div className="b-row"><span>Setup &amp; extras <em>one-off</em></span><span>{gbp(totals.setupList)}</span></div>
               )}
               {totals.waivedValue > 0 && (
-                <div className="t-row"><span>Founding studio discount</span><span>−{gbp(totals.waivedValue)}</span></div>
+                <div className="b-row save"><span>Founding studio discount</span><span>−{gbp(totals.waivedValue)}</span></div>
               )}
-              <div className="t-due">
-                <div className="t-due-num">{gbp(dueShown)}</div>
+              <div className="b-row save b-disc">
+                <span>Discount{manual && manual.mode === 'pct' ? <em>{manual.value}%</em> : null}</span>
+                <DiscountField
+                  amount={manual ? totals.discAmounts[manual.id] ?? 0 : 0}
+                  current={manual ? (manual.mode === 'pct' ? `${manual.value}%` : String(manual.value)) : ''}
+                  onSet={setManual}
+                />
+              </div>
+              <div className="b-total">
+                <span className="b-total-label">Total due today</span>
+                <span className="t-due-num">{gbp(dueShown)}</span>
               </div>
               {totals.discountTotal + totals.waivedValue > 0 && (
                 <div className="t-saved">
@@ -853,6 +894,19 @@ body { background: #eceef1; }
 .print-only { display: none; }
 .amt-note { font-size: 12px; color: #16a35a; margin-top: 6px; font-weight: 800; letter-spacing: .04em; }
 .amt-note s { color: var(--faint); font-weight: 500; margin-right: 4px; letter-spacing: 0; }
+.b-title { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #8d939c; margin-bottom: 10px; }
+.b-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 0; font-size: 14px; color: #d4d8dd; border-bottom: 1px solid rgba(255,255,255,.06); }
+.b-row em { font-style: normal; font-size: 12px; color: #8d939c; margin-left: 8px; }
+.b-row > span:last-child { color: #f1f3f5; font-weight: 500; white-space: nowrap; }
+.b-row.save > span:last-child, .b-row.save .amt-edit { color: #5be39a; }
+.b-add { all: unset; cursor: pointer; font-size: 12.5px; font-weight: 600; color: #e3e6ea; padding: 3px 10px; border-radius: 999px; border: 1px dashed rgba(255,255,255,.3); }
+.b-add:hover { border-color: rgba(255,255,255,.6); }
+.b-disc-input { width: 110px; text-align: right; font: inherit; font-size: 14px; color: #fff; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.25); border-radius: 8px; padding: 4px 8px; outline: none; }
+.b-disc-input::placeholder { color: #6b717a; }
+.b-total { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-top: 16px; }
+.b-total-label { white-space: nowrap; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #9ba1aa; padding-bottom: 8px; }
+.b-total .t-due-num { font-size: 34px; white-space: nowrap; }
+@media print { .b-disc:has(.b-add) { display: none; } }
 .t-saved { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding: 10px 12px; border-radius: 10px; background: rgba(91,227,154,.1); border: 1px solid rgba(91,227,154,.25); font-size: 13px; color: #a7f0c8; }
 .t-saved strong { color: #5be39a; font-size: 15px; }
 .cta-trust { margin-top: 10px; text-align: center; font-size: 11.5px; color: #8d939c; }
