@@ -254,7 +254,6 @@ export default function OfferPage() {
               <div className="p-row"><dt>Issued</dt><dd>{issued || '—'}</dd></div>
               <div className="p-row"><dt>Plan</dt><dd>{plan.label}</dd></div>
               <div className="p-row"><dt>Billing</dt><dd>{plan.term}</dd></div>
-              <div className="p-row"><dt>Payment</dt><dd>Due on acceptance</dd></div>
             </dl>
           </section>
         </div>
