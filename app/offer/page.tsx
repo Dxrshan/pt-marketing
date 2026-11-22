@@ -599,7 +599,7 @@ export default function OfferPage() {
       {/* ── Sheet 2: terms ─────────────────────────────────── */}
       <article className="sheet terms" id="terms">
         <h2 className="terms-title">Terms &amp; Conditions of Service</h2>
-        <p className="terms-intro">These terms govern the provision of the DNI Studios software platform (&quot;the Service&quot;) by DNI Ltd, trading as DNI Analytics, a company registered in England and Wales under company number 15630271, registered office 78a Deacon Road, London NW2 5QJ (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;) to the studio named above (&quot;the Customer&quot;, &quot;you&quot;). By signing the offer sheet or by accessing or using the Service, you agree to be bound by these terms.</p>
+        <p className="terms-intro">These terms govern the provision of the DNI Studios software platform (&quot;the Service&quot;) by DNI Ltd, trading as DNI Analytics, a company registered in England and Wales under company number 15630271, registered office 78a Deacon Road, London NW2 5QJ (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;) to the client named above (&quot;the Customer&quot;, &quot;you&quot;). By signing the offer sheet or by accessing or using the Service, you agree to be bound by these terms.</p>
         <div className="clauses">
           {CLAUSES.map(clause => (
             <div className="clause" key={clause.num}>
@@ -622,37 +622,62 @@ export default function OfferPage() {
 /* ─── Terms content ────────────────────────────────────────────────────── */
 
 const CLAUSES = [
-  { num: '1.', title: 'Subscription & Payment', paras: [
-    'The Service is provided on a subscription basis at the price and billing cycle (monthly, quarterly or annual) stated in this invoice. Your price is fixed for as long as your subscription remains continuously active, in accordance with the Founding Customer Guarantee.',
-    'Payment for each billing cycle is due in advance, at the start of that cycle, by the method agreed at sign-up. Where payment is not received within 7 days of the due date, we may suspend access to the Service until payment is made.',
+  { num: '1.', title: 'Business Use', paras: [
+    'You confirm that you are entering into this agreement in the course of your business (including as a sole trader or independent personal trainer) and not as a consumer. Consumer protection legislation that applies only to consumers does not apply to this agreement.',
   ]},
-  { num: '2.', title: 'Term & Cancellation', paras: [
-    'This is a rolling agreement with no fixed minimum term beyond the billing cycle selected. You may cancel at any time by providing 14 days\' written notice. Cancellation takes effect at the end of the then-current billing period.',
-    'Your first payment is covered by a 30-day money-back guarantee: cancel within 30 days of it and we will refund it in full, no questions asked. After that, no refunds are issued for partial billing periods. Founding price status is lost if a subscription lapses for more than 30 consecutive days and is later reinstated.',
+  { num: '2.', title: 'Subscription, Fees & Payment', paras: [
+    'The Service is provided on a subscription basis at the price and billing cycle (monthly, quarterly or annual) stated in this invoice. Your subscription price is fixed for as long as your subscription remains continuously active, in accordance with the Founding Customer Guarantee. All prices exclude VAT, which will be added where applicable.',
+    'Subscription fees are payable in advance at the start of each billing cycle. One-off fees are payable on acceptance of this invoice. Where any payment is more than 7 days overdue, we may suspend access to the Service until it is paid in full, and we may charge interest and compensation on late payments under the Late Payment of Commercial Debts (Interest) Act 1998.',
   ]},
-  { num: '3.', title: 'Data & Privacy', paras: [
-    'You retain ownership of all client and business data entered into the Service. We process this data solely to provide the Service and will not sell or share it with third parties for marketing purposes.',
-    'Upon cancellation, you may request a full export of your data within 30 days. After this period, data may be permanently deleted from our systems.',
+  { num: '3.', title: 'Term, Cancellation & Refunds', paras: [
+    'This is a rolling agreement that renews automatically at the end of each billing cycle. You may cancel at any time by giving at least 14 days\' written notice before your next renewal date; cancellation takes effect at the end of the then-current billing period. No refunds are given for unused time in a billing period, including on annual and quarterly plans.',
+    'Money-back guarantee: if you cancel within 30 days of your first payment, we will refund the subscription fee from that first payment in full. One-off fees for onboarding, setup calls or custom work are non-refundable once that work has started. Founding price status is lost if a subscription lapses for more than 30 consecutive days.',
   ]},
-  { num: '4.', title: 'Service Availability', paras: [
-    'We aim to maintain high availability of the Service but do not guarantee uninterrupted access. Scheduled maintenance will be communicated in advance where reasonably possible.',
-    'As an early-stage platform, features may be added, modified, or occasionally withdrawn as the product develops, in which case we will give reasonable notice of any change materially affecting your use.',
+  { num: '4.', title: 'Your Responsibilities', paras: [
+    'You are responsible for all activity under your account, for keeping login details secure, for the accuracy and lawfulness of all data you and your staff enter, and for ensuring your trainers and clients use the Service in line with these terms.',
+    'You are solely responsible for the training, nutrition, health and coaching services you provide to your clients, and for holding appropriate qualifications and insurance for them.',
   ]},
-  { num: '5.', title: 'Acceptable Use', paras: [
-    'You agree to use the Service only for lawful purposes connected with the operation of a fitness training business, and not to attempt to reverse-engineer, resell, or sublicense the Service without prior written consent.',
+  { num: '5.', title: 'No Health, Medical or Professional Advice', paras: [
+    'The Service is a business management tool. Workout programmes, meal plans, progress data and any content generated by AI features are provided for information and convenience only and do not constitute medical, nutritional, health or professional advice. AI-generated content may be inaccurate or incomplete and must be reviewed by a suitably qualified professional before being relied on or shared with any client.',
+    'We accept no responsibility for any injury, illness or loss suffered by you or your clients arising from training, nutrition or other advice delivered using the Service.',
   ]},
-  { num: '6.', title: 'Intellectual Property', paras: [
-    'All software, design, and branding associated with the Service remain the exclusive property of DNI Ltd. Nothing in this agreement transfers any intellectual property rights to the Customer.',
+  { num: '6.', title: 'Data Protection', paras: [
+    'For personal data about your clients and staff that you enter into the Service, you are the data controller and we act as your data processor under UK GDPR and the Data Protection Act 2018. We will process that data only on your documented instructions to provide the Service, keep it confidential, apply appropriate technical and organisational security measures, use only sub-processors bound by equivalent obligations (such as our hosting and email providers), assist you with data subject requests where reasonably required, notify you without undue delay of any personal data breach, and delete or return the data at the end of the agreement.',
+    'Some data you may record, such as health, body-measurement and menstrual-cycle information, is special category data. You are responsible for having a lawful basis, including explicit consent where required, and for giving your clients appropriate privacy information before recording it.',
+    'You retain ownership of your data. We will not sell it or share it with third parties for marketing. On cancellation you may request a full export within 30 days, after which your data may be permanently deleted.',
   ]},
-  { num: '7.', title: 'Limitation of Liability', paras: [
-    'The Service is provided on an "as is" basis. To the fullest extent permitted by law, our total liability arising from or in connection with this agreement is limited to the total fees paid by you in the 3 months preceding the claim.',
-    'We are not liable for indirect, incidental, or consequential losses, including loss of profits, data, or business opportunity, except where such liability cannot be excluded by law.',
+  { num: '7.', title: 'Fair Use & Storage', paras: [
+    'Unlimited trainers and clients are included. Uploads of photos, video and voice notes are subject to fair use. If your usage materially exceeds typical use for a studio of your size, we will contact you to agree a reasonable solution, which may include archiving older media or an additional storage charge, before any limit is applied.',
   ]},
-  { num: '8.', title: 'Termination', paras: [
-    'We may suspend or terminate access immediately in cases of non-payment, breach of these terms, or misuse of the Service. Either party may terminate this agreement for convenience in accordance with Clause 2.',
+  { num: '8.', title: 'Custom Changes & Feature Requests', paras: [
+    'Priority feature requests and custom changes are delivered at our reasonable discretion as to scope, design and timing. We have no obligation to build any particular feature. All software, features and improvements we create, including those made at your request, remain our property and may be made available to other customers.',
   ]},
-  { num: '9.', title: 'Governing Law', paras: [
-    'This agreement is governed by the laws of England and Wales, and the parties submit to the exclusive jurisdiction of the courts of England and Wales in respect of any dispute arising from it.',
+  { num: '9.', title: 'Service Availability & Changes', paras: [
+    'We aim to keep the Service available but do not guarantee uninterrupted or error-free operation. Planned maintenance will be communicated in advance where reasonably possible. We are not responsible for outages or failures of third-party services, networks or devices outside our control.',
+    'As an early-stage platform, features may be added, changed or withdrawn as the product develops. We will give reasonable notice of any change that materially reduces the core functionality you use.',
+  ]},
+  { num: '10.', title: 'Acceptable Use', paras: [
+    'You must use the Service only for lawful purposes connected with your fitness business. You must not copy, reverse-engineer, resell, sublicense or attempt to gain unauthorised access to the Service, or upload unlawful, infringing or harmful content.',
+  ]},
+  { num: '11.', title: 'Intellectual Property & Confidentiality', paras: [
+    'All software, design, branding and know-how associated with the Service remain the exclusive property of DNI Ltd. You receive a non-exclusive, non-transferable licence to use the Service during your subscription. Each party will keep the other\'s confidential information confidential and use it only for the purposes of this agreement.',
+  ]},
+  { num: '12.', title: 'Limitation of Liability', paras: [
+    'Nothing in this agreement limits liability for death or personal injury caused by negligence, for fraud or fraudulent misrepresentation, or any other liability that cannot be limited by law.',
+    'Subject to that, the Service is provided "as is", and we are not liable for any loss of profits, revenue, business, goodwill, anticipated savings or data, or for any indirect or consequential loss. Our total liability arising from or in connection with this agreement, whether in contract, tort (including negligence) or otherwise, is limited to the total fees paid by you in the 12 months before the event giving rise to the claim.',
+  ]},
+  { num: '13.', title: 'Indemnity', paras: [
+    'You will indemnify us against any claims, losses and costs (including reasonable legal fees) arising from claims by your clients, staff or any third party in connection with the services you provide to them, the data or content you upload, or your breach of these terms or of data protection law.',
+  ]},
+  { num: '14.', title: 'Suspension & Termination', paras: [
+    'We may suspend or terminate your access immediately if you fail to pay any amount when due, materially breach these terms, misuse the Service, or become insolvent. Either party may end this agreement by cancellation under Clause 3. Clauses 5, 6, 11, 12, 13 and 16 survive termination.',
+  ]},
+  { num: '15.', title: 'Changes to These Terms', paras: [
+    'We may update these terms by giving you at least 30 days\' written notice. Changes will not alter your founding subscription price. If you do not accept a change, you may cancel before it takes effect.',
+  ]},
+  { num: '16.', title: 'General', paras: [
+    'This agreement, comprising this invoice and these terms, is the entire agreement between us and supersedes any prior discussions. Neither party is liable for delays caused by events beyond its reasonable control. If any provision is found unenforceable, the remainder continues in effect. No failure or delay in exercising a right is a waiver of it. You may not assign this agreement without our consent. No third party has rights under it. Signatures given electronically are valid and binding.',
+    'This agreement is governed by the laws of England and Wales, and the courts of England and Wales have exclusive jurisdiction over any dispute arising from it.',
   ]},
 ]
 
