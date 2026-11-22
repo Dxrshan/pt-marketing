@@ -381,9 +381,8 @@ export default function OfferPage() {
                         aria-label={`${x.label} amount`}
                       />
                     </span>
-                    {x.status === 'waived' && <div className="amt-note no-print"><s>{gbp(x.amount)}</s> FREE</div>}
-                    <span className="print-only">
-                      {x.status === 'waived' ? <><s className="struck">{gbp(x.amount)}</s> FREE</> : gbp(x.amount)}
+                                        <span className="print-only">
+                      {x.status === 'waived' ? 'Included' : gbp(x.amount)}
                     </span>
                   </td>
                 </tr>
