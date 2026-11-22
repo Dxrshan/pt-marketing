@@ -462,7 +462,14 @@ export default function OfferPage() {
 
           <div className="signs">
             <div><div className="sign-line" /><div className="sign-label">Studio signature &amp; date</div></div>
-            <div><div className="sign-line" /><div className="sign-label">For DNI Studios</div></div>
+            <div>
+              <div className="sign-line signed">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/signature.png" alt="Signed for DNI Studios" className="sign-img" />
+                {issued && <span className="sign-date">{issued}</span>}
+              </div>
+              <div className="sign-label">For DNI Studios</div>
+            </div>
           </div>
         </section>
         </div>
@@ -798,7 +805,10 @@ body { background: #eceef1; }
 .agree { font-size: 13px; line-height: 1.6; color: var(--muted); margin: 4px 0 48px; }
 .agree strong { color: var(--ink); font-weight: 600; }
 .signs { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
-.sign-line { border-bottom: 1px solid var(--ink); height: 44px; }
+.sign-line { border-bottom: 1px solid var(--ink); height: 72px; }
+.sign-line.signed { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+.sign-img { height: 84px; width: auto; margin: 0 0 -10px 12px; transform: rotate(-4deg); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.sign-date { font-size: 12.5px; color: var(--muted); padding-bottom: 6px; }
 .sign-label { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
 
 .sheet-foot {
