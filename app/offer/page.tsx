@@ -20,20 +20,20 @@ const yearlySaving = (rate: number) => (LIST_MONTHLY - rate) * 12
 
 const FEATURES: { name: string; detail: string; icon: keyof typeof FEATURE_ICONS; points: string[] }[] = [
   { name: 'Scheduling & calendar', detail: 'Book, reschedule and track every session', icon: 'calendar',
-    points: ['Session booking with double-booking protection', 'Calendar invites sent automatically', 'Email and push reminders', 'Live session mode with rest timer'] },
+    points: ['Session booking with double-booking protection', 'Calendar invites sent automatically', 'Email and push reminders'] },
   { name: 'Client tracking & progress', detail: 'Goals, metrics, workout logs and trends', icon: 'trend',
-    points: ['Workout programmes and session logs', 'Body metrics and progress photos', 'Before / after photo comparison', 'Daily check-ins and habit tracking'] },
+    points: ['Workout programmes and session logs', 'Body metrics and progress photos', 'Before / after photo comparison', 'Daily check-ins'] },
   { name: 'Payments & invoicing', detail: 'See who has paid at a glance', icon: 'card',
     points: ['Payment status for every client', 'Square card payments and payment links', 'Packages and memberships', 'Payment history per client'] },
   { name: 'Lead pipeline (CRM)', detail: 'From enquiry to signed client', icon: 'funnel',
-    points: ['Visual enquiry-to-client pipeline', 'Automated follow-up emails', 'Trial session tracking', 'Import your existing clients'] },
+    points: ['Visual enquiry-to-client pipeline', 'Automated follow-up emails'] },
   { name: 'Performance analytics', detail: 'Adherence and trends in one place', icon: 'chart',
     points: ['Studio dashboard and KPIs', 'Client adherence and attendance', 'Client at-a-glance summaries', 'Trends over time'] },
-  { name: 'Unlimited trainers & clients', detail: 'No per-seat fees, ever', icon: 'users',
+  { name: 'Unlimited trainers & clients', detail: 'No per-seat fees', icon: 'users',
     points: ['Branded client portal app', '7 roles with custom permissions', 'Unlimited trainer accounts', 'Unlimited client accounts'] },
 ]
 
-const EXTRAS = ['AI coaching assistant', 'Diet & meal plans', 'Form-check video review', 'Messaging & voice notes', 'Community feed & leaderboard', 'Apple Health step sync']
+const EXTRAS = ['AI coaching assistant', 'Diet & meal plans', 'Form-check video review', 'Messaging & voice notes', 'Community feed & leaderboard']
 
 const FEATURE_ICONS = {
   calendar: <><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" /><path d="M8 3v4M16 3v4M3.5 10h17M8 14h3" /></>,
@@ -53,9 +53,9 @@ type Extra = { id: string; label: string; amount: number; kind: Kind; status: St
 type Discount = { id: string; label: string; mode: 'pct' | 'fixed'; value: number; scope: Kind }
 
 const DEFAULT_EXTRAS: Extra[] = [
-  { id: 'onboard', label: 'Onboarding & data migration',     amount: 150, kind: 'once', status: 'waived', custom: false },
-  { id: 'call',    label: '1:1 setup call with the founder', amount: 75,  kind: 'once', status: 'waived', custom: false },
-  { id: 'support', label: 'Priority support, first 90 days', amount: 90,  kind: 'once', status: 'waived', custom: false },
+  { id: 'onboard', label: 'Onboarding & data migration',     amount: 99,  kind: 'once', status: 'waived', custom: false },
+  { id: 'call',    label: '1:1 setup call with the team',    amount: 75,  kind: 'once', status: 'waived', custom: false },
+  { id: 'support', label: 'Unlimited edits during your contract', amount: 90,  kind: 'once', status: 'waived', custom: false },
 ]
 
 const gbp = (n: number) =>
@@ -114,6 +114,20 @@ function useTween(value: number, ms = 450) {
     return () => cancelAnimationFrame(raf)
   }, [value, ms])
   return shown
+}
+
+/* Looks like a plain amount; click it to edit. */
+function EditableAmount({ value, onChange, label }: { value: number; onChange: (v: number) => void; label: string }) {
+  const [editing, setEditing] = useState(false)
+  if (!editing) {
+    return <button type="button" className="amt-edit" onClick={() => setEditing(true)} aria-label={`Edit ${label}`}>{gbp(value)}</button>
+  }
+  return (
+    <input autoFocus type="number" min={0} step="0.01" className="amt-input num" defaultValue={value} aria-label={label}
+      onFocus={e => e.target.select()}
+      onBlur={e => { onChange(Math.max(0, Number(e.target.value) || 0)); setEditing(false) }}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === 'Escape') (e.target as HTMLInputElement).blur() }} />
+  )
 }
 
 /* ─── Page ─────────────────────────────────────────────────────────────── */
@@ -283,7 +297,7 @@ export default function OfferPage() {
                 <h3 className="inc-title">Everything you need.<br /><span>Nothing held back.</span></h3>
               </div>
               <div className="inc-count num">
-                <strong>30+</strong>
+                <strong>25+</strong>
                 <span>features across<br />6 core modules</span>
               </div>
             </div>
@@ -344,16 +358,6 @@ export default function OfferPage() {
               )
             })}
           </div>
-          {term !== 'annual' && (
-            <button type="button" className="nudge no-print" onClick={() => setTerm('annual')}>
-              <span className="nudge-dot" aria-hidden="true" />
-              <span>
-                You&rsquo;re leaving <strong>£{yearlySaving(PLANS.annual.rate) - yearlySaving(plan.rate)} a year</strong> on the table.
-                {' '}Switch to Annual and pay £{PLANS.annual.rate}/mo instead of £{plan.rate}.
-              </span>
-              <span className="nudge-go">Switch &rarr;</span>
-            </button>
-          )}
         </section>
 
         {/* Quote */}
@@ -408,13 +412,8 @@ export default function OfferPage() {
                     )}
                   </td>
                   <td className="amt num">
-                    <span className="ctl-money no-print">
-                      <span>£</span>
-                      <input
-                        type="number" min={0} step="0.01" className="ctl ctl-amt num" value={x.amount}
-                        onChange={e => updateExtra(x.id, { amount: Math.max(0, Number(e.target.value) || 0) })}
-                        aria-label={`${x.label} amount`}
-                      />
+                    <span className="no-print">
+                      <EditableAmount value={x.amount} label={`${x.label} amount`} onChange={v => updateExtra(x.id, { amount: v })} />
                     </span>
                                         <span className="print-only">
                       {x.status === 'waived' ? 'Included' : gbp(x.amount)}
@@ -801,6 +800,12 @@ body { background: #eceef1; }
 .ctl:focus { outline: none; border-color: var(--ink); }
 .ctl-wide { width: 100%; max-width: 340px; }
 .ctl-amt { width: 96px; text-align: right; }
+.amt-edit { all: unset; cursor: text; font: inherit; color: inherit; font-weight: inherit; }
+.amt-input {
+  width: 90px; text-align: right; font: inherit; font-weight: inherit; color: inherit; padding: 0; margin: 0;
+  border: none; border-bottom: 1px solid var(--ink); background: transparent; outline: none; -moz-appearance: textfield;
+}
+.amt-input::-webkit-outer-spin-button, .amt-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .link-btn { border: none; background: transparent; color: var(--muted); font-size: 13px; cursor: pointer; padding: 6px 4px; }
 .link-btn:hover { color: var(--ink); text-decoration: underline; }
 
