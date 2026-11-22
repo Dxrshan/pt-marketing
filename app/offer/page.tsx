@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import BrandLogo from '../../components/BrandLogo'
+import SignaturePad, { SIGNATURE_PAD_CSS } from '../../components/SignaturePad'
 
 /* ─── Pricing data ─────────────────────────────────────────────────────── */
 
@@ -213,6 +214,9 @@ export default function OfferPage() {
 
   const dueShown = useTween(totals.dueToday)
 
+  const [signOpen, setSignOpen] = useState(false)
+  const [clientSig, setClientSig] = useState<{ src: string; at: Date } | null>(null)
+
   // The one negotiable discount in the bill: "20%" or "50" / "£50", off today's payment.
   const manual = discounts.find(d => d.id === 'manual')
   const setManual = (raw: string) => {
@@ -236,7 +240,9 @@ export default function OfferPage() {
 
   return (
     <div className="offer">
-      <style>{CSS}</style>
+      <style>{CSS + SIGNATURE_PAD_CSS}</style>
+      <SignaturePad open={signOpen} onClose={() => setSignOpen(false)} signer={contact || studio} reference={ref || autoRef}
+        onSign={src => { setClientSig({ src, at: new Date() }); setSignOpen(false); setTimeout(() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 350) }} />
 
       {/* ── Sheet 1: invoice ─────────────────────────────── */}
       <article className="sheet">
@@ -504,7 +510,7 @@ export default function OfferPage() {
                   <strong>{gbp(totals.discountTotal + totals.waivedValue)}</strong>
                 </div>
               )}
-              <button className="cta no-print" onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}>
+              <button className="cta no-print" onClick={() => setSignOpen(true)}>
                 Lock in my founding rate
               </button>
               <div className="cta-trust no-print">30-day money-back guarantee &middot; Rate fixed while you stay</div>
@@ -518,7 +524,21 @@ export default function OfferPage() {
           <p className="agree">By signing, {studio ? <strong>{studio}</strong> : 'the client named above'} accepts this invoice and the Terms &amp; Conditions that follow, which form part of this agreement.</p>
 
           <div className="signs">
-            <div><div className="sign-line" /><div className="sign-label">Client signature &amp; date</div></div>
+            <div>
+              <button type="button" className={`sign-line client-sign ${clientSig ? 'has-sig' : ''}`} onClick={() => setSignOpen(true)}
+                aria-label={clientSig ? 'Signed. Tap to sign again' : 'Tap to sign'}>
+                {clientSig ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={clientSig.src} src={clientSig.src} alt="Client signature" className="client-sig-img" />
+                ) : (
+                  <span className="tap-sign no-print">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M16.5 3.5l4 4L8 20l-5 1 1-5z" /></svg>
+                    Tap to sign
+                  </span>
+                )}
+              </button>
+              <div className="sign-label">{clientSig ? `Signed ${fmtDate(clientSig.at)}` : 'Client signature & date'}</div>
+            </div>
             <div>
               <div className="sign-line signed">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -663,7 +683,13 @@ body { background: #eceef1; }
   border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px 8px;
   background: linear-gradient(180deg, #ffffff, #fbfbfc);
 }
-.panel .label { margin-bottom: 2px; }
+.panel { overflow: hidden; }
+.panel .label {
+  margin: -16px -18px 8px; padding: 12px 18px; color: #c9cdd3; letter-spacing: .2em;
+  background: radial-gradient(140% 160% at 0% 0%, #30343c 0%, var(--steel-1) 35%, var(--steel-2) 75%, #0a0b0d 100%);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.panel .label::after { display: none; }
 .p-row {
   display: grid; grid-template-columns: 76px 1fr; align-items: center; gap: 10px;
   padding: 4px 0; border-top: 1px solid var(--line-soft); min-height: 32px;
@@ -945,6 +971,17 @@ body { background: #eceef1; }
 .sign-line.signed { position: relative; display: flex; align-items: flex-end; justify-content: center; }
 .sign-img { height: 84px; width: auto; margin: 0 0 -10px; transform: rotate(-4deg); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .sign-date { position: absolute; right: 0; bottom: 6px; font-size: 12.5px; color: var(--muted); }
+.client-sign { all: unset; box-sizing: border-box; display: flex; width: 100%; align-items: flex-end; justify-content: center; cursor: pointer;
+  border-bottom: 1px solid var(--ink); height: 72px; position: relative; border-radius: 10px 10px 0 0; transition: background .25s ease; }
+.client-sign:hover { background: #f6f7f9; }
+.client-sign:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+.tap-sign { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 14px; padding: 9px 16px; border-radius: 999px; font-size: 13px; font-weight: 600; color: #fff;
+  background: radial-gradient(140% 160% at 0% 0%, #3a3e46 0%, var(--steel-1) 45%, var(--steel-2) 100%); box-shadow: 0 10px 22px -12px rgba(17,19,24,.8);
+  animation: tap-pulse 2.4s ease-in-out infinite; }
+@keyframes tap-pulse { 0%, 100% { box-shadow: 0 10px 22px -12px rgba(17,19,24,.8), 0 0 0 0 rgba(17,19,24,.18); } 50% { box-shadow: 0 10px 22px -12px rgba(17,19,24,.8), 0 0 0 8px rgba(17,19,24,0); } }
+.client-sig-img { max-height: 84px; max-width: 90%; margin-bottom: -8px; animation: sig-in .9s cubic-bezier(.22,1,.36,1) both; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+@keyframes sig-in { from { clip-path: inset(0 100% 0 0); opacity: .4; } to { clip-path: inset(0 0 0 0); opacity: 1; } }
+@media print { .client-sign { background: none !important; } }
 .sign-label { font-size: 12.5px; color: var(--muted); margin-top: 8px; text-align: center; }
 
 .sheet-foot {
