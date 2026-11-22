@@ -284,6 +284,12 @@ export default function OfferPage() {
             <h1 className="doc-title">Invoice</h1>
             <div className="lh-sub">Founding studio offer</div>
           </div>
+          <div className="lh-meta num">
+            <div><span>Invoice no.</span><b className="mono">{ref || autoRef || '—'}</b></div>
+            <div><span>Issued</span><b>{issued || '—'}</b></div>
+            <div><span>{studio ? 'Billed to' : 'Plan'}</span><b>{studio || plan.label}</b></div>
+            <div className="lh-due"><span>Amount due</span><b>{gbp(totals.dueToday)}</b></div>
+          </div>
         </header>
 
         <div className="sheet-body">
@@ -426,13 +432,6 @@ export default function OfferPage() {
 
         {/* Quote */}
         <section className="part" id="quote">
-          <div className="p2-head print-only" aria-hidden="true">
-            <BrandLogo height={26} />
-            <div className="p2-meta">
-              <span>Invoice <b>{ref || autoRef}</b></span>
-              {studio && <span>{studio}</span>}
-            </div>
-          </div>
 
 
           <table className="lines">
@@ -486,6 +485,14 @@ export default function OfferPage() {
             </tbody>
           </table>
 
+          <div className="p2-wrap">
+          <div className="p2-head print-only" aria-hidden="true">
+            <BrandLogo height={26} />
+            <div className="p2-meta">
+              <span>Invoice <b>{ref || autoRef}</b></span>
+              {studio && <span>{studio}</span>}
+            </div>
+          </div>
           <div className="summary">
             <div className="summary-note">
               <div className="bank-wrap">
@@ -544,6 +551,7 @@ export default function OfferPage() {
               </button>
               <div className="cta-trust no-print">30-day money-back guarantee &middot; Rate fixed while you stay</div>
             </div>
+          </div>
           </div>
         </section>
 
@@ -692,6 +700,15 @@ body { background: #eceef1; }
   background: linear-gradient(90deg, #5c626b, #f2f4f7 30%, #8a9099 50%, #e4e7eb 70%, #5c626b);
 }
 .letterhead > * { position: relative; }
+.letterhead { flex-wrap: wrap; row-gap: 30px; }
+.lh-meta { flex-basis: 100%; display: grid; grid-template-columns: 1.1fr 1fr 1.2fr auto; gap: 24px; align-items: end;
+  padding-top: 22px; border-top: 1px solid rgba(255,255,255,.09); }
+.lh-meta span { display: block; font-size: 10px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #7d838c; margin-bottom: 6px; }
+.lh-meta b { display: block; font-size: 14px; font-weight: 500; color: #e8eaee; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lh-meta b.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; letter-spacing: .04em; }
+.lh-due { text-align: right; }
+.lh-due b { font-size: 30px; font-weight: 600; letter-spacing: -.02em; line-height: 1;
+  background: linear-gradient(180deg, #ffffff 0%, #e2e5e9 45%, #9aa0a8 60%, #eef0f2 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .lh-title { text-align: right; }
 .doc-title {
   font-family: var(--sans); font-weight: 600; font-size: 30px; line-height: 1;
@@ -704,9 +721,10 @@ body { background: #eceef1; }
 
 /* Section labels */
 .label {
-  display: flex; align-items: center; gap: 14px; font-family: var(--sans); font-size: 11px; font-weight: 600;
-  letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin: 0 0 16px;
+  display: flex; align-items: center; gap: 12px; font-family: var(--sans); font-size: 11px; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--ink); margin: 0 0 18px;
 }
+.part > .label::before { content: ""; width: 18px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, #111318, #8a9099); }
 .label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 
 /* Billed to / details panels */
@@ -865,15 +883,14 @@ body { background: #eceef1; }
 /* Line items */
 .lines { width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
 .lines th {
-  font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #c9cdd3;
-  text-align: left; padding: 13px 20px;
-  background: linear-gradient(180deg, #2a2d34 0%, #16181c 100%);
+  font-size: 10.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--faint);
+  text-align: left; padding: 14px 20px 12px; background: #fafbfc; border-bottom: 1px solid var(--line);
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
 .lines td { padding: 15px 20px; border-top: 1px solid var(--line-soft); vertical-align: top; font-size: 14.5px; background: #fff; }
 .lines tbody tr:first-child td { border-top: none; }
 .lines tbody tr:nth-child(even) td { background: #fafbfc; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-.lines th.amt { color: #c9cdd3; }
+.lines th.amt { color: var(--faint); }
 .lines .amt { text-align: right; white-space: nowrap; padding-left: 24px; color: var(--ink); font-weight: 600; }
 .th-title { font: inherit; letter-spacing: inherit; }
 .l-main { color: var(--ink); font-weight: 500; }
@@ -903,7 +920,7 @@ body { background: #eceef1; }
 .link-btn:hover { color: var(--ink); text-decoration: underline; }
 
 /* Summary */
-.summary { display: grid; grid-template-columns: 1fr 340px; gap: 32px; align-items: end; margin-top: 28px; }
+.summary { display: grid; grid-template-columns: 1fr 340px; gap: 36px; align-items: start; margin-top: 36px; }
 .summary-note h3 { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
 .bank-wrap { margin-bottom: 26px; }
 .bcard {
@@ -1106,10 +1123,17 @@ body { background: #eceef1; }
   .print-only { display: inline; }
   div.print-only { display: block; }
   .terms { break-before: page; }
-  @page { size: A4; margin: 12mm; }
+  /* margin 0 drops the browser's own date/URL header and footer */
+  @page { size: A4; margin: 0; }
   #included.selection { display: block !important; }
-  .sheet { zoom: .72; }
-  #quote { break-before: page; }
+  .sheet { zoom: .74; }
+  .lines, .inc { break-inside: avoid; }
+  .part { margin-top: 26px; }
+  .sheet-body { padding: 0 48px 40px; }
+  .letterhead { padding: 34px 48px 30px; }
+  .p2-wrap { break-before: page; padding-top: 40px; }
+  .sheet-foot { padding: 20px 48px; }
+  .lh-due b, .t-due-num { background: none !important; -webkit-text-fill-color: #fff; color: #fff; }
   .p2-head.print-only { display: flex; }
   .summary { align-items: start; }
   .doc-title, .inc-title, .inc-title span, .inc-count strong, .t-due-num {
