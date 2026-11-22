@@ -473,9 +473,12 @@ export default function OfferPage() {
               <p className="fair-use">Unlimited clients and trainers. Photo, video and voice-note uploads are subject to a fair-use storage policy; we will contact you before any limit affects your account.</p>
             </div>
             <div className="sum-card num">
-              <div className="t-row"><span>Subtotal</span><span>{gbp(totals.subtotal)}</span></div>
+              <div className="t-row"><span>Subtotal</span><span>{gbp(totals.subtotal + totals.waivedValue)}</span></div>
               {totals.discountTotal > 0 && (
                 <div className="t-row"><span>Discounts</span><span>−{gbp(totals.discountTotal)}</span></div>
+              )}
+              {totals.waivedValue > 0 && (
+                <div className="t-row"><span>Founding studio offer</span><span>−{gbp(totals.waivedValue)}</span></div>
               )}
               <div className="t-due">
                 <div className="t-due-label">Due today</div>
