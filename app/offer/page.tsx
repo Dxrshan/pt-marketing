@@ -248,9 +248,7 @@ export default function OfferPage() {
                 <dd className="ref-cell">
                   <input id="inv-ref" className="p-input ref-input" placeholder={autoRef || 'Generating…'} value={ref || autoRef} spellCheck={false}
                     onChange={e => setRef(e.target.value === autoRef ? '' : e.target.value)} />
-                  {ref
-                    ? <button type="button" className="ref-tag" onClick={() => setRef('')} title="Go back to the generated number">Reset</button>
-                    : <span className="ref-tag auto" title="Built from the studio, date, plan and client details">Auto</span>}
+                  {ref && <button type="button" className="ref-tag" onClick={() => setRef('')} title="Go back to the generated number">Reset</button>}
                 </dd>
               </div>
               <div className="p-row"><dt>Issued</dt><dd>{issued || '—'}</dd></div>
