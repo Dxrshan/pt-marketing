@@ -448,15 +448,25 @@ export default function OfferPage() {
 
           <div className="summary">
             <div className="summary-note">
-              <div className="bank">
+              <div className="bank-wrap">
                 <h3>Pay by bank transfer</h3>
-                <dl className="num">
-                  <div><dt>Bank</dt><dd>Monzo</dd></div>
-                  <div><dt>Account name</dt><dd>DNI Ltd</dd></div>
-                  <div><dt>Sort code</dt><dd>04-00-03</dd></div>
-                  <div><dt>Account no.</dt><dd>98336645</dd></div>
-                  <div className="bank-ref"><dt>Reference</dt><dd>{ref || autoRef || 'Your invoice number'}</dd></div>
-                </dl>
+                <div className="bcard" role="group" aria-label="Bank transfer details">
+                  <div className="bcard-top">
+                    <span className="bcard-bank">Monzo Business</span>
+                    <svg className="bcard-nfc" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+                      <path d="M8.5 7.5a6 6 0 0 1 0 9M12 5a9.5 9.5 0 0 1 0 14M15.5 2.5a13 13 0 0 1 0 19" />
+                    </svg>
+                  </div>
+                  <span className="bcard-chip" aria-hidden="true" />
+                  <div className="bcard-nums">
+                    <div><span className="bcard-k">Sort code</span><span className="bcard-v">04-00-03</span></div>
+                    <div><span className="bcard-k">Account no.</span><span className="bcard-v">98336645</span></div>
+                  </div>
+                  <div className="bcard-foot">
+                    <div><span className="bcard-k">Account name</span><span className="bcard-name">DNI LTD</span></div>
+                    <div className="right"><span className="bcard-k">Reference</span><span className="bcard-ref">{ref || autoRef || 'Invoice no.'}</span></div>
+                  </div>
+                </div>
               </div>
               <h3>Payment terms</h3>
               <p>Due on acceptance. Covered by a 30-day money-back guarantee, and your rate stays fixed for as long as you stay subscribed.</p>
@@ -503,10 +513,10 @@ export default function OfferPage() {
         {/* Acceptance */}
         <section className="part" id="signup">
           <h2 className="label">Acceptance</h2>
-          <p className="agree">By signing, {studio ? <strong>{studio}</strong> : 'the studio named above'} accepts this invoice and the Terms &amp; Conditions that follow, which form part of this agreement.</p>
+          <p className="agree">By signing, {studio ? <strong>{studio}</strong> : 'the client named above'} accepts this invoice and the Terms &amp; Conditions that follow, which form part of this agreement.</p>
 
           <div className="signs">
-            <div><div className="sign-line" /><div className="sign-label">Studio signature &amp; date</div></div>
+            <div><div className="sign-line" /><div className="sign-label">Client signature &amp; date</div></div>
             <div>
               <div className="sign-line signed">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -812,12 +822,39 @@ body { background: #eceef1; }
 /* Summary */
 .summary { display: grid; grid-template-columns: 1fr 340px; gap: 32px; align-items: end; margin-top: 28px; }
 .summary-note h3 { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
-.bank { border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px 10px; margin-bottom: 24px; max-width: 380px; background: #fafbfc; }
-.bank dl > div { display: grid; grid-template-columns: 110px 1fr; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line-soft); font-size: 13.5px; }
-.bank dl > div:first-child { border-top: none; }
-.bank dt { color: var(--faint); font-size: 12.5px; }
-.bank dd { color: var(--ink); font-weight: 600; letter-spacing: .02em; }
-.bank-ref dd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; }
+.bank-wrap { margin-bottom: 26px; }
+.bcard {
+  position: relative; overflow: hidden; width: 100%; max-width: 380px; aspect-ratio: 1.586; border-radius: 18px; padding: 20px 22px;
+  display: flex; flex-direction: column; justify-content: space-between; color: #eef1f4;
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(255,255,255,.14), transparent 55%),
+    radial-gradient(90% 120% at 0% 100%, rgba(47,123,255,.18), transparent 60%),
+    linear-gradient(135deg, #1d2230 0%, #121620 55%, #0b0d13 100%);
+  box-shadow: 0 24px 44px -22px rgba(17,19,24,.75), inset 0 1px 0 rgba(255,255,255,.12);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.bcard::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+  background: repeating-linear-gradient(115deg, rgba(255,255,255,.025) 0 2px, transparent 2px 6px); }
+.bcard > * { position: relative; z-index: 1; }
+.bcard-top { display: flex; justify-content: space-between; align-items: center; }
+.bcard-bank { font-size: 13px; font-weight: 700; letter-spacing: .02em; }
+.bcard-nfc { color: rgba(255,255,255,.7); }
+.bcard-chip {
+  width: 42px; height: 32px; border-radius: 7px; margin-top: 6px;
+  background: linear-gradient(135deg, #f2d991 0%, #c9a24a 45%, #f6e3a8 70%, #b38a35 100%);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.2);
+  -webkit-mask: linear-gradient(#000 0 0); mask: linear-gradient(#000 0 0);
+  background-image: linear-gradient(90deg, transparent 32%, rgba(0,0,0,.25) 32% 34%, transparent 34% 66%, rgba(0,0,0,.25) 66% 68%, transparent 68%),
+    linear-gradient(0deg, transparent 47%, rgba(0,0,0,.25) 47% 53%, transparent 53%),
+    linear-gradient(135deg, #f2d991 0%, #c9a24a 45%, #f6e3a8 70%, #b38a35 100%);
+}
+.bcard-nums { display: flex; gap: 28px; }
+.bcard-k { display: block; font-size: 9.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: rgba(238,241,244,.55); margin-bottom: 3px; }
+.bcard-v { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 20px; letter-spacing: .08em; color: #fff; text-shadow: 0 1px 0 rgba(0,0,0,.5), 0 -1px 0 rgba(255,255,255,.15); }
+.bcard-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.bcard-foot .right { text-align: right; min-width: 0; }
+.bcard-name { font-size: 14px; font-weight: 600; letter-spacing: .14em; }
+.bcard-ref { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; letter-spacing: .02em; white-space: nowrap; }
 .summary-note p.fair-use { margin-top: 10px; font-size: 11.5px; color: var(--faint); }
 .summary-note p { font-size: 13px; line-height: 1.65; color: var(--muted); max-width: 300px; }
 .sum-card {
@@ -967,10 +1004,10 @@ body { background: #eceef1; }
   @page { size: A4; margin: 12mm; }
   #included.selection { display: block !important; }
   .sheet { zoom: .78; }
-  .features > li, .sum-card, .bank, .signs, .parties .panel, .lines tr, .inc-head, .inc-extras, .summary, #signup { break-inside: avoid; }
+  .features > li, .sum-card, .bcard, .signs, .parties .panel, .lines tr, .inc-head, .inc-extras, .summary, #signup { break-inside: avoid; }
   .part { margin-top: 32px; }
   .p-input { border-color: transparent !important; box-shadow: none !important; background: transparent !important; }
-  .inc, .bank, .f-icon, .f-points li::before { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .inc, .bcard, .f-icon, .f-points li::before { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .inc { box-shadow: none; }
   .features > li:hover { background: #fff; }
 }
