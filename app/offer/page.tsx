@@ -459,6 +459,7 @@ export default function OfferPage() {
               </div>
               <h3>Payment terms</h3>
               <p>Due on acceptance. Covered by a 30-day money-back guarantee, and your rate stays fixed for as long as you stay subscribed.</p>
+              <p className="fair-use">Unlimited clients and trainers. Photo, video and voice-note uploads are subject to a fair-use storage policy; we will contact you before any limit affects your account.</p>
             </div>
             <div className="sum-card num">
               <div className="t-row"><span>Subtotal</span><span>{gbp(totals.subtotal)}</span></div>
@@ -807,6 +808,7 @@ body { background: #eceef1; }
 .bank dt { color: var(--faint); font-size: 12.5px; }
 .bank dd { color: var(--ink); font-weight: 600; letter-spacing: .02em; }
 .bank-ref dd { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; }
+.summary-note p.fair-use { margin-top: 10px; font-size: 11.5px; color: var(--faint); }
 .summary-note p { font-size: 13px; line-height: 1.65; color: var(--muted); max-width: 300px; }
 .sum-card {
   position: relative; overflow: hidden; border-radius: 16px; padding: 22px 24px 24px; color: #c8ccd2;
