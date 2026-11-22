@@ -6,7 +6,7 @@ import { SectionHead, Counter, Reveal, SpotlightCard, Icon } from './fx'
 const FACTS = [
   { value: 10, suffix: ' min', prefix: '<', label: 'to set up your studio' },
   { value: 0, prefix: '£', suffix: '', label: 'per-trainer or per-client fees' },
-  { value: 30, suffix: ' days', prefix: '', label: 'free trial, no card' },
+  { value: 30, suffix: ' days', prefix: '', label: 'money-back guarantee' },
   { value: 100, suffix: '%', prefix: '', label: 'of features on every plan' },
 ]
 

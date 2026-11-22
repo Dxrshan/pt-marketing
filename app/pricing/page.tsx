@@ -9,7 +9,7 @@ import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd'
 
 export const metadata: Metadata = {
   title: 'Personal Trainer Software Pricing & Plans',
-  description: 'Simple pricing for PT studios: one plan with every feature, from £49/month. Unlimited trainers and clients, free 30-day trial, no setup fees for founding studios.',
+  description: 'Simple pricing for PT studios: one plan with every feature, from £49/month. Unlimited trainers and clients, 30-day money-back guarantee, no setup fees for founding studios.',
   alternates: { canonical: '/pricing' },
   openGraph: {
     title: 'DNI Studios Pricing: one plan, everything included', url: '/pricing', siteName: 'DNI Studios', type: 'website', locale: 'en_GB',

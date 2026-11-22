@@ -155,7 +155,7 @@ export function CineHero() {
           </h1>
           <div className="hero-in hero-in-cta" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 40 }}>
             <a href="#waitlist" className="btn-spectrum magnetic" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 30px', borderRadius: 999, fontSize: 16, textDecoration: 'none' }}>
-              Start free trial <Icon name="arrow" size={17} />
+              Get early access <Icon name="arrow" size={17} />
             </a>
           </div>
         </motion.div>
@@ -428,7 +428,7 @@ function SeatsVisual() {
   )
 }
 
-/* Trial: a month of days lighting up, card not required. */
+/* Guarantee: a month of days lighting up, full refund inside it. */
 function TrialVisual() {
   return (
     <div style={{ width: '100%', maxWidth: 340 }}>
@@ -446,10 +446,9 @@ function TrialVisual() {
       <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 1.6, ease: EASE }}
         style={{ marginTop: 18, display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', borderRadius: 14, background: 'rgba(255,79,163,0.08)', border: '1px solid rgba(255,79,163,0.22)', fontSize: 14, color: '#f3d7e5' }}>
         <span style={{ position: 'relative', display: 'inline-flex', color: '#ffb3d6' }}>
-          <Icon name="card" size={20} />
-          <span style={{ position: 'absolute', left: -2, right: -2, top: '50%', height: 2, background: '#ff4fa3', transform: 'rotate(-30deg)', borderRadius: 2 }} />
+          <Icon name="shield" size={20} />
         </span>
-        No card. Nothing to cancel.
+        Full refund. No questions asked.
       </motion.div>
     </div>
   )
@@ -501,7 +500,7 @@ export function BigNumbers() {
           <StatCard tone="violet" span={5} delay={0.1} num={<Counter to={0} prefix="£" />} label="per-seat fees, ever" sub="Unlimited trainers and unlimited clients. Grow the team without growing the bill.">
             <SeatsVisual />
           </StatCard>
-          <StatCard tone="pink" span={5} delay={0.1} num={<Counter to={30} duration={2} />} unit="days" label="free trial, no card" sub="Every feature, fully unlocked. If it is not for you, just walk away.">
+          <StatCard tone="pink" span={5} delay={0.1} num={<Counter to={30} duration={2} />} unit="days" label="money-back guarantee" sub="Every feature from day one. Not for you? Cancel within 30 days for a full refund of your subscription.">
             <TrialVisual />
           </StatCard>
           <StatCard tone="amber" span={7} delay={0.2} num={<Counter to={1} duration={1.2} />} unit="app" label="instead of five" sub="Bookings, payments, programmes, check-ins and chat, all in one place.">

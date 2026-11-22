@@ -1,8 +1,8 @@
 const FAQS: [string, string][] = [
   ['How much does DNI Studios cost?',
    'Founding studios pay £69 a month on the monthly plan, £59 a month on quarterly billing (£177 every 3 months) or £49 a month on annual billing (£588 a year). Every plan includes every feature.'],
-  ['Is there a free trial?',
-   'Yes. You get a free 30-day trial with no credit card needed, so you can run your studio on it before paying anything.'],
+  ['Is there a money-back guarantee?',
+   'Yes. If DNI Studios isn\'t right for you, cancel within 30 days of your first payment and we\'ll refund your subscription in full, no questions asked.'],
   ['Do you charge per trainer or per client?',
    'No. Unlimited trainers and unlimited clients are included. There are no per-seat fees, ever.'],
   ['Are there setup fees?',

@@ -196,7 +196,7 @@ export default function Hero() {
           style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 38 }}
         >
           <a href="#waitlist" className="btn-steel" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 28px', borderRadius: 14, fontSize: 16, textDecoration: 'none' }}>
-            Start your free trial <Icon name="arrow" size={17} />
+            Get early access <Icon name="arrow" size={17} />
           </a>
           <a href="/features" className="btn-ghost" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 26px', borderRadius: 14, fontSize: 16, fontWeight: 600, textDecoration: 'none' }}>
             Explore features
@@ -207,7 +207,7 @@ export default function Hero() {
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 1.3 }}
           style={{ display: 'flex', gap: 22, justifyContent: 'center', flexWrap: 'wrap', marginTop: 22, fontSize: 13.5, color: 'var(--text-subtle)' }}
         >
-          {['30-day free trial', 'No card needed', 'Unlimited clients', 'UK-built'].map(t => (
+          {['30-day money-back guarantee', 'No lock-in', 'Unlimited clients', 'UK-built'].map(t => (
             <span key={t} style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}><Icon name="check" size={14} style={{ color: 'var(--steel-2)' }} />{t}</span>
           ))}
         </motion.div>

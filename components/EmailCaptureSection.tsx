@@ -92,7 +92,7 @@ export default function EmailCaptureSection() {
                 {loading ? 'Securing your spot…' : <>Secure my founding spot <Icon name="arrow" size={17} /></>}
               </button>
               <p style={{ fontSize: 13, color: 'var(--text-subtle)', marginTop: 14, textAlign: 'center' }}>
-                30-day free trial · No card · Cancel anytime
+                30-day money-back guarantee · No lock-in
               </p>
             </motion.form>
           ) : (
