@@ -111,63 +111,6 @@ function useTween(value: number, ms = 450) {
   return shown
 }
 
-/* Bank details as a card; tap to flip for a QR code + copy buttons. */
-const BANK = { name: 'DNI Ltd', sort: '04-00-03', account: '98336645' }
-function BankCard({ reference, amount }: { reference: string; amount: number }) {
-  const [flipped, setFlipped] = useState(false)
-  const [qr, setQr] = useState('')
-  const [copied, setCopied] = useState('')
-  const payload = `Pay DNI Ltd by bank transfer\nSort code: ${BANK.sort}\nAccount no: ${BANK.account}\nReference: ${reference}\nAmount: ${gbp(amount)}`
-  useEffect(() => {
-    let live = true
-    import('qrcode').then(Q => Q.toString(payload, { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#111318', light: '#ffffff' } }))
-      .then(svg => { if (live) setQr(svg) }).catch(() => {})
-    return () => { live = false }
-  }, [payload])
-  const copy = (label: string, value: string) => (e: React.MouseEvent) => {
-    e.stopPropagation()
-    navigator.clipboard?.writeText(value).then(() => { setCopied(label); setTimeout(() => setCopied(''), 1400) }).catch(() => {})
-  }
-  return (
-    <div className={`bflip ${flipped ? 'flipped' : ''}`} onClick={() => setFlipped(f => !f)} role="button" tabIndex={0}
-      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setFlipped(f => !f) } }}
-      aria-label={flipped ? 'Show card front' : 'Show QR code and copy options'}>
-      <div className="bflip-inner">
-        <div className="bcard bface front">
-          <div className="bcard-top">
-            <span className="bcard-bank">Monzo Business</span>
-            <span className="bcard-qr-hint no-print">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><path d="M14 14h3v3M21 14v.01M17 21h4v-4M14 21v-3" /></svg>
-              Tap for QR
-            </span>
-          </div>
-          <span className="bcard-chip" aria-hidden="true" />
-          <div className="bcard-nums">
-            <div><span className="bcard-k">Sort code</span><span className="bcard-v">{BANK.sort}</span></div>
-            <div><span className="bcard-k">Account no.</span><span className="bcard-v">{BANK.account}</span></div>
-          </div>
-          <div className="bcard-foot">
-            <div><span className="bcard-k">Account name</span><span className="bcard-name">DNI LTD</span></div>
-            <div className="right"><span className="bcard-k">Reference</span><span className="bcard-ref">{reference}</span></div>
-          </div>
-        </div>
-        <div className="bcard bface back" aria-hidden={!flipped}>
-          <div className="bqr" dangerouslySetInnerHTML={{ __html: qr }} />
-          <div className="bback-info">
-            <div className="bcard-k">Scan with phone camera</div>
-            <div className="bback-amt">{gbp(amount)}</div>
-            {([['Sort code', BANK.sort], ['Account', BANK.account], ['Reference', reference]] as const).map(([k, v]) => (
-              <button type="button" key={k} className="bcopy" onClick={copy(k, v)} tabIndex={flipped ? 0 : -1}>
-                <span>{k === 'Reference' ? 'Ref' : k}</span><b>{copied === k ? 'Copied ✓' : v}</b>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 /* Discount in the bill: shows "Add" until set; type 20% or 50. */
 function DiscountField({ amount, current, onSet }: { amount: number; current: string; onSet: (raw: string) => void }) {
   const [editing, setEditing] = useState(false)
@@ -500,7 +443,23 @@ export default function OfferPage() {
             <div className="summary-note">
               <div className="bank-wrap">
                 <h3>Pay by bank transfer</h3>
-                <BankCard reference={ref || autoRef} amount={totals.dueToday} />
+                <div className="bcard" role="group" aria-label="Bank transfer details">
+                  <div className="bcard-top">
+                    <span className="bcard-bank">Monzo Business</span>
+                    <svg className="bcard-nfc" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+                      <path d="M8.5 7.5a6 6 0 0 1 0 9M12 5a9.5 9.5 0 0 1 0 14M15.5 2.5a13 13 0 0 1 0 19" />
+                    </svg>
+                  </div>
+                  <span className="bcard-chip" aria-hidden="true" />
+                  <div className="bcard-nums">
+                    <div><span className="bcard-k">Sort code</span><span className="bcard-v">04-00-03</span></div>
+                    <div><span className="bcard-k">Account no.</span><span className="bcard-v">98336645</span></div>
+                  </div>
+                  <div className="bcard-foot">
+                    <div><span className="bcard-k">Account name</span><span className="bcard-name">DNI LTD</span></div>
+                    <div className="right"><span className="bcard-k">Reference</span><span className="bcard-ref">{ref || autoRef || 'Invoice no.'}</span></div>
+                  </div>
+                </div>
               </div>
               <h3>Payment terms</h3>
               <p>Due on acceptance. Covered by a 30-day money-back guarantee, and your rate stays fixed for as long as you stay subscribed.</p>
@@ -908,23 +867,6 @@ body { background: #eceef1; }
 .bcard::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
   background: repeating-linear-gradient(115deg, rgba(255,255,255,.025) 0 2px, transparent 2px 6px); }
 .bcard > * { position: relative; z-index: 1; }
-.bflip { perspective: 1400px; width: 100%; max-width: 380px; aspect-ratio: 1.586; cursor: pointer; outline: none; }
-.bflip:focus-visible .bflip-inner { box-shadow: 0 0 0 3px rgba(17,19,24,.25); border-radius: 18px; }
-.bflip-inner { position: relative; width: 100%; height: 100%; transition: transform .8s cubic-bezier(.22,1,.36,1); transform-style: preserve-3d; }
-.bflip.flipped .bflip-inner { transform: rotateY(180deg); }
-.bflip:not(.flipped):hover .bflip-inner { transform: rotateY(-6deg) rotateX(3deg); }
-.bface { position: absolute !important; inset: 0; max-width: none !important; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
-.bface.back { transform: rotateY(180deg); flex-direction: row !important; align-items: center; gap: 18px; }
-.bqr { flex-shrink: 0; width: 42%; aspect-ratio: 1; padding: 10px; border-radius: 12px; background: #fff; box-shadow: 0 8px 20px -10px rgba(0,0,0,.6); }
-.bqr svg { display: block; width: 100%; height: 100%; }
-.bback-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
-.bback-amt { font-size: 22px; font-weight: 700; letter-spacing: -.02em; color: #fff; margin-bottom: 4px; }
-.bcopy { all: unset; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; padding: 6px 9px; border-radius: 8px; font-size: 11px;
-  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); color: rgba(238,241,244,.6); transition: background .2s ease; }
-.bcopy:hover { background: rgba(255,255,255,.14); }
-.bcopy b { color: #fff; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.bcard-qr-hint { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: rgba(238,241,244,.75); padding: 4px 9px; border-radius: 999px; background: rgba(255,255,255,.08); }
-@media print { .bflip-inner { transform: none !important; } .bface.back { display: none !important; } }
 .bcard-top { display: flex; justify-content: space-between; align-items: center; }
 .bcard-bank { font-size: 13px; font-weight: 700; letter-spacing: .02em; }
 .bcard-nfc { color: rgba(255,255,255,.7); }
