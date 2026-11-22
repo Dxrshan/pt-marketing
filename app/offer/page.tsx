@@ -453,20 +453,10 @@ export default function OfferPage() {
               <tr>
                 <td>
                   <div className="l-main">DNI Studios platform, {plan.label.toLowerCase()}</div>
-                  <div className="l-sub num">{`${plan.months} ${plan.months === 1 ? 'month' : 'months'} at ${gbp(LIST_MONTHLY)} · Recurring`}</div>
+                  <div className="l-sub num">{`${plan.months} ${plan.months === 1 ? 'month' : 'months'} at ${gbp(plan.rate)} · Recurring`}</div>
                 </td>
-                <td className="amt num">{gbp(totals.listSub)}</td>
+                <td className="amt num">{gbp(plan.rate * plan.months)}</td>
               </tr>
-
-              {totals.termSaving > 0 && (
-                <tr>
-                  <td>
-                    <div className="l-main">{plan.label} rate</div>
-                    <div className="l-sub num">{`${gbp(plan.rate)} a month instead of ${gbp(LIST_MONTHLY)} · Recurring`}</div>
-                  </td>
-                  <td className="amt num">−{gbp(totals.termSaving)}</td>
-                </tr>
-              )}
 
               {visibleExtras.map(x => (
                 <tr key={x.id} className={x.status === 'removed' ? 'removed' : ''}>
