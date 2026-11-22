@@ -142,8 +142,9 @@ export default function SignaturePad({ open, onClose, onSign, signer, reference 
     ctx.setTransform(scale, 0, 0, scale, -minX * scale, -minY * scale)
     // The invoice shows the signature ~84px tall, so a big signature gets shrunk a lot.
     // Thicken the ink by the same factor so it lands on the line as bold as it was drawn.
-    const shrink = Math.max(1, Math.min((maxY - minY) / 84, (maxX - minX) / 300))
-    strokes.current.forEach(s => drawStroke(ctx, s, Math.min(shrink, 4)))
+    // Displayed size is capped by height (84px) and width (~300px); whichever bites harder sets the shrink.
+    const shrink = Math.max(1, (maxY - minY) / 84, (maxX - minX) / 300)
+    strokes.current.forEach(s => drawStroke(ctx, s, Math.min(shrink, 5) * 0.5))
     onSign(out.toDataURL('image/png'))
   }
 
