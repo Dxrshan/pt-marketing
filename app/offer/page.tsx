@@ -18,14 +18,22 @@ type Term = keyof typeof PLANS
 // What a plan keeps in the studio's pocket over a year, against monthly.
 const yearlySaving = (rate: number) => (LIST_MONTHLY - rate) * 12
 
-const FEATURES: { name: string; detail: string; icon: keyof typeof FEATURE_ICONS; tone: string }[] = [
-  { name: 'Scheduling & calendar',        detail: 'Book, reschedule and track every session', icon: 'calendar', tone: '#2f7bff' },
-  { name: 'Client tracking & progress',   detail: 'Goals, metrics, workout logs and trends',  icon: 'trend',    tone: '#8b5cff' },
-  { name: 'Payments & invoicing',         detail: 'See who has paid at a glance',             icon: 'card',     tone: '#16a37b' },
-  { name: 'Lead pipeline (CRM)',          detail: 'From enquiry to signed client',            icon: 'funnel',   tone: '#ff4fa3' },
-  { name: 'Performance analytics',        detail: 'Adherence and trends in one place',        icon: 'chart',    tone: '#ff8a3d' },
-  { name: 'Unlimited trainers & clients', detail: 'No per-seat fees, ever',                   icon: 'users',    tone: '#111318' },
+const FEATURES: { name: string; detail: string; icon: keyof typeof FEATURE_ICONS; points: string[] }[] = [
+  { name: 'Scheduling & calendar', detail: 'Book, reschedule and track every session', icon: 'calendar',
+    points: ['Session booking with double-booking protection', 'Calendar invites sent automatically', 'Email and push reminders', 'Live session mode with rest timer'] },
+  { name: 'Client tracking & progress', detail: 'Goals, metrics, workout logs and trends', icon: 'trend',
+    points: ['Workout programmes and session logs', 'Body metrics and progress photos', 'Before / after photo comparison', 'Daily check-ins and habit tracking'] },
+  { name: 'Payments & invoicing', detail: 'See who has paid at a glance', icon: 'card',
+    points: ['Payment status for every client', 'Square card payments and payment links', 'Packages and memberships', 'Payment history per client'] },
+  { name: 'Lead pipeline (CRM)', detail: 'From enquiry to signed client', icon: 'funnel',
+    points: ['Visual enquiry-to-client pipeline', 'Automated follow-up emails', 'Trial session tracking', 'Import your existing clients'] },
+  { name: 'Performance analytics', detail: 'Adherence and trends in one place', icon: 'chart',
+    points: ['Studio dashboard and KPIs', 'Client adherence and attendance', 'Client at-a-glance summaries', 'Trends over time'] },
+  { name: 'Unlimited trainers & clients', detail: 'No per-seat fees, ever', icon: 'users',
+    points: ['Branded client portal app', '7 roles with custom permissions', 'Unlimited trainer accounts', 'Unlimited client accounts'] },
 ]
+
+const EXTRAS = ['AI coaching assistant', 'Diet & meal plans', 'Form-check video review', 'Messaging & voice notes', 'Community feed & leaderboard', 'Apple Health step sync']
 
 const FEATURE_ICONS = {
   calendar: <><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" /><path d="M8 3v4M16 3v4M3.5 10h17M8 14h3" /></>,
@@ -275,8 +283,8 @@ export default function OfferPage() {
                 <h3 className="inc-title">Everything you need.<br /><span>Nothing held back.</span></h3>
               </div>
               <div className="inc-count num">
-                <strong>6</strong>
-                <span>core modules<br />on every plan</span>
+                <strong>30+</strong>
+                <span>features across<br />6 core modules</span>
               </div>
             </div>
             <ul className="features">
@@ -290,9 +298,16 @@ export default function OfferPage() {
                   </div>
                   <span className="f-name">{f.name}</span>
                   <span className="f-det">{f.detail}</span>
+                  <ul className="f-points">
+                    {f.points.map(pt => <li key={pt}>{pt}</li>)}
+                  </ul>
                 </li>
               ))}
             </ul>
+            <div className="inc-extras">
+              <span className="inc-extras-label">Also included</span>
+              {EXTRAS.map(x => <span key={x} className="inc-pill">{x}</span>)}
+            </div>
             <div className="inc-foot">
               {['No tiers', 'No add-ons', 'No per-seat fees', 'Every update included'].map(t => (
                 <span key={t}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>{t}</span>
@@ -737,8 +752,8 @@ body { background: #eceef1; }
   list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
   background: var(--line-soft); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft);
 }
-.features li { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 22px 24px 24px; background: #fff; transition: background .25s ease; }
-.features li:hover { background: #fafbfc; }
+.features > li { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 22px 24px 24px; background: #fff; transition: background .25s ease; }
+.features > li:hover { background: #fafbfc; }
 .f-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
 .f-icon {
   width: 42px; height: 42px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center;
@@ -749,6 +764,16 @@ body { background: #eceef1; }
 .f-num { font-size: 11px; letter-spacing: .14em; color: #c2c6cc; }
 .f-name { font-size: 14.5px; font-weight: 600; color: var(--ink); letter-spacing: -.01em; }
 .f-det { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.f-points { list-style: none; margin: 12px 0 0; padding: 12px 0 0; border-top: 1px dashed var(--line); display: grid; gap: 7px; }
+.f-points li { position: relative; padding-left: 20px; font-size: 12.5px; color: var(--text); line-height: 1.4; }
+.f-points li::before {
+  content: ""; position: absolute; left: 0; top: 2px; width: 13px; height: 13px; border-radius: 50%;
+  background: #16a35a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 9px no-repeat;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.inc-extras { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 18px 24px; border-bottom: 1px solid var(--line-soft); }
+.inc-extras-label { font-size: 10.5px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--faint); margin-right: 6px; }
+.inc-pill { font-size: 12.5px; font-weight: 500; color: var(--ink); padding: 6px 12px; border-radius: 999px; background: #f4f5f7; border: 1px solid var(--line); }
 .inc-foot { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 24px; padding: 14px 24px; background: #fafbfc; font-size: 12px; color: var(--muted); }
 .inc-foot span { display: inline-flex; align-items: center; gap: 7px; }
 .inc-foot svg { color: #16a35a; }
@@ -890,7 +915,7 @@ body { background: #eceef1; }
   .features { grid-template-columns: 1fr 1fr; }
   .inc-head { flex-direction: column; align-items: flex-start; padding: 24px 22px 20px; }
   .inc-title { font-size: 21px; }
-  .features li { padding: 20px; }
+  .features > li { padding: 20px; }
   .summary { grid-template-columns: 1fr; gap: 20px; }
   .signs { grid-template-columns: 1fr; gap: 24px; }
   .sheet-foot { padding: 16px 20px; flex-direction: column; gap: 4px; }
@@ -900,9 +925,10 @@ body { background: #eceef1; }
 
 @media (max-width: 480px) {
   .features { grid-template-columns: 1fr; }
-  .features li { display: grid; grid-template-columns: 46px 1fr; column-gap: 16px; row-gap: 3px; padding: 18px 20px; }
+  .features > li { display: grid; grid-template-columns: 46px 1fr; column-gap: 16px; row-gap: 3px; padding: 18px 20px; }
   .f-top { grid-row: span 2; margin: 0; }
   .f-num { display: none; }
+  .f-points { grid-column: 2; }
 }
 @media (prefers-reduced-motion: reduce) {
   .offer *, .offer *::before, .offer *::after { transition: none !important; }
