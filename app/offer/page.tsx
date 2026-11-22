@@ -350,7 +350,7 @@ export default function OfferPage() {
 
           <table className="lines">
             <thead>
-              <tr><th><h2 className="th-title">Quote</h2></th><th className="amt">Amount</th></tr>
+              <tr><th><h2 className="th-title">Your investment</h2></th><th className="amt">Amount</th></tr>
             </thead>
             <tbody>
               <tr>
