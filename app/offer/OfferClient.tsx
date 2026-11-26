@@ -403,9 +403,9 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                     ) : (
                       <div className="l-main">{x.label}{x.qty === 0 && <span className="opt-tag">Optional</span>}</div>
                     )}
-                    <div className="l-sub">
-                      {x.status === 'removed' ? 'Removed' : x.qty === 0 ? `Optional · ${gbp(x.amount)} · ${kindWord(x.kind)}` : x.qty > 1 ? `${x.qty} × ${gbp(x.amount)} · ${kindWord(x.kind)}` : x.amount < x.list ? (x.amount === 0 ? 'Waived for your studio' : `Reduced from ${gbp(x.list)} for your studio`) : kindWord(x.kind)}
-                    </div>
+                    {x.qty > 0 && <div className="l-sub">
+                      {x.status === 'removed' ? 'Removed' : x.qty > 1 ? `${x.qty} × ${gbp(x.amount)} · ${kindWord(x.kind)}` : x.amount < x.list ? (x.amount === 0 ? 'Waived for your studio' : `Reduced from ${gbp(x.list)} for your studio`) : kindWord(x.kind)}
+                    </div>}
                     {x.custom && (
                       <div className="ctls no-print">
                         <select className="ctl" value={x.kind} onChange={e => updateExtra(x.id, { kind: e.target.value as Kind })} aria-label="Charge type">
@@ -439,20 +439,18 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
               <tr className={aiQty > 0 ? '' : 'optional'}>
                 <td>
                   <div className="l-main">AI Coach add-on{aiQty === 0 && <span className="opt-tag">Optional</span>}</div>
-                  <div className="l-sub num">
-                    {aiQty > 0
-                      ? `${aiQty > 1 ? `${aiQty} × ` : ''}${plan.months} ${plan.months === 1 ? 'month' : 'months'} at ${gbp(AI_ADDON_RATE)} · Recurring · 24/7 AI assistant for you and your clients`
-                      : `Optional · ${gbp(AI_ADDON_RATE)}/mo · 24/7 AI assistant for you and your clients`}
-                  </div>
+                  {aiQty > 0 && <div className="l-sub num">
+                    {`${aiQty > 1 ? `${aiQty} × ` : ''}${plan.months} ${plan.months === 1 ? 'month' : 'months'} at ${gbp(AI_ADDON_RATE)} · 24/7 AI assistant for you and your clients`}
+                  </div>}
                 </td>
                 <td className="qty-col"><QtyStepper value={aiQty} label="AI Coach add-on" onChange={setAiQty} /></td>
-                <td className="amt num">{aiQty > 0 ? gbp(totals.aiAddon) : '—'}</td>
+                <td className="amt num">{aiQty > 0 ? gbp(totals.aiAddon) : `${gbp(AI_ADDON_RATE)}/mo`}</td>
               </tr>
 
               <tr className={feedbackOn ? '' : 'optional'}>
                 <td>
                   <div className="l-main">Feedback credit{!feedbackOn && <span className="opt-tag">Optional</span>}</div>
-                  <div className="l-sub">{`${gbp(FEEDBACK_CREDIT)} off your next bill for every fix or new feature you suggest, up to ${gbp(FEEDBACK_CREDIT_CAP)} a month · Recurring`}</div>
+                  <div className="l-sub" style={{ whiteSpace: 'nowrap' }}>{`${gbp(FEEDBACK_CREDIT)} off per fix or feature you suggest, up to ${gbp(FEEDBACK_CREDIT_CAP)}/month`}</div>
                 </td>
                 <td className="qty-col"><Switch on={feedbackOn} onChange={setFeedbackOn} label="Feedback credit" /></td>
                 <td className="amt num">{feedbackOn ? 'Included' : '—'}<div className="amt-sub">from next bill</div></td>
@@ -903,7 +901,7 @@ body { background: #eceef1; }
 .lines tr.removed td.qty-col { opacity: 1; }
 .lines tr.removed .l-main { text-decoration: line-through; }
 /* Optional extras not on this bill yet: shown as available, not crossed out. */
-.lines tr.optional td { background: #fbfcfd; }
+.lines tr.optional td { background: #fbfcfd; padding-top: 9px; padding-bottom: 9px; vertical-align: middle; }
 .lines tr.optional .l-main { color: var(--muted); }
 .lines tr.optional .amt { color: var(--faint); font-weight: 500; }
 .opt-tag { display: inline-block; margin-left: 8px; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: #16a35a; background: #e9f8ef; border-radius: 999px; padding: 2px 8px; vertical-align: 2px; }
