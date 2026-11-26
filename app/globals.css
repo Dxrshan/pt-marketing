@@ -338,6 +338,7 @@ hr.gradient-hr { border: none; height: 1px; background: linear-gradient(90deg, t
   .hero-mock-side { display: none; }
   .hero-toast-wrap { right: 8px !important; top: -18px !important; width: 220px !important; }
   .hero-live { display: none; }
+  .phone-crater { display: none; }
 }
 
 /* ══════════════════════════════════════════════════════════════════════

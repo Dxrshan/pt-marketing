@@ -6,73 +6,263 @@ import { WordsReveal, CursorLight, Icon, Tilt } from './fx'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
-/* ── Dashboard mockup (graphite build of the real app) ─────────────────── */
-export function DashboardMockup() {
-  const nav = ['Dashboard', 'Clients', 'Bookings', 'Workout Plans', 'Progress', 'Payments', 'Leads']
-  const week = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+/* ── Dashboard mockup: a faithful mini build of the real PT dashboard ───── */
+// Same layout as app.dnianalytics.com: icon rail, purple header with KPIs, then
+// Action Items, Revenue, Sessions and Lead Pipeline cards. Demo names only.
+const M = {
+  rail: '#0b0d16', head: 'linear-gradient(180deg,#1c1840 0%,#16142e 60%,#12122a 100%)', page: '#f4f5fa',
+  card: '#ffffff', line: '#e8eaf2', ink: '#14162a', muted: '#6b7088', faint: '#9aa0b5',
+  purple: '#6d5dfc', purple2: '#8b7bff', red: '#e5484d', green: '#16a35a', amber: '#f59e0b',
+}
+
+function RailIcon({ d, active, badge }: { d: React.ReactNode; active?: boolean; badge?: number }) {
   return (
-    <div className="app-mockup" style={{ display: 'flex', minHeight: 440 }}>
-      <div className="mockup-sidebar hero-mock-side" style={{ width: 180, padding: '16px 0' }}>
-        <div style={{ padding: '2px 14px 18px' }}><BrandLogo height={16} /></div>
-        {nav.map((n, i) => (
-          <div key={n} className={`mockup-nav-item ${i === 0 ? 'active' : ''}`}>
-            <span style={{ width: 5, height: 5, borderRadius: '50%', background: i === 0 ? '#e8eaee' : 'transparent' }} />{n}
-          </div>
-        ))}
+    <div style={{ position: 'relative', width: 30, height: 30, borderRadius: 9, display: 'grid', placeItems: 'center', color: active ? '#fff' : '#7d82a3', background: active ? 'linear-gradient(160deg,#7b6bff,#5b4bf0)' : 'transparent', boxShadow: active ? '0 6px 16px -6px rgba(109,93,252,.9)' : 'none' }}>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">{d}</svg>
+      {badge ? <span style={{ position: 'absolute', top: 1, right: 0, minWidth: 12, height: 12, borderRadius: 6, background: M.red, color: '#fff', fontSize: 7.5, fontWeight: 800, display: 'grid', placeItems: 'center' }}>{badge}</span> : null}
+    </div>
+  )
+}
+
+function MCard({ title, right, children, style }: { title: React.ReactNode; right?: React.ReactNode; children: React.ReactNode; style?: React.CSSProperties }) {
+  return (
+    <div style={{ background: M.card, border: `1px solid ${M.line}`, borderRadius: 12, padding: '10px 12px', display: 'flex', flexDirection: 'column', minWidth: 0, ...style }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 10.5, fontWeight: 700, color: M.ink, paddingBottom: 7, marginBottom: 7, borderBottom: `1px solid ${M.line}` }}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>{title}</span>
+        {right && <span style={{ fontSize: 9, fontWeight: 600, color: M.purple }}>{right}</span>}
       </div>
-      <div style={{ flex: 1, padding: 18, display: 'flex', flexDirection: 'column', gap: 12, minWidth: 0 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-          <div>
-            <div style={{ fontSize: 15, fontWeight: 700, color: '#f2f3f5' }}>Good morning, Darshan</div>
-            <div style={{ fontSize: 10.5, color: '#6b717b', marginTop: 2 }}>Monday, 16 June 2026</div>
-          </div>
-          <span style={{ fontSize: 10, color: '#9aa0a8', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 999, padding: '4px 10px' }}>This week</span>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
-          {[
-            ['Today’s sessions', '4', '2 completed'],
-            ['Revenue this month', '£3,840', '+12% vs last month'],
-            ['Active clients', '18', '3 need attention'],
-          ].map(([k, v, s], i) => (
-            <div key={k} className="mockup-card">
-              <div style={{ fontSize: 9.5, color: '#6b717b' }}>{k}</div>
-              <div style={{ fontSize: 20, fontWeight: 800, marginTop: 4, color: i === 1 ? '#8ff0bf' : '#f2f3f5', letterSpacing: '-0.02em' }}>{v}</div>
-              <div style={{ fontSize: 9, color: '#5a6069', marginTop: 2 }}>{s}</div>
+      {children}
+    </div>
+  )
+}
+
+export function DashboardMockup() {
+  const kpis = [
+    { k: 'Revenue', v: '£1,260', s: '▲ 33% vs last month', tone: '#5ee0a0', icon: 'card' as const },
+    { k: 'Active clients', v: '13', s: '+2 this month', tone: '#c9c6ff', icon: 'users' as const },
+    { k: 'Sessions / week', v: '20', s: '+1 vs last week', tone: '#c9c6ff', icon: 'calendar' as const },
+    { k: 'Overdue', v: '£905', s: '3 invoices overdue', tone: '#ff8a8f', icon: 'bell' as const },
+  ]
+  const revenue = [950, 1100, 1100, 1120, 945, 1260]
+  const months = ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov']
+  const max = 1400, min = 700
+  const pts = revenue.map((v, i) => [8 + i * (284 / 5), 70 - ((v - min) / (max - min)) * 60])
+  const line = pts.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`).join(' ')
+  return (
+    <div className="app-mockup" style={{ display: 'flex', minHeight: 460, background: M.page, fontFamily: 'Inter, -apple-system, Segoe UI, sans-serif', textAlign: 'left' }}>
+      {/* Icon rail */}
+      <div className="hero-mock-side" style={{ width: 50, background: M.rail, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 9, padding: '12px 0', flexShrink: 0 }}>
+        <div style={{ marginBottom: 6 }}><BrandLogo height={14} /></div>
+        <RailIcon active d={<path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z" />} />
+        <RailIcon d={<><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6" /></>} />
+        <RailIcon badge={4} d={<path d="M4 5.5h16v10H9l-5 4z" />} />
+        <RailIcon d={<><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" /><path d="M8 3v4M16 3v4M3.5 10h17" /></>} />
+        <RailIcon d={<path d="M4 9h16M4 15h16M9 4v16M15 4v16" />} />
+        <RailIcon d={<path d="M3 12h4l3-7 4 14 3-7h4" />} />
+        <RailIcon d={<><rect x="2.5" y="5" width="19" height="14" rx="2.5" /><path d="M2.5 10h19" /></>} />
+        <RailIcon d={<path d="M5 20V10M12 20V4M19 20v-7" />} />
+      </div>
+
+      <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+        {/* Purple header with KPIs */}
+        <div style={{ background: M.head, padding: '14px 16px 14px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+            <div>
+              <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', letterSpacing: '-0.02em' }}>Good evening, Darshan 👋</div>
+              <div style={{ fontSize: 9.5, color: '#a9a6d6', marginTop: 2 }}>Thursday 26 November</div>
             </div>
-          ))}
-        </div>
-        <div className="mockup-card" style={{ flex: 1 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 700, color: '#e8eaee', marginBottom: 8 }}>
-            Action items <span style={{ color: '#9aa0a8', fontWeight: 500, fontSize: 10 }}>3 items</span>
+            <div style={{ display: 'flex', gap: 6 }}>
+              <span style={{ fontSize: 9, fontWeight: 600, color: '#d6d4ff', border: '1px solid rgba(255,255,255,.16)', borderRadius: 7, padding: '5px 9px' }}>Layout</span>
+              <span style={{ fontSize: 9, fontWeight: 700, color: '#d6d4ff', border: '1px solid rgba(139,123,255,.6)', borderRadius: 7, padding: '5px 9px' }}>+ Book Session</span>
+              <span style={{ fontSize: 9, fontWeight: 700, color: '#fff', background: `linear-gradient(160deg,${M.purple2},${M.purple})`, borderRadius: 7, padding: '5px 9px' }}>+ Add Client</span>
+            </div>
           </div>
-          {[
-            ['J', 'James T.', 'Payment overdue · £240', '#f87171'],
-            ['S', 'Sarah K.', 'No session in 14 days', '#fbbf24'],
-            ['M', 'Marcus L.', '2 sessions left in package', '#a9c7ff'],
-          ].map(([a, n, d, c]) => (
-            <div key={n} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '7px 0', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-              <span style={{ width: 22, height: 22, borderRadius: '50%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, fontWeight: 700, color: '#e8eaee', background: 'linear-gradient(160deg,#2a2e35,#15171c)', border: '1px solid rgba(255,255,255,0.08)' }}>{a}</span>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 10.5, fontWeight: 600, color: '#e8eaee' }}>{n}</div>
-                <div style={{ fontSize: 9.5, color: '#6b717b' }}>{d}</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0,1fr))', gap: 8 }}>
+            {kpis.map(c => (
+              <div key={c.k} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 10px', borderRadius: 10, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.09)', minWidth: 0 }}>
+                <span style={{ width: 24, height: 24, borderRadius: 7, display: 'grid', placeItems: 'center', color: c.tone, background: 'rgba(255,255,255,0.07)', flexShrink: 0 }}><Icon name={c.icon} size={12} /></span>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 7.5, fontWeight: 700, letterSpacing: '.08em', color: '#a9a6d6', textTransform: 'uppercase' }}>{c.k}</div>
+                  <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1.15 }}>{c.v}</div>
+                  <div style={{ fontSize: 8, color: c.tone, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.s}</div>
+                </div>
               </div>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: c }} />
-            </div>
-          ))}
-        </div>
-        <div className="mockup-card">
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#e8eaee', marginBottom: 8 }}>This week</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 6 }}>
-            {week.map((d, i) => (
-              <div key={i} style={{
-                textAlign: 'center', fontSize: 9.5, fontWeight: 700, padding: '6px 0', borderRadius: 6,
-                color: i < 2 ? '#0b0c0f' : i === 2 ? '#0b0c0f' : '#5a6069',
-                background: i < 2 ? 'linear-gradient(180deg,#8ff0bf,#5ee0a0)' : i === 2 ? 'linear-gradient(180deg,#fff,#c4c9d0)' : 'rgba(255,255,255,0.04)',
-              }}>{d}</div>
             ))}
           </div>
         </div>
+
+        {/* Cards */}
+        <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)', gap: 10, padding: 12 }}>
+          <MCard title={<><span style={{ color: M.amber }}>⚡</span> Action Items</>}>
+            {[
+              { t: '3 new messages', s: 'Sarah W., Tom B., Priya M.', c: M.purple, n: 3 },
+              { t: '3 overdue payments', s: '£905 total · Joe K., Amy R., Ben S.', c: M.red, n: 3 },
+              { t: 'James C.', s: 'Missed their session · follow up', c: M.red },
+            ].map(r => (
+              <div key={r.t} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 8px', border: `1px solid ${M.line}`, borderRadius: 8, marginBottom: 5 }}>
+                <span style={{ width: 18, height: 18, borderRadius: '50%', background: r.n ? r.c : '#fde8e8', color: r.n ? '#fff' : M.red, fontSize: 8.5, fontWeight: 800, display: 'grid', placeItems: 'center', flexShrink: 0 }}>{r.n || '!'}</span>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 9.5, fontWeight: 700, color: r.c }}>{r.t}</div>
+                  <div style={{ fontSize: 8.5, color: M.muted, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.s}</div>
+                </div>
+              </div>
+            ))}
+          </MCard>
+
+          <MCard title="Revenue" right="Full report →">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div>
+                <div style={{ fontSize: 7.5, fontWeight: 700, letterSpacing: '.08em', color: M.muted }}>NOVEMBER</div>
+                <div style={{ fontSize: 15, fontWeight: 800, color: M.ink }}>£1,260</div>
+              </div>
+              <span style={{ fontSize: 9, fontWeight: 800, color: M.green, background: '#e9f8ef', borderRadius: 6, padding: '3px 6px' }}>↑ 33%</span>
+            </div>
+            <svg viewBox="0 0 300 84" style={{ width: '100%', height: 'auto', marginTop: 4 }} aria-hidden="true">
+              <defs><linearGradient id="mock-rev" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={M.purple} stopOpacity=".28" /><stop offset="1" stopColor={M.purple} stopOpacity="0" /></linearGradient></defs>
+              <path d={`${line} L${pts[pts.length - 1][0]},74 L${pts[0][0]},74 Z`} fill="url(#mock-rev)" />
+              <path d={line} fill="none" stroke={M.purple} strokeWidth="2" />
+              {pts.map(([x, y], i) => <circle key={i} cx={x} cy={y} r={i === pts.length - 1 ? 3.2 : 2.2} fill="#fff" stroke={M.purple} strokeWidth="1.6" />)}
+              {months.map((m, i) => <text key={m} x={8 + i * (284 / 5)} y="83" fontSize="7" textAnchor="middle" fill={i === 5 ? M.ink : M.faint} fontWeight={i === 5 ? 700 : 400}>{m}</text>)}
+            </svg>
+          </MCard>
+
+          <MCard title={<>📅 Sessions</>} right="View all →">
+            <div style={{ fontSize: 7.5, fontWeight: 700, letterSpacing: '.08em', color: M.muted, marginBottom: 5 }}>TODAY · THURSDAY 26 NOV</div>
+            {[['S', 'Sarah W.', '08:00 · 60min · PT Session'], ['V', 'Vikram T.', '09:00 · 60min · PT Session'], ['E', 'Emma R.', '14:00 · 60min · PT Session']].map(([a, n, d]) => (
+              <div key={n} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '5px 7px', background: '#f6f5ff', border: '1px solid #ebe8ff', borderRadius: 8, marginBottom: 5 }}>
+                <span style={{ width: 18, height: 18, borderRadius: '50%', background: M.purple, color: '#fff', fontSize: 8.5, fontWeight: 800, display: 'grid', placeItems: 'center', flexShrink: 0 }}>{a}</span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 9.5, fontWeight: 700, color: M.ink }}>{n}</div>
+                  <div style={{ fontSize: 8, color: M.muted }}>{d}</div>
+                </div>
+                <span style={{ fontSize: 7.5, fontWeight: 800, color: M.green, letterSpacing: '.05em' }}>SCHEDULED</span>
+                <span style={{ fontSize: 8.5, fontWeight: 700, color: '#fff', background: M.purple, borderRadius: 6, padding: '3px 7px' }}>▶ Start</span>
+              </div>
+            ))}
+          </MCard>
+
+          <MCard title="Lead Pipeline" right="Manage →">
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 5, marginBottom: 7 }}>
+              {[['7', 'In pipeline', M.purple, '#f3f2ff'], ['2', 'Won', M.green, '#eefaf2'], ['1', 'Lost', M.red, '#fdf0f0']].map(([n, l, c, bg]) => (
+                <div key={l} style={{ textAlign: 'center', padding: '5px 0', borderRadius: 7, background: bg }}>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: c }}>{n}</div>
+                  <div style={{ fontSize: 7, fontWeight: 700, letterSpacing: '.06em', color: M.muted, textTransform: 'uppercase' }}>{l}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 4 }}>
+              {[['2', 'Enquiry', M.faint], ['2', 'Contacted', M.purple], ['2', 'Trial', M.purple], ['1', 'Negotiating', M.amber], ['2', 'Won', M.green]].map(([n, l, c]) => (
+                <div key={l} style={{ textAlign: 'center', padding: '4px 0', borderRadius: 6, border: `1px solid ${c}55` }}>
+                  <div style={{ fontSize: 10.5, fontWeight: 800, color: c }}>{n}</div>
+                  <div style={{ fontSize: 6, fontWeight: 700, color: M.muted, textTransform: 'uppercase' }}>{l}</div>
+                </div>
+              ))}
+            </div>
+          </MCard>
+        </div>
       </div>
+    </div>
+  )
+}
+
+/* ── Client app on a phone, landed in a rocky crater beside the dashboard ── */
+function PhoneScreen() {
+  const C = { bg: '#0d0e16', card: 'rgba(255,255,255,0.06)', line: 'rgba(255,255,255,0.09)', ink: '#f3f5fa', muted: '#9aa3b8', accent: '#7c5cff' }
+  const macros: [string, number, number, string][] = [['Protein', 118, 150, '#7c5cff'], ['Carbs', 160, 220, '#22d3ee'], ['Fat', 48, 70, '#f59e0b']]
+  return (
+    <div style={{ position: 'absolute', inset: 0, background: C.bg, display: 'flex', flexDirection: 'column', fontFamily: 'Inter, -apple-system, sans-serif', textAlign: 'left' }}>
+      <div style={{ padding: '34px 12px 8px', background: 'radial-gradient(120% 80% at 20% 0%, rgba(124,92,255,.35), transparent 60%)' }}>
+        <div style={{ fontSize: 8, color: C.muted }}>Thursday 26 Nov</div>
+        <div style={{ fontSize: 14, fontWeight: 800, color: C.ink, letterSpacing: '-0.02em' }}>Hi Sarah 👋</div>
+      </div>
+      <div style={{ padding: '0 10px', display: 'flex', flexDirection: 'column', gap: 7, flex: 1 }}>
+        <div style={{ display: 'flex', gap: 6 }}>
+          {[['🔥', '6', 'week streak'], ['🏆', '3', 'PBs this month']].map(([e, n, l]) => (
+            <div key={l} style={{ flex: 1, background: C.card, border: `1px solid ${C.line}`, borderRadius: 10, padding: '6px 7px' }}>
+              <div style={{ fontSize: 13, fontWeight: 800, color: C.ink }}>{e} {n}</div>
+              <div style={{ fontSize: 7, color: C.muted }}>{l}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{ borderRadius: 12, padding: '9px 9px', background: 'linear-gradient(150deg,#7c5cff,#c34bd8)', color: '#fff' }}>
+          <div style={{ fontSize: 7, fontWeight: 700, letterSpacing: '.08em', opacity: .85 }}>TODAY’S WORKOUT</div>
+          <div style={{ fontSize: 11.5, fontWeight: 800, marginTop: 2 }}>Upper Body A</div>
+          <div style={{ fontSize: 7.5, opacity: .85 }}>6 exercises · 55 min</div>
+          <div style={{ marginTop: 6, display: 'inline-block', fontSize: 8, fontWeight: 800, background: '#fff', color: '#5b3fe0', borderRadius: 999, padding: '3px 9px' }}>▶ Start</div>
+        </div>
+        <div style={{ background: C.card, border: `1px solid ${C.line}`, borderRadius: 10, padding: '7px 8px' }}>
+          <div style={{ fontSize: 8, fontWeight: 700, color: C.ink, marginBottom: 5 }}>Food Log · 1,640 kcal</div>
+          {macros.map(([n, v, t, c]) => (
+            <div key={n} style={{ marginBottom: 4 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 6.8, color: C.muted }}><span>{n}</span><span>{v}/{t}g</span></div>
+              <div style={{ height: 3.5, borderRadius: 3, background: 'rgba(255,255,255,0.08)' }}><div style={{ width: `${(v / t) * 100}%`, height: '100%', borderRadius: 3, background: c }} /></div>
+            </div>
+          ))}
+        </div>
+        <div style={{ background: C.card, border: `1px solid ${C.line}`, borderRadius: 10, padding: '7px 8px', display: 'flex', alignItems: 'center', gap: 7 }}>
+          <span style={{ width: 20, height: 20, borderRadius: 6, background: 'rgba(124,92,255,.2)', color: '#b9a8ff', display: 'grid', placeItems: 'center', fontSize: 9 }}>📅</span>
+          <div><div style={{ fontSize: 8, fontWeight: 700, color: C.ink }}>Next session · Fri 08:00</div><div style={{ fontSize: 7, color: C.muted }}>PT Session with Darshan</div></div>
+        </div>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-around', padding: '6px 4px 14px', borderTop: `1px solid ${C.line}`, background: 'rgba(13,14,22,.95)' }}>
+        {['Home', 'Train', 'Food', 'Progress', 'Chat'].map((t, i) => (
+          <div key={t} style={{ textAlign: 'center', fontSize: 6.5, fontWeight: 600, color: i === 0 ? '#b9a8ff' : C.muted }}>
+            <div style={{ width: 4, height: 4, borderRadius: 2, margin: '0 auto 3px', background: i === 0 ? '#b9a8ff' : 'transparent' }} />{t}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/** The client app on a phone, crashed into a little crater of rocks. Desktop only. */
+export function PhoneInCrater({ style }: { style?: React.CSSProperties }) {
+  return (
+    <div className="phone-crater" aria-hidden="true" style={{ position: 'absolute', width: 230, height: 420, ...style }}>
+      {/* impact glow and dust */}
+      <div style={{ position: 'absolute', left: -40, right: -40, bottom: -10, height: 120, background: 'radial-gradient(ellipse at 50% 70%, rgba(255,140,60,.35), rgba(139,92,255,.18) 45%, transparent 70%)', filter: 'blur(14px)' }} />
+      {/* back rim of the crater */}
+      <svg viewBox="0 0 320 110" style={{ position: 'absolute', left: -45, bottom: 6, width: 320, height: 110 }}>
+        <defs>
+          <linearGradient id="rock-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#57504a" /><stop offset="1" stopColor="#151210" /></linearGradient>
+          <linearGradient id="rock-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#6a6258" /><stop offset=".5" stopColor="#2c2824" /><stop offset="1" stopColor="#0f0d0c" /></linearGradient>
+          <filter id="stone" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="7" result="n" />
+            <feColorMatrix in="n" type="saturate" values="0" result="g" />
+            <feComponentTransfer in="g" result="g2"><feFuncA type="linear" slope="0.55" /></feComponentTransfer>
+            <feComposite in="g2" in2="SourceGraphic" operator="in" result="tex" />
+            <feBlend in="SourceGraphic" in2="tex" mode="multiply" />
+          </filter>
+        </defs>
+        <ellipse cx="160" cy="78" rx="140" ry="26" fill="#07080b" />
+        <path d="M30 70 L48 44 L70 50 L84 34 L104 46 L96 72 Z" fill="url(#rock-b)" filter="url(#stone)" /><path d="M48 44 L70 50 L84 34 L66 40 Z" fill="rgba(255,200,160,.18)" />
+        <path d="M210 72 L222 40 L246 30 L262 44 L280 48 L290 74 Z" fill="url(#rock-b)" filter="url(#stone)" /><path d="M222 40 L246 30 L240 44 Z" fill="rgba(255,200,160,.2)" />
+        <path d="M120 60 L132 46 L150 50 L146 66 Z" fill="url(#rock-a)" filter="url(#stone)" />
+      </svg>
+      {/* the phone, tilted back as if it landed */}
+      <div style={{ position: 'absolute', left: 18, bottom: 34, width: 190, height: 390, transform: 'perspective(1100px) rotateY(-22deg) rotateX(6deg) rotateZ(-8deg)', transformOrigin: '50% 100%', transformStyle: 'preserve-3d' }}>
+        {/* side edge: a slightly offset slab gives the frame real thickness */}
+        <div style={{ position: 'absolute', inset: 0, borderRadius: 38, transform: 'translate3d(7px, 3px, -8px)', background: 'linear-gradient(90deg,#2b2e35,#8d929c 40%,#3a3d44 75%,#1a1c21)', boxShadow: '30px 40px 70px -18px rgba(0,0,0,.95)' }} />
+      <div style={{ position: 'absolute', inset: 0, borderRadius: 38, padding: 7, background: 'linear-gradient(145deg,#eef0f3,#9ea3ad 28%,#4a4e57 62%,#b7bcc5 92%)', boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.35), inset 0 -2px 3px rgba(0,0,0,.4)' }}>
+        <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: 32, overflow: 'hidden', background: '#000' }}>
+          <PhoneScreen />
+          <div style={{ position: 'absolute', top: 9, left: '50%', transform: 'translateX(-50%)', width: 58, height: 17, borderRadius: 10, background: '#000' }} />
+          <div style={{ position: 'absolute', inset: 0, borderRadius: 32, background: 'linear-gradient(115deg, rgba(255,255,255,.16), transparent 36%, transparent 70%, rgba(255,255,255,.05))', pointerEvents: 'none' }} />
+        </div>
+        {/* side buttons */}
+        <span style={{ position: 'absolute', left: -2.5, top: 92, width: 3, height: 26, borderRadius: 2, background: 'linear-gradient(90deg,#55595f,#b5b9c0)' }} />
+        <span style={{ position: 'absolute', left: -2.5, top: 126, width: 3, height: 40, borderRadius: 2, background: 'linear-gradient(90deg,#55595f,#b5b9c0)' }} />
+        <span style={{ position: 'absolute', right: -2.5, top: 110, width: 3, height: 56, borderRadius: 2, background: 'linear-gradient(90deg,#b5b9c0,#55595f)' }} />
+      </div>
+      </div>
+      {/* front rocks, overlapping the bottom of the phone */}
+      <svg viewBox="0 0 320 90" style={{ position: 'absolute', left: -45, bottom: -14, width: 320, height: 90 }}>
+        <path d="M0 86 L14 58 L40 50 L58 62 L72 52 L96 60 L110 86 Z" fill="url(#rock-b)" filter="url(#stone)" />
+        <path d="M86 86 L104 66 L132 60 L150 70 L176 62 L196 72 L206 86 Z" fill="url(#rock-a)" filter="url(#stone)" />
+        <path d="M190 86 L206 56 L232 46 L254 56 L276 50 L300 64 L320 86 Z" fill="url(#rock-b)" filter="url(#stone)" />
+        <path d="M40 50 L58 62 L50 66 Z M232 46 L254 56 L244 60 Z" fill="rgba(255,255,255,.12)" />
+        {[[70, 40], [250, 30], [150, 44], [30, 36], [290, 40]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r={1.4} fill="rgba(255,190,140,.6)" />)}
+      </svg>
     </div>
   )
 }

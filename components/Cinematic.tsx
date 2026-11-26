@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, type ReactNode } from 'react'
 import { motion, useScroll, useTransform, useReducedMotion, useMotionValue, useSpring, useMotionTemplate, type MotionValue } from 'framer-motion'
 import BrandLogo from './BrandLogo'
-import { DashboardMockup, LiveToasts, LiveSessionCard } from './Hero'
+import { DashboardMockup, LiveToasts, LiveSessionCard, PhoneInCrater } from './Hero'
 import { LoggerDemo, ChatDemo, RevenueDemo, PipelineDemo, PhoneDemo } from './FeaturesSection'
 import { Icon, Counter, CursorLight } from './fx'
 
@@ -212,6 +212,7 @@ export function ProductReveal() {
               <LiveToasts />
               <LiveSessionCard />
             </div>
+            <PhoneInCrater style={{ right: -130, bottom: 40, zIndex: 4 }} />
           </motion.div>
         </div>
       </div>

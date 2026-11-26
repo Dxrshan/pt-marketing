@@ -163,6 +163,18 @@ function QtyStepper({ value, onChange, label, min = 0, max = 99 }: { value: numb
   )
 }
 
+/* Yes/no switch: polished-metal knob in a deep track that lights up green when on. */
+function Switch({ on, onChange, label }: { on: boolean; onChange: (v: boolean) => void; label: string }) {
+  return (
+    <>
+      <button type="button" role="switch" aria-checked={on} aria-label={label} className={`sw no-print ${on ? 'on' : ''}`} onClick={() => onChange(!on)}>
+        <span className="sw-knob" />
+      </button>
+      <span className="print-only">{on ? 'Yes' : 'No'}</span>
+    </>
+  )
+}
+
 /* ─── Page ─────────────────────────────────────────────────────────────── */
 
 export type BankDetails = { bankName: string; sortCode: string; accountNumber: string; accountName: string }
@@ -172,7 +184,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
   const [extras, setExtras] = useState<Extra[]>(DEFAULT_EXTRAS)
   const [discounts, setDiscounts] = useState<Discount[]>([])
   const [aiQty, setAiQty] = useState(0)
-  const [feedbackQty, setFeedbackQty] = useState(0)
+  const [feedbackOn, setFeedbackOn] = useState(false)
 
   const [studio, setStudio] = useState('')
   const [contact, setContact] = useState('')
@@ -202,10 +214,9 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
     // come off whatever is left on the first payment.
     const aiAddon = AI_ADDON_RATE * aiQty * plan.months
     // Feedback credits come off the subscription, capped per month of the term.
-    const feedbackCredit = Math.min(FEEDBACK_CREDIT * feedbackQty, FEEDBACK_CREDIT_CAP * plan.months, listSub - termSaving)
     const recurringBase = listSub - termSaving + recurringExtras + aiAddon
     const discAmounts: Record<string, number> = {}
-    let recurringDisc = feedbackCredit
+    let recurringDisc = 0
     for (const d of discounts.filter(d => d.scope === 'recurring')) {
       const amt = Math.min(
         d.mode === 'pct' ? (recurringBase * d.value) / 100 : d.value,
@@ -228,16 +239,16 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
     }
 
     return {
-      listSub, termSaving, onceExtras, discAmounts, recurringTotal, aiAddon, feedbackCredit,
-      // What each renewal costs from the next period on (feedback credits vary, so not included).
-      recurringOngoing: Math.max(recurringBase - (recurringDisc - feedbackCredit), 0),
+      listSub, termSaving, onceExtras, discAmounts, recurringTotal, aiAddon,
+      // What each renewal costs from the next period on (feedback credits come off later bills, so not included).
+      recurringOngoing: Math.max(recurringBase - recurringDisc, 0),
       dueToday: Math.max(firstBase - onceDisc, 0),
       subtotal: listSub + recurringExtras + aiAddon + onceExtras,
       waivedValue: charged.reduce((s, e) => s + Math.max(e.list - e.amount, 0) * e.qty, 0),
       setupList: charged.reduce((s, e) => s + Math.max(e.list, e.amount) * e.qty, 0),
       discountTotal: termSaving + recurringDisc + onceDisc,
     }
-  }, [plan, extras, discounts, aiQty, feedbackQty])
+  }, [plan, extras, discounts, aiQty])
 
   const dueShown = useTween(totals.dueToday)
 
@@ -390,7 +401,12 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                   </ul>
                 </td>
                 <td className="qty-col num">1</td>
-                <td className="amt num">{gbp(plan.rate * plan.months)}</td>
+                <td className="amt num">
+                  {gbp(plan.rate * plan.months)}
+                  {plan.rate < LIST_MONTHLY && (
+                    <div className="amt-note"><s>{gbp(LIST_MONTHLY * plan.months)}</s>SAVE {gbp(yearlySaving(plan.rate))} A YEAR</div>
+                  )}
+                </td>
               </tr>
 
               {visibleExtras.map(x => (
@@ -450,13 +466,13 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                 <td className="amt num">{aiQty > 0 ? gbp(totals.aiAddon) : '—'}</td>
               </tr>
 
-              <tr className={feedbackQty > 0 ? '' : 'optional'}>
+              <tr className={feedbackOn ? '' : 'optional'}>
                 <td>
-                  <div className="l-main">Feedback credit{feedbackQty === 0 && <span className="opt-tag">Optional</span>}</div>
+                  <div className="l-main">Feedback credit{!feedbackOn && <span className="opt-tag">Optional</span>}</div>
                   <div className="l-sub">{`${gbp(FEEDBACK_CREDIT)} off your next bill for every fix or new feature you suggest, up to ${gbp(FEEDBACK_CREDIT_CAP)} a month · Recurring`}</div>
                 </td>
-                <td className="qty-col"><QtyStepper value={feedbackQty} label="feedback credits" onChange={setFeedbackQty} /></td>
-                <td className="amt num">{feedbackQty > 0 ? `−${gbp(totals.feedbackCredit)}` : `−${gbp(FEEDBACK_CREDIT)} each`}</td>
+                <td className="qty-col"><Switch on={feedbackOn} onChange={setFeedbackOn} label="Feedback credit" /></td>
+                <td className="amt num">{feedbackOn ? 'Included' : '—'}<div className="amt-sub">from next bill</div></td>
               </tr>
 
             </tbody>
@@ -501,9 +517,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
               <div className="b-row"><span>{plan.label} plan <em>{plan.months === 1 ? '1 month' : `${plan.months} months`}</em></span><span>{gbp(plan.rate * plan.months)}</span></div>
               {totals.aiAddon > 0 && (
                 <div className="b-row"><span>AI Coach add-on <em>{plan.months === 1 ? '1 month' : `${plan.months} months`}</em></span><span>{gbp(totals.aiAddon)}</span></div>
-              )}
-              {totals.feedbackCredit > 0 && (
-                <div className="b-row save"><span>Feedback credit <em>{feedbackQty} × {gbp(FEEDBACK_CREDIT)}</em></span><span>−{gbp(totals.feedbackCredit)}</span></div>
               )}
               {totals.setupList > 0 && (
                 <div className="b-row"><span>Setup &amp; extras <em>one-off</em></span><span>{gbp(totals.setupList)}</span></div>
@@ -895,6 +908,17 @@ body { background: #eceef1; }
 @media (max-width: 560px) { .l-incl { grid-template-columns: 1fr; } }
 .lines .qty-col { text-align: center; white-space: nowrap; width: 1%; color: var(--ink); font-weight: 600; padding-left: 12px; padding-right: 0; }
 .lines th.qty-col { color: var(--faint); }
+.amt-sub { font-size: 11px; font-weight: 500; color: var(--faint); margin-top: 3px; }
+.sw { position: relative; width: 50px; height: 30px; border-radius: 999px; border: none; padding: 0; cursor: pointer; vertical-align: middle;
+  background: linear-gradient(180deg, #d9dde3, #eceff3); box-shadow: inset 0 1.5px 3px rgba(0,0,0,.22), inset 0 0 0 1px rgba(0,0,0,.08);
+  transition: background .3s ease, box-shadow .3s ease; }
+.sw.on { background: linear-gradient(180deg, #13b85f, #2bd477); box-shadow: inset 0 1.5px 3px rgba(0,0,0,.25), 0 0 0 3px rgba(43,212,119,.16), 0 4px 14px -4px rgba(19,184,95,.7); }
+.sw-knob { position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff, #f1f3f6 45%, #c9ced6 100%);
+  box-shadow: 0 2px 5px rgba(0,0,0,.28), 0 0 0 .5px rgba(0,0,0,.12), inset 0 1px 0 #fff;
+  transition: transform .32s cubic-bezier(.3,1.5,.5,1); }
+.sw.on .sw-knob { transform: translateX(20px); }
+.sw:focus-visible { outline: 2px solid #6d5dfc; outline-offset: 3px; }
 .qty { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: #fff; }
 .qty-btn { all: unset; cursor: pointer; width: 26px; height: 26px; display: grid; place-items: center; font-size: 15px; color: var(--muted); }
 .qty-btn:hover:not(:disabled) { background: #f1f3f5; color: var(--ink); }
