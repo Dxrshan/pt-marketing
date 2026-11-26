@@ -399,7 +399,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
             <tbody>
               <tr>
                 <td>
-                  <div className="l-main">DNI Studios PT Portal + Client Portal, {plan.label.toLowerCase()}</div>
+                  <div className="l-main">DNI Studios PT Portal + Client Portal</div>
                   <div className="l-sub num">{`${plan.months} ${plan.months === 1 ? 'month' : 'months'} at ${gbp(plan.rate)} · Recurring`}</div>
                   <ul className="l-incl" aria-label="Included">
                     {[...FEATURES.map(f => f.name), ...EXTRAS].map(name => (
