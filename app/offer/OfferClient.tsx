@@ -39,18 +39,21 @@ const FEEDBACK_CREDIT_CAP = 10
 //  - cancel any time: Terms clause 3
 //  - GDPR: processor terms in Terms clause 6 (register with the ICO to keep this true)
 //  - export: built into the app and Terms clause 6
-//  - encryption: HTTPS everywhere, passwords hashed, files in a private bucket
+//  - encryption: HTTPS/TLS with HSTS in transit; MongoDB Atlas and Cloudflare R2 encrypt at rest
+//  - isolation: every query is scoped to the studio at the storage layer
 //  - registered company: Companies House no. 15630271
 // Add your ICO registration number to ICO_REG_NO once you have it and an
 // "ICO registered" badge appears.
 const ICO_REG_NO = ''
 const TRUST_BADGES: { label: string; icon: React.ReactNode }[] = [
-  { label: 'Cancel any time', icon: <path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4" /> },
-  { label: 'GDPR compliant', icon: <><path d="M12 3l8 3v6c0 4.8-3.4 8-8 9-4.6-1-8-4.2-8-9V6z" /><path d="M8.8 12.2l2.2 2.2 4.2-4.3" /></> },
-  { label: 'Encrypted & private', icon: <><circle cx="12" cy="12" r="8.5" /><path d="M3.5 12h17M12 3.5c2.4 2.4 3.6 5.2 3.6 8.5s-1.2 6.1-3.6 8.5c-2.4-2.4-3.6-5.2-3.6-8.5S9.6 5.9 12 3.5z" /></> },
-  { label: 'Export your data', icon: <><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5" /><path d="M4.5 19.5h15" /></> },
-  { label: 'UK registered company', icon: <><path d="M3 9.5 12 4l9 5.5" /><path d="M5 10v7M9.5 10v7M14.5 10v7M19 10v7M3.5 20h17" /></> },
-  ...(ICO_REG_NO ? [{ label: `ICO registered · ${ICO_REG_NO}`, icon: <><rect x="4" y="3.5" width="16" height="17" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" /></> }] : []),
+  { label: 'Cancel any time', icon: <><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4.5V9h-4.5" /></> },
+  { label: 'GDPR compliant', icon: <><path d="M12 2.8 19.5 5.6v5.9c0 4.9-3.2 8.4-7.5 9.7-4.3-1.3-7.5-4.8-7.5-9.7V5.6z" /><path d="M9 11.8 11.2 14 15.2 9.8" /></> },
+  { label: 'Encrypted in transit & at rest', icon: <><rect x="5" y="10.5" width="14" height="10" rx="2.6" /><path d="M8.5 10.5V7.8a3.5 3.5 0 0 1 7 0v2.7" /><path d="M12 14.4v2.4" /></> },
+  { label: 'Isolated data per studio', icon: <><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.8" /><rect x="13" y="3.5" width="7.5" height="7.5" rx="1.8" /><rect x="3.5" y="13" width="7.5" height="7.5" rx="1.8" /><rect x="13" y="13" width="7.5" height="7.5" rx="1.8" /></> },
+  { label: 'Export your data', icon: <><path d="M12 3.5v10.5" /><path d="M8 10l4 4 4-4" /><path d="M4.5 15.5v2.8a2.2 2.2 0 0 0 2.2 2.2h10.6a2.2 2.2 0 0 0 2.2-2.2v-2.8" /></> },
+  { label: 'UK registered company', icon: <><path d="M3.5 9.2 12 4l8.5 5.2" /><path d="M5.5 10.5v7M9.8 10.5v7M14.2 10.5v7M18.5 10.5v7" /><path d="M3.5 20.3h17" /></> },
+  { label: 'Founder-led support', icon: <><path d="M4.5 12.5v-1a7.5 7.5 0 0 1 15 0v1" /><rect x="3.5" y="12.5" width="4" height="6" rx="1.6" /><rect x="16.5" y="12.5" width="4" height="6" rx="1.6" /><path d="M18.5 18.5c0 1.3-1.4 2-4 2" /></> },
+  ...(ICO_REG_NO ? [{ label: `ICO registered · ${ICO_REG_NO}`, icon: <><rect x="4.5" y="3.5" width="15" height="17" rx="2.2" /><path d="M8 8.5h8M8 12h8M8 15.5h5" /></> }] : []),
 ]
 
 const EXTRAS = ['Diet & meal plans', 'Form-check video review', 'Messaging & voice notes', 'Community feed & leaderboard']
@@ -502,12 +505,21 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
               </div>
               {/* Reassurance: every badge here is backed by the terms below or by how the app works. */}
               <div className="trust">
+                <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
+                  <defs>
+                    <linearGradient id="trust-silver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#ffffff" /><stop offset=".45" stopColor="#c9cdd3" /><stop offset="1" stopColor="#80868f" /></linearGradient>
+                    <linearGradient id="trust-emerald" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#3fe39a" /><stop offset=".55" stopColor="#17a85f" /><stop offset="1" stopColor="#0b6b3c" /></linearGradient>
+                    <linearGradient id="trust-rim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#f4f5f7" /><stop offset=".35" stopColor="#9aa0a8" /><stop offset=".6" stopColor="#e8eaee" /><stop offset="1" stopColor="#5d636c" /></linearGradient>
+                  </defs>
+                </svg>
                 <div className="trust-main">
-                  <svg width="34" height="38" viewBox="0 0 24 27" fill="none" aria-hidden="true">
-                    <path d="M12 1.5 21.5 5v7.2c0 6.3-4.1 10.9-9.5 12.6C6.6 23.1 2.5 18.5 2.5 12.2V5z" fill="url(#trust-g)" stroke="#16a35a" strokeWidth="1.2" />
-                    <path d="M7.8 13.2 10.8 16.2 16.4 10.4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    <defs><linearGradient id="trust-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#2ad07a" /><stop offset="1" stopColor="#14924f" /></linearGradient></defs>
-                  </svg>
+                  <span className="trust-seal" aria-hidden="true">
+                    <svg width="30" height="33" viewBox="0 0 24 27" fill="none">
+                      <path d="M12 1.5 21.5 5v7.2c0 6.3-4.1 10.9-9.5 12.6C6.6 23.1 2.5 18.5 2.5 12.2V5z" fill="url(#trust-emerald)" stroke="url(#trust-rim)" strokeWidth="1.3" />
+                      <path d="M12 3.4 19.6 6.2v6c0 2.6-.8 4.8-2.2 6.5" stroke="rgba(255,255,255,.35)" strokeWidth=".8" fill="none" />
+                      <path d="M7.8 13.2 10.8 16.2 16.4 10.4" stroke="#fff" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
                   <div>
                     <div className="trust-title">30-day money-back guarantee</div>
                     <div className="trust-sub">Not right for your studio? Full refund of your first subscription payment.</div>
@@ -516,7 +528,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                 <div className="trust-grid">
                   {TRUST_BADGES.map(b => (
                     <div key={b.label} className="trust-badge">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{b.icon}</svg>
+                      <span className="trust-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="url(#trust-silver)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{b.icon}</svg></span>
                       <span>{b.label}</span>
                     </div>
                   ))}
@@ -976,14 +988,19 @@ body { background: #eceef1; }
 .summary { display: grid; grid-template-columns: 1fr 340px; gap: 36px; align-items: start; margin-top: 36px; }
 .summary-note h3, .terms-wide h3 { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
 .bank-wrap { margin-bottom: 18px; }
-.trust { border: 1px solid var(--line); border-radius: 14px; padding: 14px; background: #fff; break-inside: avoid; }
-.trust-main { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--line-soft); }
-.trust-main svg { flex-shrink: 0; filter: drop-shadow(0 4px 8px rgba(22,163,90,.25)); }
-.trust-title { font-size: 14px; font-weight: 700; color: var(--ink); }
-.trust-sub { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.45; }
-.trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; }
-.trust-badge { display: flex; align-items: center; gap: 7px; white-space: nowrap; font-size: 12px; font-weight: 500; color: var(--text); }
-.trust-badge svg { color: #16a35a; flex-shrink: 0; }
+.trust { position: relative; border-radius: 16px; padding: 16px; color: #eef0f2; break-inside: avoid;
+  background: radial-gradient(120% 90% at 0% 0%, rgba(255,255,255,.07), transparent 55%), linear-gradient(160deg, #1b1d22 0%, #111317 60%, #0c0d10 100%);
+  border: 1px solid rgba(255,255,255,.08); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 24px 44px -24px rgba(0,0,0,.75);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.trust-main { display: flex; align-items: center; gap: 14px; padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.trust-seal { flex-shrink: 0; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+  background: radial-gradient(circle at 35% 30%, #2a2e35, #0f1114 75%); box-shadow: 0 0 0 1px rgba(255,255,255,.14), 0 0 0 4px rgba(255,255,255,.03), 0 8px 22px -6px rgba(23,168,95,.55); }
+.trust-title { font-size: 15px; font-weight: 600; letter-spacing: -.01em; color: #fff; }
+.trust-sub { font-size: 12px; color: #9aa0a8; margin-top: 3px; line-height: 1.45; }
+.trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+.trust-badge { display: flex; align-items: center; gap: 9px; white-space: nowrap; font-size: 12px; font-weight: 500; color: #dfe2e6; }
+.trust-ico { flex-shrink: 0; width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center;
+  background: linear-gradient(160deg, #2b2e34, #16181c); border: 1px solid rgba(255,255,255,.1); box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
 .bcard {
   position: relative; overflow: hidden; width: 100%; max-width: 380px; aspect-ratio: 1.586; border-radius: 18px; padding: 20px 22px;
   display: flex; flex-direction: column; justify-content: space-between; color: #eef1f4;
