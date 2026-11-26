@@ -48,8 +48,8 @@ const ICO_REG_NO = ''
 const TRUST_BADGES: { label: string; icon: React.ReactNode }[] = [
   { label: 'Cancel any time', icon: <><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4.5V9h-4.5" /></> },
   { label: 'GDPR compliant', icon: <><path d="M12 2.8 19.5 5.6v5.9c0 4.9-3.2 8.4-7.5 9.7-4.3-1.3-7.5-4.8-7.5-9.7V5.6z" /><path d="M9 11.8 11.2 14 15.2 9.8" /></> },
-  { label: 'Encrypted in transit & at rest', icon: <><rect x="5" y="10.5" width="14" height="10" rx="2.6" /><path d="M8.5 10.5V7.8a3.5 3.5 0 0 1 7 0v2.7" /><path d="M12 14.4v2.4" /></> },
-  { label: 'Isolated data per studio', icon: <><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.8" /><rect x="13" y="3.5" width="7.5" height="7.5" rx="1.8" /><rect x="3.5" y="13" width="7.5" height="7.5" rx="1.8" /><rect x="13" y="13" width="7.5" height="7.5" rx="1.8" /></> },
+  { label: 'Fully encrypted', icon: <><rect x="5" y="10.5" width="14" height="10" rx="2.6" /><path d="M8.5 10.5V7.8a3.5 3.5 0 0 1 7 0v2.7" /><path d="M12 14.4v2.4" /></> },
+  { label: 'Isolated studio data', icon: <><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.8" /><rect x="13" y="3.5" width="7.5" height="7.5" rx="1.8" /><rect x="3.5" y="13" width="7.5" height="7.5" rx="1.8" /><rect x="13" y="13" width="7.5" height="7.5" rx="1.8" /></> },
   { label: 'Export your data', icon: <><path d="M12 3.5v10.5" /><path d="M8 10l4 4 4-4" /><path d="M4.5 15.5v2.8a2.2 2.2 0 0 0 2.2 2.2h10.6a2.2 2.2 0 0 0 2.2-2.2v-2.8" /></> },
   { label: 'UK registered company', icon: <><path d="M3.5 9.2 12 4l8.5 5.2" /><path d="M5.5 10.5v7M9.8 10.5v7M14.2 10.5v7M18.5 10.5v7" /><path d="M3.5 20.3h17" /></> },
   { label: 'Founder-led support', icon: <><path d="M4.5 12.5v-1a7.5 7.5 0 0 1 15 0v1" /><rect x="3.5" y="12.5" width="4" height="6" rx="1.6" /><rect x="16.5" y="12.5" width="4" height="6" rx="1.6" /><path d="M18.5 18.5c0 1.3-1.4 2-4 2" /></> },
