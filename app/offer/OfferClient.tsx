@@ -384,7 +384,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
 
           <table className="lines">
             <thead>
-              <tr><th><h2 className="th-title">Your investment</h2></th><th className="qty-col">Qty</th><th className="amt">Amount</th></tr>
+              <tr><th><h2 className="th-title">Your plan</h2></th><th className="qty-col">Qty</th><th className="amt">Amount</th></tr>
             </thead>
             <tbody>
               <tr>
