@@ -28,7 +28,14 @@ const FEATURES: { name: string; detail: string; icon: keyof typeof FEATURE_ICONS
   { name: 'Unlimited trainers & clients', detail: 'Branded client app, no per-seat fees', icon: 'users' },
 ]
 
-const EXTRAS = ['AI coaching assistant', 'Diet & meal plans', 'Form-check video review', 'Messaging & voice notes', 'Community feed & leaderboard']
+// Paid add-on, on top of any plan, billed with the subscription.
+const AI_ADDON_RATE = 12
+
+// Feedback credit: £5 off the next bill per piece of useful feedback, capped per month.
+const FEEDBACK_CREDIT = 5
+const FEEDBACK_CREDIT_CAP = 10
+
+const EXTRAS = ['Diet & meal plans', 'Form-check video review', 'Messaging & voice notes', 'Community feed & leaderboard']
 
 const FEATURE_ICONS = {
   calendar: <><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" /><path d="M8 3v4M16 3v4M3.5 10h17M8 14h3" /></>,
@@ -149,6 +156,7 @@ export default function OfferPage() {
   const [term, setTerm] = useState<Term>('quarterly')
   const [extras, setExtras] = useState<Extra[]>(DEFAULT_EXTRAS)
   const [discounts, setDiscounts] = useState<Discount[]>([])
+  const [aiOn, setAiOn] = useState(false)
 
   const [studio, setStudio] = useState('')
   const [contact, setContact] = useState('')
@@ -176,7 +184,8 @@ export default function OfferPage() {
 
     // Recurring discounts come off the recurring subtotal; one-off discounts
     // come off whatever is left on the first payment.
-    const recurringBase = listSub - termSaving + recurringExtras
+    const aiAddon = aiOn ? AI_ADDON_RATE * plan.months : 0
+    const recurringBase = listSub - termSaving + recurringExtras + aiAddon
     const discAmounts: Record<string, number> = {}
     let recurringDisc = 0
     for (const d of discounts.filter(d => d.scope === 'recurring')) {
@@ -201,14 +210,14 @@ export default function OfferPage() {
     }
 
     return {
-      listSub, termSaving, onceExtras, discAmounts, recurringTotal,
+      listSub, termSaving, onceExtras, discAmounts, recurringTotal, aiAddon,
       dueToday: Math.max(firstBase - onceDisc, 0),
-      subtotal: listSub + recurringExtras + onceExtras,
+      subtotal: listSub + recurringExtras + aiAddon + onceExtras,
       waivedValue: extras.filter(e => e.status === 'charge').reduce((s, e) => s + Math.max(e.list - e.amount, 0), 0),
       setupList: charged.reduce((s, e) => s + Math.max(e.list, e.amount), 0),
       discountTotal: termSaving + recurringDisc + onceDisc,
     }
-  }, [plan, extras, discounts])
+  }, [plan, extras, discounts, aiOn])
 
   const dueShown = useTween(totals.dueToday)
 
@@ -344,7 +353,7 @@ export default function OfferPage() {
               {EXTRAS.map(x => <span key={x} className="inc-pill">{x}</span>)}
             </div>
             <div className="inc-foot">
-              {['No tiers', 'No paid feature add-ons', 'No per-seat fees', 'Every update included'].map(t => (
+              {['No tiers', 'One optional add-on: AI Coach', 'No per-seat fees', 'Every update included'].map(t => (
                 <span key={t}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>{t}</span>
               ))}
             </div>
@@ -433,6 +442,29 @@ export default function OfferPage() {
                 </tr>
               ))}
 
+              <tr className={aiOn ? '' : 'removed'}>
+                <td>
+                  <div className="l-main">AI Coach add-on</div>
+                  <div className="l-sub num">
+                    {aiOn
+                      ? `${plan.months} ${plan.months === 1 ? 'month' : 'months'} at ${gbp(AI_ADDON_RATE)} · Recurring · 24/7 AI assistant for you and your clients`
+                      : `Optional · ${gbp(AI_ADDON_RATE)}/mo · 24/7 AI assistant for you and your clients`}
+                  </div>
+                  <div className="ctls no-print">
+                    <button className="link-btn" onClick={() => setAiOn(v => !v)}>{aiOn ? 'Remove' : 'Add to plan'}</button>
+                  </div>
+                </td>
+                <td className="amt num">{aiOn ? gbp(AI_ADDON_RATE * plan.months) : '—'}</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div className="l-main">Feedback credit</div>
+                  <div className="l-sub">{`${gbp(FEEDBACK_CREDIT)} off your next bill for each piece of useful feedback, up to ${gbp(FEEDBACK_CREDIT_CAP)} a month · Recurring`}</div>
+                </td>
+                <td className="amt num">{`−${gbp(FEEDBACK_CREDIT)} each`}</td>
+              </tr>
+
             </tbody>
           </table>
 
@@ -467,12 +499,15 @@ export default function OfferPage() {
                 </div>
               </div>
               <h3>Payment terms</h3>
-              <p>Due on acceptance. Your subscription is covered by a 30-day money-back guarantee, and your rate stays fixed for as long as you stay subscribed.</p>
+              <p>Due on acceptance. Your subscription is covered by a 30-day money-back guarantee, and your rate stays fixed for as long as you stay subscribed. Feedback credits ({gbp(FEEDBACK_CREDIT)} each, up to {gbp(FEEDBACK_CREDIT_CAP)} a month) come off your next bill.</p>
               <p className="fair-use">Unlimited clients and trainers. Photo, video and voice-note uploads are subject to a fair-use storage policy; we will contact you before any limit affects your account.</p>
             </div>
             <div className="sum-card num">
               <div className="b-title">Your bill</div>
               <div className="b-row"><span>{plan.label} plan <em>{plan.months === 1 ? '1 month' : `${plan.months} months`}</em></span><span>{gbp(plan.rate * plan.months)}</span></div>
+              {totals.aiAddon > 0 && (
+                <div className="b-row"><span>AI Coach add-on <em>{plan.months === 1 ? '1 month' : `${plan.months} months`}</em></span><span>{gbp(totals.aiAddon)}</span></div>
+              )}
               {totals.setupList > 0 && (
                 <div className="b-row"><span>Setup &amp; extras <em>one-off</em></span><span>{gbp(totals.setupList)}</span></div>
               )}
