@@ -327,20 +327,20 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z" /><circle cx="12" cy="10" r="2.3" /></svg>
                   <span className="bt-addr">
                     <input id="bt-addr" className="p-input" placeholder="Street address" aria-label="Street address" autoComplete="street-address" />
-                    <span className="p-split">
-                      <input id="bt-city" className="p-input" placeholder="City" aria-label="City" autoComplete="address-level2" value={city} onChange={e => setCity(e.target.value)} />
-                      <input className="p-input" placeholder="Postcode" aria-label="Postcode" autoComplete="postal-code" value={postcode} onChange={e => setPostcode(e.target.value)} />
-                    </span>
+                    <input id="bt-city" className="p-input" placeholder="City" aria-label="City" autoComplete="address-level2" value={city} onChange={e => setCity(e.target.value)} />
+                    <input className="p-input" placeholder="Postcode" aria-label="Postcode" autoComplete="postal-code" value={postcode} onChange={e => setPostcode(e.target.value)} />
                   </span>
                 </label>
-                <label className="bt-line">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2.2" /><path d="m4 7 8 6 8-6" /></svg>
-                  <input id="bt-email" className="p-input" type="email" placeholder="Email" aria-label="Email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} />
-                </label>
-                <label className="bt-line">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h3.2l1.6 4-2.1 1.3a11 11 0 0 0 6.5 6.5l1.3-2.1 4 1.6V19a1.5 1.5 0 0 1-1.6 1.5A15.5 15.5 0 0 1 3.5 6.1 1.5 1.5 0 0 1 5 4.5z" /></svg>
-                  <input id="bt-phone" className="p-input" type="tel" placeholder="Phone" aria-label="Phone" autoComplete="tel" />
-                </label>
+                <div className="bt-pair">
+                  <label className="bt-line">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2.2" /><path d="m4 7 8 6 8-6" /></svg>
+                    <input id="bt-email" className="p-input" type="email" placeholder="Email" aria-label="Email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} />
+                  </label>
+                  <label className="bt-line">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h3.2l1.6 4-2.1 1.3a11 11 0 0 0 6.5 6.5l1.3-2.1 4 1.6V19a1.5 1.5 0 0 1-1.6 1.5A15.5 15.5 0 0 1 3.5 6.1 1.5 1.5 0 0 1 5 4.5z" /></svg>
+                    <input id="bt-phone" className="p-input" type="tel" placeholder="Phone" aria-label="Phone" autoComplete="tel" />
+                  </label>
+                </div>
               </div>
             </div>
           </section>
@@ -788,18 +788,17 @@ body { background: #eceef1; }
 .p-row:first-child { border-top: none; }
 .p-row dt { font-size: 12px; color: var(--faint); }
 .p-row dd { font-size: 13.5px; color: var(--ink); min-width: 0; }
-.bt-body { padding: 18px 20px 16px; display: flex; flex-direction: column; }
-.bt .p-input { margin: 0; width: 100%; height: 30px; padding: 0 8px; border-radius: 7px; font-size: 13.5px; }
-.bt .bt-studio { font-family: var(--font-display), Georgia, serif !important; font-size: 23px; font-weight: 500; letter-spacing: -.01em; height: 36px; margin-left: -8px; width: calc(100% + 8px); color: var(--ink); }
-.bt .bt-contact { font-size: 14px; height: 26px; margin-left: -8px; width: calc(100% + 8px); color: var(--muted); }
+.bt-body { padding: 12px 18px 12px; display: flex; flex-direction: column; }
+.bt .p-input { margin: 0; width: 100%; height: 26px; padding: 0 6px; border-radius: 6px; font-size: 13px; min-width: 0; }
+.bt .bt-studio { font-family: var(--font-display), Georgia, serif !important; font-size: 19px; font-weight: 500; letter-spacing: -.01em; height: 30px; margin-left: -6px; width: calc(100% + 6px); color: var(--ink); }
+.bt .bt-contact { font-size: 13px; height: 22px; margin-left: -6px; width: calc(100% + 6px); color: var(--muted); }
 .bt .bt-studio::placeholder { color: #b9bdc4; }
-.bt-lines { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line-soft); display: grid; gap: 8px; }
-.bt-line { display: grid; grid-template-columns: 28px 1fr; align-items: start; column-gap: 10px; cursor: text; }
-.bt-line svg { box-sizing: content-box; width: 13px; height: 13px; padding: 7.5px; border-radius: 50%; background: #f2f3f5; border: 1px solid #e8eaed;
-  fill: none; stroke: #7d838c; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-.bt-addr { display: grid; gap: 4px; min-width: 0; }
-.bt-addr .p-split { display: grid; grid-template-columns: 1.4fr 1fr; gap: 8px; }
-.bt-addr .p-split .p-input { width: 100%; }
+.bt-lines { margin-top: 8px; padding-top: 9px; border-top: 1px solid var(--line-soft); display: grid; gap: 5px; }
+.bt-line { display: grid; grid-template-columns: 22px 1fr; align-items: center; column-gap: 6px; cursor: text; min-width: 0; }
+.bt-line svg { box-sizing: content-box; width: 11px; height: 11px; padding: 5px; border-radius: 50%; background: #f2f3f5; border: 1px solid #e8eaed;
+  fill: none; stroke: #7d838c; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.bt-addr { display: grid; grid-template-columns: 2fr 1.2fr 1fr; gap: 4px; min-width: 0; }
+.bt-pair { display: grid; grid-template-columns: 1.3fr 1fr; gap: 8px; }
 .p-split { display: grid; grid-template-columns: 1fr 100px; gap: 10px; }
 .p-input {
   width: 100%; border: 1px solid transparent; background: transparent; border-radius: 8px;
