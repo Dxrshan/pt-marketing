@@ -250,7 +250,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
     }
   }, [plan, extras, discounts, aiQty])
 
-  const dueShown = useTween(totals.dueToday)
+  const dueShown = totals.dueToday // no count-up: a ticking total made prices feel like they were climbing
 
   const [signOpen, setSignOpen] = useState(false)
   const [clientSig, setClientSig] = useState<{ src: string; at: Date } | null>(null)
@@ -511,19 +511,13 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                   </div>
                 </div>
               </div>
-              <h3>Payment terms</h3>
-              <p>Due on acceptance. Your subscription is covered by a 30-day money-back guarantee, and your rate stays fixed for as long as you stay subscribed. Feedback credits ({gbp(FEEDBACK_CREDIT)} each, up to {gbp(FEEDBACK_CREDIT_CAP)} a month) come off your next bill.</p>
-              <p className="fair-use">Unlimited clients and trainers. Photo, video and voice-note uploads are subject to a fair-use storage policy; we will contact you before any limit affects your account.</p>
             </div>
             <div className="sum-card num">
               <div className="b-title">Your bill</div>
               <div className="b-row"><span>{plan.label} plan <em>{plan.months === 1 ? '1 month' : `${plan.months} months`}</em></span><span>{gbp(plan.rate * plan.months)}</span></div>
-              {totals.aiAddon > 0 && (
-                <div className="b-row"><span>AI Coach add-on <em>{plan.months === 1 ? '1 month' : `${plan.months} months`}</em></span><span>{gbp(totals.aiAddon)}</span></div>
-              )}
-              {totals.setupList > 0 && (
-                <div className="b-row"><span>Setup &amp; extras <em>one-off</em></span><span>{gbp(totals.setupList)}</span></div>
-              )}
+              {/* Rows stay put whether or not they're in use, so the box never jumps in size mid-conversation. */}
+              <div className="b-row"><span>AI Coach add-on <em>{plan.months === 1 ? '1 month' : `${plan.months} months`}</em></span><span>{totals.aiAddon > 0 ? gbp(totals.aiAddon) : '—'}</span></div>
+              <div className="b-row"><span>Setup &amp; extras <em>one-off</em></span><span>{totals.setupList > 0 ? gbp(totals.setupList) : '—'}</span></div>
               {totals.waivedValue > 0 && (
                 <div className="b-row save"><span>Founding studio discount</span><span>−{gbp(totals.waivedValue)}</span></div>
               )}
@@ -539,15 +533,18 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                 <span className="b-total-label">Total due today</span>
                 <span className="t-due-num">{gbp(dueShown)}</span>
               </div>
-              <div className="t-then">Then {gbp(totals.recurringOngoing)} {plan.period}{totals.onceExtras > 0 ? ' · setup is one-off' : ''}</div>
-              {totals.discountTotal + totals.waivedValue > 0 && (
-                <div className="t-saved">
-                  <span>You&rsquo;re saving</span>
-                  <strong>{gbp(totals.discountTotal + totals.waivedValue)}</strong>
-                </div>
-              )}
+              <div className="t-then">Then {gbp(totals.recurringOngoing)} {plan.period}</div>
+              <div className="t-saved" style={{ visibility: totals.discountTotal + totals.waivedValue > 0 ? 'visible' : 'hidden' }}>
+                <span>You&rsquo;re saving</span>
+                <strong>{gbp(totals.discountTotal + totals.waivedValue)}</strong>
+              </div>
               <div className="cta-trust no-print">30-day money-back guarantee on your subscription</div>
             </div>
+          </div>
+          <div className="terms-wide">
+            <h3>Payment terms</h3>
+            <p>Due on acceptance. Your subscription is covered by a 30-day money-back guarantee, and your rate stays fixed for as long as you stay subscribed. Feedback credits ({gbp(FEEDBACK_CREDIT)} each, up to {gbp(FEEDBACK_CREDIT_CAP)} a month) come off your next bill.</p>
+            <p className="fair-use">Unlimited clients and trainers. Photo, video and voice-note uploads are subject to a fair-use storage policy; we will contact you before any limit affects your account.</p>
           </div>
           </div>
         </section>
@@ -962,8 +959,11 @@ body { background: #eceef1; }
 .link-btn:hover { color: var(--ink); text-decoration: underline; }
 
 /* Summary */
+.terms-wide { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); }
+.terms-wide h3 { margin: 0 0 8px; }
+.terms-wide p { margin: 0 0 6px; max-width: none; }
 .summary { display: grid; grid-template-columns: 1fr 340px; gap: 36px; align-items: start; margin-top: 36px; }
-.summary-note h3 { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
+.summary-note h3, .terms-wide h3 { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
 .bank-wrap { margin-bottom: 26px; }
 .bcard {
   position: relative; overflow: hidden; width: 100%; max-width: 380px; aspect-ratio: 1.586; border-radius: 18px; padding: 20px 22px;
@@ -997,8 +997,9 @@ body { background: #eceef1; }
 .bcard-foot .right { text-align: right; min-width: 0; }
 .bcard-name { font-size: 14px; font-weight: 600; letter-spacing: .14em; }
 .bcard-ref { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; letter-spacing: .02em; white-space: nowrap; }
-.summary-note p.fair-use { margin-top: 10px; font-size: 11.5px; color: var(--faint); }
-.summary-note p { font-size: 13px; line-height: 1.65; color: var(--muted); max-width: 300px; }
+.summary-note p.fair-use, .terms-wide p.fair-use { margin-top: 10px; font-size: 11.5px; color: var(--faint); }
+.summary-note p, .terms-wide p { font-size: 13px; line-height: 1.65; color: var(--muted); max-width: 300px; }
+.terms-wide p { max-width: none; }
 .sum-card {
   position: relative; overflow: hidden; border-radius: 16px; padding: 22px 24px 24px; color: #c8ccd2;
   background: radial-gradient(140% 140% at 0% 0%, #30343c 0%, var(--steel-1) 40%, var(--steel-2) 100%);
