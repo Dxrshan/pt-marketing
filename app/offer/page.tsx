@@ -31,8 +31,8 @@ const FEATURES: { name: string; detail: string; icon: keyof typeof FEATURE_ICONS
 // Paid add-on, on top of any plan, billed with the subscription.
 const AI_ADDON_RATE = 12
 
-// Feedback credit: £5 off the next bill per piece of useful feedback, capped per month.
-const FEEDBACK_CREDIT = 5
+// Feedback credit: £1 off the next bill per fix or new feature suggested, capped per month.
+const FEEDBACK_CREDIT = 1
 const FEEDBACK_CREDIT_CAP = 10
 
 const EXTRAS = ['Diet & meal plans', 'Form-check video review', 'Messaging & voice notes', 'Community feed & leaderboard']
@@ -450,7 +450,7 @@ export default function OfferPage() {
               <tr className={feedbackQty > 0 ? '' : 'removed'}>
                 <td>
                   <div className="l-main">Feedback credit</div>
-                  <div className="l-sub">{`${gbp(FEEDBACK_CREDIT)} off your next bill for each piece of useful feedback, up to ${gbp(FEEDBACK_CREDIT_CAP)} a month · Recurring`}</div>
+                  <div className="l-sub">{`${gbp(FEEDBACK_CREDIT)} off your next bill for every fix or new feature you suggest, up to ${gbp(FEEDBACK_CREDIT_CAP)} a month · Recurring`}</div>
                 </td>
                 <td className="qty-col"><QtyStepper value={feedbackQty} label="feedback credits" onChange={setFeedbackQty} /></td>
                 <td className="amt num">{feedbackQty > 0 ? `−${gbp(totals.feedbackCredit)}` : `−${gbp(FEEDBACK_CREDIT)} each`}</td>
