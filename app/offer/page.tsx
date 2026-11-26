@@ -51,13 +51,13 @@ const FEATURE_ICONS = {
 type Kind = 'once' | 'recurring'
 type Status = 'charge' | 'waived' | 'removed'
 
-type Extra = { id: string; label: string; amount: number; list: number; kind: Kind; status: Status; custom: boolean }
+type Extra = { id: string; label: string; amount: number; list: number; qty: number; kind: Kind; status: Status; custom: boolean }
 type Discount = { id: string; label: string; mode: 'pct' | 'fixed'; value: number; scope: Kind }
 
 const DEFAULT_EXTRAS: Extra[] = [
-  { id: 'onboard', label: 'Onboarding & data migration',     amount: 99,  list: 99, kind: 'once', status: 'charge', custom: false },
-  { id: 'call',    label: '1:1 setup call with the team',    amount: 75,  list: 75, kind: 'once', status: 'charge', custom: false },
-  { id: 'support', label: 'Priority feature requests & custom changes', amount: 90,  list: 90, kind: 'once', status: 'charge', custom: false },
+  { id: 'onboard', label: 'Onboarding & data migration',     amount: 99,  list: 99, qty: 1, kind: 'once', status: 'charge', custom: false },
+  { id: 'call',    label: '1:1 setup call with the team',    amount: 75,  list: 75, qty: 1, kind: 'once', status: 'charge', custom: false },
+  { id: 'support', label: 'Priority feature requests & custom changes', amount: 90,  list: 90, qty: 1, kind: 'once', status: 'charge', custom: false },
 ]
 
 // Whole pounds by default (£441); pence only when there are some (£273.60).
@@ -150,13 +150,28 @@ function EditableAmount({ value, onChange, label }: { value: number; onChange: (
   )
 }
 
+/* Quantity: − n + on screen, just the number in print. 0 takes the line off the bill. */
+function QtyStepper({ value, onChange, label, min = 0, max = 99 }: { value: number; onChange: (v: number) => void; label: string; min?: number; max?: number }) {
+  return (
+    <>
+      <span className="qty no-print" role="group" aria-label={`${label} quantity`}>
+        <button type="button" className="qty-btn" onClick={() => onChange(Math.max(min, value - 1))} disabled={value <= min} aria-label={`Fewer ${label}`}>−</button>
+        <span className="qty-n num">{value}</span>
+        <button type="button" className="qty-btn" onClick={() => onChange(Math.min(max, value + 1))} disabled={value >= max} aria-label={`More ${label}`}>+</button>
+      </span>
+      <span className="print-only num">{value}</span>
+    </>
+  )
+}
+
 /* ─── Page ─────────────────────────────────────────────────────────────── */
 
 export default function OfferPage() {
   const [term, setTerm] = useState<Term>('quarterly')
   const [extras, setExtras] = useState<Extra[]>(DEFAULT_EXTRAS)
   const [discounts, setDiscounts] = useState<Discount[]>([])
-  const [aiOn, setAiOn] = useState(false)
+  const [aiQty, setAiQty] = useState(0)
+  const [feedbackQty, setFeedbackQty] = useState(0)
 
   const [studio, setStudio] = useState('')
   const [contact, setContact] = useState('')
@@ -178,16 +193,18 @@ export default function OfferPage() {
   const totals = useMemo(() => {
     const listSub = LIST_MONTHLY * plan.months
     const termSaving = listSub - plan.rate * plan.months
-    const charged = extras.filter(e => e.status === 'charge')
-    const recurringExtras = charged.filter(e => e.kind === 'recurring').reduce((s, e) => s + e.amount, 0)
-    const onceExtras = charged.filter(e => e.kind === 'once').reduce((s, e) => s + e.amount, 0)
+    const charged = extras.filter(e => e.status === 'charge' && e.qty > 0)
+    const recurringExtras = charged.filter(e => e.kind === 'recurring').reduce((s, e) => s + e.amount * e.qty, 0)
+    const onceExtras = charged.filter(e => e.kind === 'once').reduce((s, e) => s + e.amount * e.qty, 0)
 
     // Recurring discounts come off the recurring subtotal; one-off discounts
     // come off whatever is left on the first payment.
-    const aiAddon = aiOn ? AI_ADDON_RATE * plan.months : 0
+    const aiAddon = AI_ADDON_RATE * aiQty * plan.months
+    // Feedback credits come off the subscription, capped per month of the term.
+    const feedbackCredit = Math.min(FEEDBACK_CREDIT * feedbackQty, FEEDBACK_CREDIT_CAP * plan.months, listSub - termSaving)
     const recurringBase = listSub - termSaving + recurringExtras + aiAddon
     const discAmounts: Record<string, number> = {}
-    let recurringDisc = 0
+    let recurringDisc = feedbackCredit
     for (const d of discounts.filter(d => d.scope === 'recurring')) {
       const amt = Math.min(
         d.mode === 'pct' ? (recurringBase * d.value) / 100 : d.value,
@@ -210,14 +227,14 @@ export default function OfferPage() {
     }
 
     return {
-      listSub, termSaving, onceExtras, discAmounts, recurringTotal, aiAddon,
+      listSub, termSaving, onceExtras, discAmounts, recurringTotal, aiAddon, feedbackCredit,
       dueToday: Math.max(firstBase - onceDisc, 0),
       subtotal: listSub + recurringExtras + aiAddon + onceExtras,
-      waivedValue: extras.filter(e => e.status === 'charge').reduce((s, e) => s + Math.max(e.list - e.amount, 0), 0),
-      setupList: charged.reduce((s, e) => s + Math.max(e.list, e.amount), 0),
+      waivedValue: charged.reduce((s, e) => s + Math.max(e.list - e.amount, 0) * e.qty, 0),
+      setupList: charged.reduce((s, e) => s + Math.max(e.list, e.amount) * e.qty, 0),
       discountTotal: termSaving + recurringDisc + onceDisc,
     }
-  }, [plan, extras, discounts, aiOn])
+  }, [plan, extras, discounts, aiQty, feedbackQty])
 
   const dueShown = useTween(totals.dueToday)
 
@@ -239,7 +256,7 @@ export default function OfferPage() {
     setExtras(xs => xs.map(x => (x.id === id ? { ...x, ...patch } : x)))
   const deleteExtra = (id: string) => setExtras(xs => xs.filter(x => x.id !== id))
   const addCharge = () =>
-    setExtras(xs => [...xs, { id: uid(), label: 'Additional item', amount: 0, list: 0, kind: 'once', status: 'charge', custom: true }])
+    setExtras(xs => [...xs, { id: uid(), label: 'Additional item', amount: 0, list: 0, qty: 1, kind: 'once', status: 'charge', custom: true }])
 
 
   const visibleExtras = extras
@@ -396,7 +413,7 @@ export default function OfferPage() {
 
           <table className="lines">
             <thead>
-              <tr><th><h2 className="th-title">Your investment</h2></th><th className="amt">Amount</th></tr>
+              <tr><th><h2 className="th-title">Your investment</h2></th><th className="qty-col">Qty</th><th className="amt">Amount</th></tr>
             </thead>
             <tbody>
               <tr>
@@ -404,11 +421,12 @@ export default function OfferPage() {
                   <div className="l-main">DNI Studios platform, {plan.label.toLowerCase()}</div>
                   <div className="l-sub num">{`${plan.months} ${plan.months === 1 ? 'month' : 'months'} at ${gbp(plan.rate)} · Recurring`}</div>
                 </td>
+                <td className="qty-col num">1</td>
                 <td className="amt num">{gbp(plan.rate * plan.months)}</td>
               </tr>
 
               {visibleExtras.map(x => (
-                <tr key={x.id} className={x.status === 'removed' ? 'removed' : ''}>
+                <tr key={x.id} className={x.status === 'removed' || x.qty === 0 ? 'removed' : ''}>
                   <td>
                     {x.custom ? (
                       <>
@@ -419,7 +437,7 @@ export default function OfferPage() {
                       <div className="l-main">{x.label}</div>
                     )}
                     <div className="l-sub">
-                      {x.status === 'removed' ? 'Removed' : x.amount < x.list ? (x.amount === 0 ? 'Waived for your studio' : `Reduced from ${gbp(x.list)} for your studio`) : kindWord(x.kind)}
+                      {x.status === 'removed' || x.qty === 0 ? 'Removed' : x.qty > 1 ? `${x.qty} × ${gbp(x.amount)} · ${kindWord(x.kind)}` : x.amount < x.list ? (x.amount === 0 ? 'Waived for your studio' : `Reduced from ${gbp(x.list)} for your studio`) : kindWord(x.kind)}
                     </div>
                     {x.custom && (
                       <div className="ctls no-print">
@@ -431,38 +449,46 @@ export default function OfferPage() {
                       </div>
                     )}
                   </td>
+                  <td className="qty-col">
+                    <QtyStepper value={x.qty} label={x.label} onChange={v => updateExtra(x.id, { qty: v })} />
+                  </td>
                   <td className="amt num">
-                    <span className="no-print">
-                      <EditableAmount value={x.amount} label={`${x.label} amount`} onChange={v => updateExtra(x.id, { amount: v })} />
-                    </span>
-                                        <span className="print-only">
-                      {x.amount === 0 && x.list > 0 ? 'Waived' : gbp(x.amount)}
-                    </span>
+                    {x.qty > 1 ? (
+                      gbp(x.amount * x.qty)
+                    ) : (
+                      <>
+                        <span className="no-print">
+                          <EditableAmount value={x.amount} label={`${x.label} amount`} onChange={v => updateExtra(x.id, { amount: v })} />
+                        </span>
+                        <span className="print-only">
+                          {x.qty === 0 ? '—' : x.amount === 0 && x.list > 0 ? 'Waived' : gbp(x.amount)}
+                        </span>
+                      </>
+                    )}
                   </td>
                 </tr>
               ))}
 
-              <tr className={aiOn ? '' : 'removed'}>
+              <tr className={aiQty > 0 ? '' : 'removed'}>
                 <td>
                   <div className="l-main">AI Coach add-on</div>
                   <div className="l-sub num">
-                    {aiOn
-                      ? `${plan.months} ${plan.months === 1 ? 'month' : 'months'} at ${gbp(AI_ADDON_RATE)} · Recurring · 24/7 AI assistant for you and your clients`
+                    {aiQty > 0
+                      ? `${aiQty > 1 ? `${aiQty} × ` : ''}${plan.months} ${plan.months === 1 ? 'month' : 'months'} at ${gbp(AI_ADDON_RATE)} · Recurring · 24/7 AI assistant for you and your clients`
                       : `Optional · ${gbp(AI_ADDON_RATE)}/mo · 24/7 AI assistant for you and your clients`}
                   </div>
-                  <div className="ctls no-print">
-                    <button className="link-btn" onClick={() => setAiOn(v => !v)}>{aiOn ? 'Remove' : 'Add to plan'}</button>
-                  </div>
                 </td>
-                <td className="amt num">{aiOn ? gbp(AI_ADDON_RATE * plan.months) : '—'}</td>
+                <td className="qty-col"><QtyStepper value={aiQty} label="AI Coach add-on" onChange={setAiQty} /></td>
+                <td className="amt num">{aiQty > 0 ? gbp(totals.aiAddon) : '—'}</td>
               </tr>
 
-              <tr>
+              <tr className={feedbackQty > 0 ? '' : 'removed'}>
                 <td>
                   <div className="l-main">Feedback credit</div>
                   <div className="l-sub">{`${gbp(FEEDBACK_CREDIT)} off your next bill for each piece of useful feedback, up to ${gbp(FEEDBACK_CREDIT_CAP)} a month · Recurring`}</div>
                 </td>
-                <td className="amt num">{`−${gbp(FEEDBACK_CREDIT)} each`}</td>
+                <td className="qty-col"><QtyStepper value={feedbackQty} label="feedback credits" onChange={setFeedbackQty} /></td>
+                <td className="amt num">{feedbackQty > 0 ? `−${gbp(totals.feedbackCredit)}` : `−${gbp(FEEDBACK_CREDIT)} each`}</td>
               </tr>
 
             </tbody>
@@ -507,6 +533,9 @@ export default function OfferPage() {
               <div className="b-row"><span>{plan.label} plan <em>{plan.months === 1 ? '1 month' : `${plan.months} months`}</em></span><span>{gbp(plan.rate * plan.months)}</span></div>
               {totals.aiAddon > 0 && (
                 <div className="b-row"><span>AI Coach add-on <em>{plan.months === 1 ? '1 month' : `${plan.months} months`}</em></span><span>{gbp(totals.aiAddon)}</span></div>
+              )}
+              {totals.feedbackCredit > 0 && (
+                <div className="b-row save"><span>Feedback credit <em>{feedbackQty} × {gbp(FEEDBACK_CREDIT)}</em></span><span>−{gbp(totals.feedbackCredit)}</span></div>
               )}
               {totals.setupList > 0 && (
                 <div className="b-row"><span>Setup &amp; extras <em>one-off</em></span><span>{gbp(totals.setupList)}</span></div>
@@ -893,12 +922,20 @@ body { background: #eceef1; }
 .lines tbody tr:first-child td { border-top: none; }
 .lines tbody tr:nth-child(even) td { background: #fafbfc; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .lines th.amt { color: var(--faint); }
+.lines .qty-col { text-align: center; white-space: nowrap; width: 1%; color: var(--ink); font-weight: 600; padding-left: 12px; padding-right: 0; }
+.lines th.qty-col { color: var(--faint); }
+.qty { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: #fff; }
+.qty-btn { all: unset; cursor: pointer; width: 26px; height: 26px; display: grid; place-items: center; font-size: 15px; color: var(--muted); }
+.qty-btn:hover:not(:disabled) { background: #f1f3f5; color: var(--ink); }
+.qty-btn:disabled { opacity: .3; cursor: default; }
+.qty-n { min-width: 22px; text-align: center; font-size: 14px; }
 .lines .amt { text-align: right; white-space: nowrap; padding-left: 24px; color: var(--ink); font-weight: 600; }
 .th-title { font: inherit; letter-spacing: inherit; }
 .l-main { color: var(--ink); font-weight: 500; }
 .l-sub { font-size: 13px; color: var(--faint); margin-top: 3px; }
 .struck { color: var(--faint); margin-right: 6px; font-weight: 400; }
 .lines tr.removed td { opacity: .4; }
+.lines tr.removed td.qty-col { opacity: 1; }
 .lines tr.removed .l-main { text-decoration: line-through; }
 
 .ctls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
