@@ -404,10 +404,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                 <td className="amt num">
                   {gbp(plan.rate * plan.months)}
                   {plan.rate < LIST_MONTHLY && (
-                    <>
-                      <div className="amt-note"><s>{gbp(LIST_MONTHLY * plan.months)}</s>YOU SAVE {gbp((LIST_MONTHLY - plan.rate) * plan.months)}</div>
-                      {plan.months < 12 && <div className="amt-sub">{gbp(yearlySaving(plan.rate))} a year</div>}
-                    </>
+                    <div className="amt-note">Save {gbp((LIST_MONTHLY - plan.rate) * plan.months)}</div>
                   )}
                 </td>
               </tr>
