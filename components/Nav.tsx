@@ -23,22 +23,24 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Highlight the link for the section under the middle of the screen, and nothing
+  // when you're above or between sections (e.g. back on the hero).
   useEffect(() => {
-    const ids = NAV_LINKS.map(l => l.section)
-    const observers: IntersectionObserver[] = []
-
-    ids.forEach(id => {
-      const el = document.getElementById(id)
-      if (!el) return
-      const obs = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActiveSection(id) },
-        { rootMargin: '-20% 0px -60% 0px', threshold: 0 }
-      )
-      obs.observe(el)
-      observers.push(obs)
-    })
-
-    return () => observers.forEach(o => o.disconnect())
+    const update = () => {
+      const mid = window.innerHeight * 0.45
+      let current = ''
+      for (const { section } of NAV_LINKS) {
+        const el = document.getElementById(section)
+        if (!el) continue
+        const r = el.getBoundingClientRect()
+        if (r.top <= mid && r.bottom > mid) current = section
+      }
+      setActiveSection(current)
+    }
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    window.addEventListener('resize', update)
+    return () => { window.removeEventListener('scroll', update); window.removeEventListener('resize', update) }
   }, [])
 
   const scrollTo = (href: string) => {
