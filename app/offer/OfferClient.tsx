@@ -273,6 +273,9 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
   const dueShown = totals.dueToday // no count-up: a ticking total made prices feel like they were climbing
 
   const [signOpen, setSignOpen] = useState(false)
+  // Terms are collapsed on screen (always printed in full as page 2).
+  const [termsOpen, setTermsOpen] = useState(false)
+  const openTerms = () => { setTermsOpen(true); setTimeout(() => document.getElementById('terms')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60) }
   const [clientSig, setClientSig] = useState<{ src: string; at: Date } | null>(null)
 
   // The one negotiable discount in the bill: "20%" or "50" / "£50", off today's payment.
@@ -565,7 +568,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
 
         {/* Acceptance */}
         <section className="part" id="signup">
-          <p className="agree">By signing, {studio ? <strong>{studio}</strong> : 'the client named above'} accepts this proposal and the Terms &amp; Conditions that follow, which form part of this agreement.</p>
+          <p className="agree">By signing, {studio ? <strong>{studio}</strong> : 'the client named above'} accepts this proposal and the <button type="button" className="terms-link" onClick={openTerms}>Terms &amp; Conditions</button> that follow, which form part of this agreement.</p>
 
           <div className="signs">
             <div>
@@ -604,7 +607,13 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
       </article>
 
       {/* ── Sheet 2: terms ─────────────────────────────────── */}
-      <article className="sheet terms" id="terms">
+      <div className="terms-toggle no-print">
+        <button type="button" onClick={() => (termsOpen ? setTermsOpen(false) : openTerms())}>
+          {termsOpen ? 'Hide Terms & Conditions' : 'View full Terms & Conditions'}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ transform: termsOpen ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }}><path d="m6 9 6 6 6-6" /></svg>
+        </button>
+      </div>
+      <article className={`sheet terms ${termsOpen ? '' : 'terms-collapsed'}`} id="terms">
         <h2 className="terms-title">Terms &amp; Conditions of Service</h2>
         <p className="terms-intro">These terms govern the provision of the DNI Studios software platform (&quot;the Service&quot;) by DNI Ltd, trading as DNI Analytics, a company registered in England and Wales under company number 15630271, registered office 78a Deacon Road, London NW2 5QJ (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;) to the client named above (&quot;the Customer&quot;, &quot;you&quot;). By signing the offer sheet or by accessing or using the Service, you agree to be bound by these terms.</p>
         <div className="clauses">
@@ -991,6 +1000,13 @@ body { background: #eceef1; }
 .seg-opt.on .seg-price em { color: #5be39a; }
 .seg-opt:focus-visible { outline: 2px solid #6d5dfc; outline-offset: 2px; }
 @media (max-width: 560px) { .seg-opt { flex-direction: column; align-items: center; gap: 2px; } }
+.terms-link { all: unset; cursor: pointer; color: var(--ink); text-decoration: underline; text-underline-offset: 2px; text-decoration-color: rgba(17,19,24,.3); }
+.terms-link:hover { text-decoration-color: currentColor; }
+.terms-toggle { display: flex; justify-content: center; margin: 18px 0; }
+.terms-toggle button { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #4a4f57; background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 9px 16px; box-shadow: 0 2px 8px -4px rgba(0,0,0,.15); }
+.terms-toggle button:hover { color: var(--ink); }
+.terms-collapsed { display: none; }
+@media print { .terms-collapsed { display: block !important; } }
 .summary { display: grid; grid-template-columns: 1fr 340px; gap: 36px; align-items: start; margin-top: 36px; }
 /* Both columns end on the same line: the bill stretches to the left column's height,
    with the saving pinned to its bottom. */
