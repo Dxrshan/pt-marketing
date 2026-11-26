@@ -538,8 +538,11 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
               <div className="b-title">Your bill</div>
               <div className="b-row"><span>{plan.label} plan <em>{plan.months === 1 ? '1 month' : `${plan.months} months`}</em></span><span>{gbp(plan.rate * plan.months)}</span></div>
               {/* Rows stay put whether or not they're in use, so the box never jumps in size mid-conversation. */}
+              {/* Same items, same order as the table above. */}
+              {extras.filter(x => x.status !== 'removed').map(x => (
+                <div key={x.id} className="b-row"><span>{x.label}{x.qty > 1 ? <em>× {x.qty}</em> : null}</span><span>{x.qty > 0 ? gbp(Math.max(x.list, x.amount) * x.qty) : '—'}</span></div>
+              ))}
               <div className="b-row"><span>AI Coach add-on <em>{plan.months === 1 ? '1 month' : `${plan.months} months`}</em></span><span>{totals.aiAddon > 0 ? gbp(totals.aiAddon) : '—'}</span></div>
-              <div className="b-row"><span>Setup &amp; extras <em>one-off</em></span><span>{totals.setupList > 0 ? gbp(totals.setupList) : '—'}</span></div>
               {totals.waivedValue > 0 && (
                 <div className="b-row save"><span>Founding studio discount</span><span>−{gbp(totals.waivedValue)}</span></div>
               )}
