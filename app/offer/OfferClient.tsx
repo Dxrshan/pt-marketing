@@ -36,8 +36,8 @@ const FEEDBACK_CREDIT = 1
 const FEEDBACK_CREDIT_CAP = 10
 
 // Trust badges under the bank card. Only claims that are true today:
-//  - price lock and cancel-any-time: Terms clauses 2 and 3
-//  - UK GDPR processor terms (DPA): Terms clause 6
+//  - cancel any time: Terms clause 3
+//  - GDPR: processor terms in Terms clause 6 (register with the ICO to keep this true)
 //  - export: built into the app and Terms clause 6
 //  - encryption: HTTPS everywhere, passwords hashed, files in a private bucket
 //  - registered company: Companies House no. 15630271
@@ -45,9 +45,8 @@ const FEEDBACK_CREDIT_CAP = 10
 // "ICO registered" badge appears.
 const ICO_REG_NO = ''
 const TRUST_BADGES: { label: string; icon: React.ReactNode }[] = [
-  { label: 'Price locked for life', icon: <><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5" /><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" /></> },
   { label: 'Cancel any time', icon: <path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4" /> },
-  { label: 'GDPR data agreement', icon: <><path d="M12 3l8 3v6c0 4.8-3.4 8-8 9-4.6-1-8-4.2-8-9V6z" /><path d="M8.8 12.2l2.2 2.2 4.2-4.3" /></> },
+  { label: 'GDPR compliant', icon: <><path d="M12 3l8 3v6c0 4.8-3.4 8-8 9-4.6-1-8-4.2-8-9V6z" /><path d="M8.8 12.2l2.2 2.2 4.2-4.3" /></> },
   { label: 'Encrypted & private', icon: <><circle cx="12" cy="12" r="8.5" /><path d="M3.5 12h17M12 3.5c2.4 2.4 3.6 5.2 3.6 8.5s-1.2 6.1-3.6 8.5c-2.4-2.4-3.6-5.2-3.6-8.5S9.6 5.9 12 3.5z" /></> },
   { label: 'Export your data', icon: <><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5" /><path d="M4.5 19.5h15" /></> },
   { label: 'UK registered company', icon: <><path d="M3 9.5 12 4l9 5.5" /><path d="M5 10v7M9.5 10v7M14.5 10v7M19 10v7M3.5 20h17" /></> },
