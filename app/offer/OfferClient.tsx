@@ -55,8 +55,8 @@ type Extra = { id: string; label: string; amount: number; list: number; qty: num
 type Discount = { id: string; label: string; mode: 'pct' | 'fixed'; value: number; scope: Kind }
 
 const DEFAULT_EXTRAS: Extra[] = [
-  { id: 'onboard', label: 'Onboarding & data migration',     amount: 99,  list: 99, qty: 1, kind: 'once', status: 'charge', custom: false },
-  { id: 'call',    label: '1:1 setup call with the team',    amount: 75,  list: 75, qty: 1, kind: 'once', status: 'charge', custom: false },
+  { id: 'onboard', label: 'Onboarding & data migration',     amount: 99,  list: 99, qty: 0, kind: 'once', status: 'charge', custom: false },
+  { id: 'call',    label: '1:1 setup call with the team',    amount: 75,  list: 75, qty: 0, kind: 'once', status: 'charge', custom: false },
 ]
 
 // Whole pounds by default (£441); pence only when there are some (£273.60).
@@ -402,7 +402,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                         <div className="l-main print-only">{x.label}</div>
                       </>
                     ) : (
-                      <div className="l-main">{x.label}</div>
+                      <div className="l-main">{x.label}{x.qty === 0 && <span className="opt-tag">Optional</span>}</div>
                     )}
                     <div className="l-sub">
                       {x.status === 'removed' ? 'Removed' : x.qty === 0 ? `Optional · ${gbp(x.amount)} · ${kindWord(x.kind)}` : x.qty > 1 ? `${x.qty} × ${gbp(x.amount)} · ${kindWord(x.kind)}` : x.amount < x.list ? (x.amount === 0 ? 'Waived for your studio' : `Reduced from ${gbp(x.list)} for your studio`) : kindWord(x.kind)}
