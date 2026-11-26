@@ -202,7 +202,7 @@ export function ProductReveal() {
     <section ref={ref} id="story" data-scroll-at="0.25" className="cine-story" style={{ position: 'relative' }}>
       <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#050607' }}>
         {/* Centred in the gap between the nav and the settled dashboard, not hugging the top */}
-        <div style={{ position: 'absolute', top: 'calc(27vh - 55px)', left: 0, right: 0, height: 110, zIndex: 3 }}>
+        <div style={{ position: 'absolute', top: 'calc(16.5vh - 14px)', left: 0, right: 0, height: 110, zIndex: 3 }}>
           {CAPTIONS.map((c, i) => <Caption key={c} text={c} i={i} p={p} />)}
         </div>
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', perspective: 1400, paddingTop: '14vh' }}>
