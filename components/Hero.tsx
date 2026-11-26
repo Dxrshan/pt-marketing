@@ -167,49 +167,108 @@ export function DashboardMockup() {
 
 /* ── Client app on a phone, landed in a rocky crater beside the dashboard ── */
 function PhoneScreen() {
-  const C = { bg: '#0d0e16', card: 'rgba(255,255,255,0.06)', line: 'rgba(255,255,255,0.09)', ink: '#f3f5fa', muted: '#9aa3b8', accent: '#7c5cff' }
-  const macros: [string, number, number, string][] = [['Protein', 118, 150, '#7c5cff'], ['Carbs', 160, 220, '#22d3ee'], ['Fat', 48, 70, '#f59e0b']]
+  // Laid out at real phone size (390 × 844 CSS px, like the live client app) and
+  // scaled down to the mockup's screen, so it matches the real app closely.
+  const W = 390, H = 844, SCALE = 173 / W
+  const days: [string, 'done' | 'missed' | 'booked' | 'none'][] = [['Mon', 'done'], ['Tue', 'none'], ['Wed', 'missed'], ['Thu', 'none'], ['Fri', 'booked'], ['Sat', 'none'], ['Sun', 'none']]
+  const tile = (st: string) => st === 'done'
+    ? { bg: 'rgba(34,160,90,.22)', bd: '#2f9a5c', c: '#6ee7a0' }
+    : st === 'missed' ? { bg: 'rgba(220,60,70,.18)', bd: '#b8424c', c: '#ff8a93' }
+    : st === 'booked' ? { bg: 'rgba(255,255,255,.06)', bd: 'rgba(255,255,255,.28)', c: '#d6d9e6' }
+    : { bg: 'rgba(255,255,255,.02)', bd: 'rgba(255,255,255,.08)', c: '#5d6380' }
+  // November 2026 starts on a Sunday. Red = missed, green = trained, today = 26.
+  const missed = new Set([2, 4, 6, 9, 11, 13, 16, 18, 20, 25]), trained = new Set([14, 15, 23]), bright = new Set([17])
+  const cells: (number | null)[] = [...Array(6).fill(null), ...Array.from({ length: 30 }, (_, i) => i + 1)]
   return (
-    <div style={{ position: 'absolute', inset: 0, background: C.bg, display: 'flex', flexDirection: 'column', fontFamily: 'Inter, -apple-system, sans-serif', textAlign: 'left' }}>
-      <div style={{ padding: '34px 12px 8px', background: 'radial-gradient(120% 80% at 20% 0%, rgba(124,92,255,.35), transparent 60%)' }}>
-        <div style={{ fontSize: 8, color: C.muted }}>Thursday 26 Nov</div>
-        <div style={{ fontSize: 14, fontWeight: 800, color: C.ink, letterSpacing: '-0.02em' }}>Hi Sarah 👋</div>
-      </div>
-      <div style={{ padding: '0 10px', display: 'flex', flexDirection: 'column', gap: 7, flex: 1 }}>
-        <div style={{ display: 'flex', gap: 6 }}>
-          {[['🔥', '6', 'week streak'], ['🏆', '3', 'PBs this month']].map(([e, n, l]) => (
-            <div key={l} style={{ flex: 1, background: C.card, border: `1px solid ${C.line}`, borderRadius: 10, padding: '6px 7px' }}>
-              <div style={{ fontSize: 13, fontWeight: 800, color: C.ink }}>{e} {n}</div>
-              <div style={{ fontSize: 7, color: C.muted }}>{l}</div>
-            </div>
-          ))}
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', background: '#0b0d1c' }}>
+      <div style={{ width: W, height: H, transform: `scale(${SCALE})`, transformOrigin: '0 0', fontFamily: 'Inter, -apple-system, sans-serif', color: '#f3f5fa', textAlign: 'left', position: 'relative' }}>
+        {/* status bar */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 30px 0 40px', fontSize: 16, fontWeight: 600 }}>
+          <span>22:37</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
+            <span style={{ display: 'flex', alignItems: 'flex-end', gap: 2 }}>{[5, 8, 11, 14].map(h => <i key={h} style={{ width: 3, height: h, borderRadius: 1, background: '#fff' }} />)}</span>5G
+            <span style={{ width: 25, height: 12, borderRadius: 4, border: '1.2px solid rgba(255,255,255,.6)', padding: 1.5 }}><i style={{ display: 'block', width: '60%', height: '100%', borderRadius: 2, background: '#fff' }} /></span>
+          </span>
         </div>
-        <div style={{ borderRadius: 12, padding: '9px 9px', background: 'linear-gradient(150deg,#7c5cff,#c34bd8)', color: '#fff' }}>
-          <div style={{ fontSize: 7, fontWeight: 700, letterSpacing: '.08em', opacity: .85 }}>TODAY’S WORKOUT</div>
-          <div style={{ fontSize: 11.5, fontWeight: 800, marginTop: 2 }}>Upper Body A</div>
-          <div style={{ fontSize: 7.5, opacity: .85 }}>6 exercises · 55 min</div>
-          <div style={{ marginTop: 6, display: 'inline-block', fontSize: 8, fontWeight: 800, background: '#fff', color: '#5b3fe0', borderRadius: 999, padding: '3px 9px' }}>▶ Start</div>
-        </div>
-        <div style={{ background: C.card, border: `1px solid ${C.line}`, borderRadius: 10, padding: '7px 8px' }}>
-          <div style={{ fontSize: 8, fontWeight: 700, color: C.ink, marginBottom: 5 }}>Food Log · 1,640 kcal</div>
-          {macros.map(([n, v, t, c]) => (
-            <div key={n} style={{ marginBottom: 4 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 6.8, color: C.muted }}><span>{n}</span><span>{v}/{t}g</span></div>
-              <div style={{ height: 3.5, borderRadius: 3, background: 'rgba(255,255,255,0.08)' }}><div style={{ width: `${(v / t) * 100}%`, height: '100%', borderRadius: 3, background: c }} /></div>
-            </div>
-          ))}
-        </div>
-        <div style={{ background: C.card, border: `1px solid ${C.line}`, borderRadius: 10, padding: '7px 8px', display: 'flex', alignItems: 'center', gap: 7 }}>
-          <span style={{ width: 20, height: 20, borderRadius: 6, background: 'rgba(124,92,255,.2)', color: '#b9a8ff', display: 'grid', placeItems: 'center', fontSize: 9 }}>📅</span>
-          <div><div style={{ fontSize: 8, fontWeight: 700, color: C.ink }}>Next session · Fri 08:00</div><div style={{ fontSize: 7, color: C.muted }}>PT Session with Darshan</div></div>
-        </div>
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'space-around', padding: '6px 4px 14px', borderTop: `1px solid ${C.line}`, background: 'rgba(13,14,22,.95)' }}>
-        {['Home', 'Train', 'Food', 'Progress', 'Chat'].map((t, i) => (
-          <div key={t} style={{ textAlign: 'center', fontSize: 6.5, fontWeight: 600, color: i === 0 ? '#b9a8ff' : C.muted }}>
-            <div style={{ width: 4, height: 4, borderRadius: 2, margin: '0 auto 3px', background: i === 0 ? '#b9a8ff' : 'transparent' }} />{t}
+
+        {/* greeting + this week */}
+        <div style={{ margin: '28px 14px 0', borderRadius: 24, padding: '22px 20px 18px', position: 'relative', overflow: 'hidden', background: 'linear-gradient(180deg,#26224a 0%,#1a1836 55%,#131229 100%)' }}>
+          <div style={{ position: 'absolute', right: -50, top: -60, width: 190, height: 190, borderRadius: '50%', background: 'rgba(255,255,255,.035)' }} />
+          <div style={{ fontSize: 12, color: '#8e92ad' }}>Thursday 26 November</div>
+          <div style={{ fontSize: 21, fontWeight: 800, letterSpacing: '-0.02em', marginTop: 4 }}>Night session, Sarah 💪</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 18, fontSize: 9.5, letterSpacing: '.14em', color: '#8e92ad', fontWeight: 600 }}>
+            <span>THIS WEEK</span>
+            <span style={{ letterSpacing: 0, fontWeight: 500 }}><b style={{ background: '#6d4cff', color: '#fff', borderRadius: 5, padding: '1px 5px', fontSize: 8 }}>PT</b> = Session Booked</span>
           </div>
-        ))}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7,1fr)', gap: 7, marginTop: 9 }}>
+            {days.map(([d, st]) => { const t = tile(st); return (
+              <div key={d} style={{ height: 50, borderRadius: 10, background: t.bg, border: `1.5px solid ${t.bd}`, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 5, color: t.c, fontSize: 9.5, fontWeight: 600 }}>
+                {d}
+                <span style={{ fontSize: st === 'done' ? 12 : 11, lineHeight: 1 }}>{st === 'done' ? '✅' : st === 'missed' ? '✕' : st === 'booked' ? '·' : '–'}</span>
+              </div>) })}
+          </div>
+          <div style={{ height: 1, background: 'rgba(255,255,255,.08)', margin: '15px 0 13px' }} />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', textAlign: 'center' }}>
+            {[['STREAK', <>🥉 3 <small style={{ fontSize: 10, fontWeight: 500, color: '#9aa0bb' }}>wks</small></>, <span style={{ color: '#4ade80' }}>5 this month</span>],
+              ['STEPS TARGET', '10,000', 'daily goal'], ['PROTEIN TARGET', <>120<small style={{ fontSize: 10, fontWeight: 500, color: '#9aa0bb' }}>g</small></>, 'daily goal']].map(([k, v, sub], i) => (
+              <div key={i} style={{ borderLeft: i ? '1px solid rgba(255,255,255,.08)' : 'none' }}>
+                <div style={{ fontSize: 8.5, letterSpacing: '.12em', color: '#8e92ad' }}>{k}</div>
+                <div style={{ fontSize: 19, fontWeight: 800, marginTop: 4 }}>{v}</div>
+                <div style={{ fontSize: 9, color: '#8e92ad', marginTop: 2 }}>{sub}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* suggested next workout */}
+        <div style={{ margin: '14px 14px 0', borderRadius: 22, overflow: 'hidden', border: '1px solid rgba(255,255,255,.08)', background: '#121428' }}>
+          <div style={{ padding: '16px 18px 16px', background: 'linear-gradient(100deg,#6a55ff 0%,#3b7ef0 55%,#1aa5e6 100%)' }}>
+            <div style={{ fontSize: 9.5, letterSpacing: '.14em', fontWeight: 700, color: 'rgba(255,255,255,.92)' }}>⚡ SUGGESTED NEXT WORKOUT</div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 }}>
+              <div style={{ fontSize: 19, fontWeight: 800 }}>Workout 2</div>
+              <span style={{ background: '#fff', color: '#4f46e5', borderRadius: 12, padding: '9px 18px', fontSize: 14, fontWeight: 800 }}>▶ Start</span>
+            </div>
+            <span style={{ display: 'inline-block', marginTop: 8, background: '#fff7e6', color: '#d97706', borderRadius: 999, padding: '4px 10px', fontSize: 10.5, fontWeight: 700 }}>9 days ago — good time to revisit</span>
+          </div>
+          <div style={{ padding: '12px 12px 14px' }}>
+            <div style={{ textAlign: 'center', fontSize: 9, letterSpacing: '.14em', fontWeight: 700, color: '#8e92ad', marginBottom: 10 }}>OR CHOOSE A DIFFERENT WORKOUT</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 7 }}>
+              {[['Workout 1', '9 days ago', '#f59e0b'], ['Workout 3', '3 days ago', '#22c55e']].map(([w, a, c]) => (
+                <div key={w} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid rgba(255,255,255,.1)', borderRadius: 12, padding: '11px 10px', fontSize: 11 }}>
+                  <b>{w}</b><span style={{ color: c, fontWeight: 700 }}>{a}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* training calendar */}
+        <div style={{ margin: '22px 14px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11.5, fontWeight: 700 }}><span>Nov 2026</span><span style={{ color: '#f04a55' }}>4 sessions</span></div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7,1fr)', gap: 4, marginTop: 10, fontSize: 9.5, textAlign: 'center' }}>
+            {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, i) => <div key={i} style={{ color: '#9aa0bb', fontWeight: 600, paddingBottom: 4 }}>{d}</div>)}
+            {cells.map((n, i) => {
+              if (!n) return <div key={i} />
+              const st = n === 26 ? { bg: 'transparent', bd: '#6366f1', c: '#a5b4fc' }
+                : bright.has(n) ? { bg: '#22c58a', bd: '#22c58a', c: '#062b1c' }
+                : trained.has(n) ? { bg: '#14684a', bd: '#1d7d59', c: '#dffbe9' }
+                : missed.has(n) ? { bg: 'rgba(180,40,50,.25)', bd: '#7a2a33', c: '#ff7d86' }
+                : { bg: 'rgba(255,255,255,.02)', bd: 'rgba(255,255,255,.12)', c: '#c9cde0' }
+              return <div key={i} style={{ height: 17, lineHeight: '15px', borderRadius: 5, background: st.bg, border: `1px solid ${st.bd}`, color: st.c, fontWeight: n === 26 || trained.has(n) || bright.has(n) ? 800 : 500 }}>{n}</div>
+            })}
+          </div>
+        </div>
+
+        {/* floating tab bar */}
+        <div style={{ position: 'absolute', left: 12, right: 12, bottom: 26, height: 64, borderRadius: 32, background: 'rgba(10,11,24,.96)', border: '1px solid rgba(110,100,255,.25)', display: 'flex', justifyContent: 'space-around', alignItems: 'center', boxShadow: '0 -10px 30px rgba(0,0,0,.5)' }}>
+          {[['Home', 'M4 11 12 4l8 7v9h-5v-6H9v6H4z'], ['Food Log', 'M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M16 3c-2 2-2 6 0 8v10'], ['Journal', 'M3 5.5c3-1.5 6-1.5 9 0v14c-3-1.5-6-1.5-9 0zM12 5.5c3-1.5 6-1.5 9 0v14c-3-1.5-6-1.5-9 0z'], ['Chat', 'M12 3l1.8 5.4L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.6z'], ['Settings', 'M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 7 19.4l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3 13.7H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 7l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 10.3 3V3a2 2 0 1 1 4 0v.1A1.7 1.7 0 0 0 17 4.6l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z']].map(([t, d], i) => (
+            <div key={t} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, color: i === 0 ? '#a78bfa' : '#a3a8c3', fontSize: 10.5, fontWeight: 500 }}>
+              {i === 0 && <i style={{ width: 18, height: 2, borderRadius: 1, background: '#a78bfa', marginBottom: -1 }} />}
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round"><path d={d} /></svg>
+              {t}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
