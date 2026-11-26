@@ -46,7 +46,7 @@ export default function EmailCaptureSection() {
             <span className="steel-text">See it with</span><br /><span className="spectrum-text">your own clients.</span>
           </h2>
           <p style={{ fontSize: 18, color: 'var(--text-muted)', lineHeight: 1.65, marginBottom: 40 }}>
-            Book a free demo. We'll walk you through DNI Studios set up for your studio, and you can lock in founding pricing for life.
+            Book a free demo. We'll walk you through DNI Studios set up for your studio.
           </p>
         </motion.div>
 

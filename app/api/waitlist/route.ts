@@ -100,7 +100,7 @@ export async function POST(req: NextRequest) {
           </td></tr>
           <tr><td style="padding:14px 32px 0;text-align:center;">
             <p style="margin:0 0 12px;font-size:15px;line-height:1.7;color:#a3a3b8;">Thanks for booking a <span style="color:#c7d2fe;font-weight:700;">DNI Studios</span> demo.</p>
-            <p style="margin:0;font-size:15px;line-height:1.7;color:#a3a3b8;">I'll be in touch within 24 hours to find a time that suits you. Founding pricing is held for you until then.</p>
+            <p style="margin:0;font-size:15px;line-height:1.7;color:#a3a3b8;">I'll be in touch within 24 hours to find a time that suits you.</p>
           </td></tr>
           <tr><td style="padding:28px 32px 8px;text-align:center;">
             <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">

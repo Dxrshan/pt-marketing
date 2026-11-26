@@ -9,7 +9,7 @@ const mono = JetBrains_Mono({ subsets: ['latin'], display: 'swap', variable: '--
 const SITE = 'https://www.dnianalytics.com'
 const TITLE = 'DNI Studios — Personal Trainer & PT Studio Management Software'
 const DESCRIPTION =
-  'Run your PT studio from one place: clients, bookings, workouts, payments and leads. Built in the UK for personal trainers. Founding rates from £49/month.'
+  'Run your PT studio from one place: clients, bookings, workouts, payments and leads. Built in the UK for personal trainers. Plans from £49/month.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),

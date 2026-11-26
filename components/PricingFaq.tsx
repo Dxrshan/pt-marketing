@@ -10,7 +10,7 @@ const FAQS: [string, string][] = [
   ['Can I cancel?',
    'Yes. It is a rolling agreement with no fixed term beyond the billing cycle you choose, and you can cancel with 14 days’ notice. There is also a 30-day money-back guarantee.'],
   ['Will my price go up?',
-   'No. Your founding rate stays fixed for as long as your subscription stays active, even when prices go up for new customers.'],
+   'We will always give you at least 30 days’ notice before any price change. It only applies from your next billing cycle, and you can cancel before it takes effect.'],
 ]
 
 export default function PricingFaq() {

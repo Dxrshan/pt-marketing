@@ -50,8 +50,7 @@ const TRUST_BADGES: { label: string; icon: React.ReactNode }[] = [
   { label: 'GDPR compliant', icon: <><path d="M12 2.8 19.5 5.6v5.9c0 4.9-3.2 8.4-7.5 9.7-4.3-1.3-7.5-4.8-7.5-9.7V5.6z" /><path d="M9 11.8 11.2 14 15.2 9.8" /></> },
   { label: 'Fully encrypted', icon: <><rect x="5" y="10.5" width="14" height="10" rx="2.6" /><path d="M8.5 10.5V7.8a3.5 3.5 0 0 1 7 0v2.7" /><path d="M12 14.4v2.4" /></> },
   { label: 'Isolated studio data', icon: <><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.8" /><rect x="13" y="3.5" width="7.5" height="7.5" rx="1.8" /><rect x="3.5" y="13" width="7.5" height="7.5" rx="1.8" /><rect x="13" y="13" width="7.5" height="7.5" rx="1.8" /></> },
-  { label: 'Export your data', icon: <><path d="M12 3.5v10.5" /><path d="M8 10l4 4 4-4" /><path d="M4.5 15.5v2.8a2.2 2.2 0 0 0 2.2 2.2h10.6a2.2 2.2 0 0 0 2.2-2.2v-2.8" /></> },
-  { label: 'UK registered company', icon: <><path d="M3.5 9.2 12 4l8.5 5.2" /><path d="M5.5 10.5v7M9.8 10.5v7M14.2 10.5v7M18.5 10.5v7" /><path d="M3.5 20.3h17" /></> },
+  { label: 'UK registered', icon: <><path d="M3.5 9.2 12 4l8.5 5.2" /><path d="M5.5 10.5v7M9.8 10.5v7M14.2 10.5v7M18.5 10.5v7" /><path d="M3.5 20.3h17" /></> },
   { label: 'Founder-led support', icon: <><path d="M4.5 12.5v-1a7.5 7.5 0 0 1 15 0v1" /><rect x="3.5" y="12.5" width="4" height="6" rx="1.6" /><rect x="16.5" y="12.5" width="4" height="6" rx="1.6" /><path d="M18.5 18.5c0 1.3-1.4 2-4 2" /></> },
   ...(ICO_REG_NO ? [{ label: `ICO registered · ${ICO_REG_NO}`, icon: <><rect x="4.5" y="3.5" width="15" height="17" rx="2.2" /><path d="M8 8.5h8M8 12h8M8 15.5h5" /></> }] : []),
 ]
@@ -507,9 +506,9 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
               <div className="trust">
                 <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
                   <defs>
-                    <linearGradient id="trust-silver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#ffffff" /><stop offset=".45" stopColor="#c9cdd3" /><stop offset="1" stopColor="#80868f" /></linearGradient>
-                    <linearGradient id="trust-emerald" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#3fe39a" /><stop offset=".55" stopColor="#17a85f" /><stop offset="1" stopColor="#0b6b3c" /></linearGradient>
-                    <linearGradient id="trust-rim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#f4f5f7" /><stop offset=".35" stopColor="#9aa0a8" /><stop offset=".6" stopColor="#e8eaee" /><stop offset="1" stopColor="#5d636c" /></linearGradient>
+                    <linearGradient id="trust-silver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#f7e7bd" /><stop offset=".5" stopColor="#d4b27a" /><stop offset="1" stopColor="#9c7a45" /></linearGradient>
+                    <linearGradient id="trust-emerald" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#fbefc9" /><stop offset=".35" stopColor="#e2c48a" /><stop offset=".65" stopColor="#b8914f" /><stop offset="1" stopColor="#f0d9a2" /></linearGradient>
+                    <linearGradient id="trust-rim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#fff6dc" /><stop offset=".5" stopColor="#a9854b" /><stop offset="1" stopColor="#f3dfae" /></linearGradient>
                   </defs>
                 </svg>
                 <div className="trust-main">
@@ -517,10 +516,11 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                     <svg width="30" height="33" viewBox="0 0 24 27" fill="none">
                       <path d="M12 1.5 21.5 5v7.2c0 6.3-4.1 10.9-9.5 12.6C6.6 23.1 2.5 18.5 2.5 12.2V5z" fill="url(#trust-emerald)" stroke="url(#trust-rim)" strokeWidth="1.3" />
                       <path d="M12 3.4 19.6 6.2v6c0 2.6-.8 4.8-2.2 6.5" stroke="rgba(255,255,255,.35)" strokeWidth=".8" fill="none" />
-                      <path d="M7.8 13.2 10.8 16.2 16.4 10.4" stroke="#fff" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M7.8 13.2 10.8 16.2 16.4 10.4" stroke="#1a1408" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </span>
                   <div>
+                    <div className="trust-eyebrow">Our promise</div>
                     <div className="trust-title">30-day money-back guarantee</div>
                     <div className="trust-sub">Not right for your studio? Full refund of your first subscription payment.</div>
                   </div>
@@ -528,7 +528,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                 <div className="trust-grid">
                   {TRUST_BADGES.map(b => (
                     <div key={b.label} className="trust-badge">
-                      <span className="trust-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="url(#trust-silver)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{b.icon}</svg></span>
+                      <span className="trust-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="url(#trust-silver)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{b.icon}</svg></span>
                       <span>{b.label}</span>
                     </div>
                   ))}
@@ -637,12 +637,12 @@ const CLAUSES = [
     'You confirm that you are entering into this agreement in the course of your business (including as a sole trader or independent personal trainer) and not as a consumer. Consumer protection legislation that applies only to consumers does not apply to this agreement.',
   ]},
   { num: '2.', title: 'Subscription, Fees & Payment', paras: [
-    'The Service is provided on a subscription basis at the price and billing cycle (monthly, quarterly or annual) stated in this proposal. Your subscription price is fixed for as long as your subscription remains continuously active, in accordance with the Founding Customer Guarantee. All prices exclude VAT, which will be added where applicable.',
+    'The Service is provided on a subscription basis at the price and billing cycle (monthly, quarterly or annual) stated in this proposal. We may change our prices by giving you at least 30 days’ written notice; any change applies from your next billing cycle after that notice, and you may cancel before it takes effect. All prices exclude VAT, which will be added where applicable.',
     'Subscription fees are payable in advance at the start of each billing cycle. One-off fees are payable on acceptance of this proposal. Where any payment is more than 7 days overdue, we may suspend access to the Service until it is paid in full, and we may charge interest and compensation on late payments under the Late Payment of Commercial Debts (Interest) Act 1998.',
   ]},
   { num: '3.', title: 'Term, Cancellation & Refunds', paras: [
     'This is a rolling agreement that renews automatically at the end of each billing cycle. You may cancel at any time by giving at least 14 days\' written notice before your next renewal date; cancellation takes effect at the end of the then-current billing period. No refunds are given for unused time in a billing period, including on annual and quarterly plans.',
-    'Money-back guarantee: if you cancel within 30 days of your first payment, we will refund the subscription fee from that first payment in full. One-off fees for onboarding, setup calls or custom work are non-refundable once that work has started. Founding price status is lost if a subscription lapses for more than 30 consecutive days.',
+    'Money-back guarantee: if you cancel within 30 days of your first payment, we will refund the subscription fee from that first payment in full. One-off fees for onboarding, setup calls or custom work are non-refundable once that work has started.',
   ]},
   { num: '4.', title: 'Your Responsibilities', paras: [
     'You are responsible for all activity under your account, for keeping login details secure, for the accuracy and lawfulness of all data you and your staff enter, and for ensuring your trainers and clients use the Service in line with these terms.',
@@ -988,19 +988,26 @@ body { background: #eceef1; }
 .summary { display: grid; grid-template-columns: 1fr 340px; gap: 36px; align-items: start; margin-top: 36px; }
 .summary-note h3, .terms-wide h3 { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
 .bank-wrap { margin-bottom: 18px; }
-.trust { position: relative; border-radius: 16px; padding: 16px; color: #eef0f2; break-inside: avoid;
-  background: radial-gradient(120% 90% at 0% 0%, rgba(255,255,255,.07), transparent 55%), linear-gradient(160deg, #1b1d22 0%, #111317 60%, #0c0d10 100%);
-  border: 1px solid rgba(255,255,255,.08); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 24px 44px -24px rgba(0,0,0,.75);
+.trust { position: relative; overflow: hidden; border-radius: 18px; padding: 18px 18px 16px; color: #efe9dc; break-inside: avoid;
+  border: 1px solid transparent;
+  background:
+    radial-gradient(120% 80% at 0% 0%, rgba(226,196,138,.10), transparent 55%) padding-box,
+    repeating-linear-gradient(135deg, rgba(255,255,255,.018) 0 2px, transparent 2px 6px) padding-box,
+    linear-gradient(160deg, #18181b 0%, #0f0f11 55%, #0a0a0b 100%) padding-box,
+    linear-gradient(140deg, rgba(240,217,162,.75), rgba(255,255,255,.06) 38%, rgba(255,255,255,.04) 62%, rgba(212,178,122,.6)) border-box;
+  box-shadow: inset 0 1px 0 rgba(255,236,190,.10), 0 30px 50px -28px rgba(0,0,0,.8);
   -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-.trust-main { display: flex; align-items: center; gap: 14px; padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,.08); }
-.trust-seal { flex-shrink: 0; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
-  background: radial-gradient(circle at 35% 30%, #2a2e35, #0f1114 75%); box-shadow: 0 0 0 1px rgba(255,255,255,.14), 0 0 0 4px rgba(255,255,255,.03), 0 8px 22px -6px rgba(23,168,95,.55); }
-.trust-title { font-size: 15px; font-weight: 600; letter-spacing: -.01em; color: #fff; }
-.trust-sub { font-size: 12px; color: #9aa0a8; margin-top: 3px; line-height: 1.45; }
-.trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
-.trust-badge { display: flex; align-items: center; gap: 9px; white-space: nowrap; font-size: 12px; font-weight: 500; color: #dfe2e6; }
-.trust-ico { flex-shrink: 0; width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center;
-  background: linear-gradient(160deg, #2b2e34, #16181c); border: 1px solid rgba(255,255,255,.1); box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
+.trust-main { display: flex; align-items: center; gap: 15px; padding-bottom: 15px; margin-bottom: 14px; border-bottom: 1px solid transparent;
+  border-image: linear-gradient(90deg, transparent, rgba(226,196,138,.35), transparent) 1; }
+.trust-seal { flex-shrink: 0; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center;
+  background: radial-gradient(circle at 35% 28%, #2c2a25, #0d0c0a 72%);
+  box-shadow: 0 0 0 1px rgba(240,217,162,.55), 0 0 0 5px rgba(240,217,162,.06), 0 10px 26px -8px rgba(226,196,138,.45), inset 0 1px 0 rgba(255,240,200,.2); }
+.trust-eyebrow { font-size: 9.5px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: #d4b27a; margin-bottom: 3px; }
+.trust-title { font-family: var(--font-display), Georgia, serif; font-size: 18px; font-weight: 500; letter-spacing: -.01em; color: #f7f1e3; line-height: 1.15; }
+.trust-sub { font-size: 11.5px; color: #a29d93; margin-top: 4px; line-height: 1.5; }
+.trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px 16px; }
+.trust-badge { display: flex; align-items: center; gap: 9px; white-space: nowrap; font-size: 10.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #ddd6c6; }
+.trust-ico { flex-shrink: 0; display: grid; place-items: center; }
 .bcard {
   position: relative; overflow: hidden; width: 100%; max-width: 380px; aspect-ratio: 1.586; border-radius: 18px; padding: 20px 22px;
   display: flex; flex-direction: column; justify-content: space-between; color: #eef1f4;

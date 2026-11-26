@@ -39,7 +39,7 @@ export default function PricingSection({ bare = false }: { bare?: boolean }) {
           eyebrow="Founding pricing"
           title="One price."
           accent="Everything included."
-          sub="No tiers, no per-seat fees, no surprises. Lock in your founding rate and it never goes up."
+          sub="No tiers, no per-seat fees, no surprises."
         />}
 
         {/* Billing toggle with sliding pill */}
@@ -83,13 +83,12 @@ export default function PricingSection({ bare = false }: { bare?: boolean }) {
                   <div style={{ fontSize: 14, color: 'var(--text-muted)', marginTop: 8 }}>{plan.label}</div>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-end' }}>
-                  <span className="badge badge-blue"><Icon name="lock" size={13} /> Rate locked for life</span>
                   {plan.saving && <span className="badge badge-green">{plan.saving} vs monthly</span>}
                 </div>
               </div>
 
               <a href="/#waitlist" className="btn-spectrum" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, padding: 17, borderRadius: 14, fontSize: 16, textDecoration: 'none', marginTop: 30 }}>
-                Claim founding price <Icon name="arrow" size={17} />
+                Book a demo <Icon name="arrow" size={17} />
               </a>
               <p style={{ fontSize: 13, color: 'var(--text-subtle)', textAlign: 'center', marginTop: 12 }}>30-day money-back guarantee · No lock-in · Unlimited clients</p>
 
@@ -116,7 +115,7 @@ export default function PricingSection({ bare = false }: { bare?: boolean }) {
         <div className="guarantee-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginTop: 18 }}>
           {[
             ['shield', '30-day money-back', 'Not the right fit within 30 days? Full refund of your first payment, no questions.'],
-            ['lock', 'Price locked forever', 'Founding pricing is only for the first 50 studios. After that, it goes up.'],
+            ['users', 'Unlimited trainers & clients', 'No per-seat fees. Bring your whole team and every client at no extra cost.'],
           ].map(([icon, t, d], i) => (
             <Reveal key={t} delay={0.1 + i * 0.08}>
               <div className="spot" style={{ padding: '20px 22px', height: '100%' }}>

@@ -26,7 +26,7 @@ export default function PricingPage() {
         crumb="Pricing"
         title="Simple pricing for"
         accent="PT studios."
-        intro="One plan with every feature. Unlimited trainers and clients, no per-seat fees, and a founding rate that never goes up."
+        intro="One plan with every feature. Unlimited trainers and clients, and no per-seat fees."
       />
       <div style={{ marginTop: -110 }}><PricingSection bare /></div>
       <PricingFaq />
