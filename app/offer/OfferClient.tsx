@@ -985,6 +985,12 @@ body { background: #eceef1; }
 .seg-opt:focus-visible { outline: 2px solid #6d5dfc; outline-offset: 2px; }
 @media (max-width: 560px) { .seg-opt { flex-direction: column; align-items: center; gap: 2px; } }
 .summary { display: grid; grid-template-columns: 1fr 340px; gap: 36px; align-items: start; margin-top: 36px; }
+/* Both columns end on the same line: the bill stretches to the left column's height,
+   with the saving pinned to its bottom. */
+.summary { align-items: stretch; }
+.summary > .sum-card { display: flex; flex-direction: column; }
+.summary > .sum-card .t-saved { margin-top: auto; }
+.summary > .sum-card .t-then { margin-bottom: 14px; }
 .summary-note h3, .terms-wide h3 { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
 .bank-wrap { margin-bottom: 18px; }
 .trust { position: relative; overflow: hidden; border-radius: 18px; padding: 18px 18px 16px; color: #efe9dc; break-inside: avoid;
