@@ -788,15 +788,18 @@ body { background: #eceef1; }
 .p-row:first-child { border-top: none; }
 .p-row dt { font-size: 12px; color: var(--faint); }
 .p-row dd { font-size: 13.5px; color: var(--ink); min-width: 0; }
-.bt-body { padding: 16px 18px 14px; display: flex; flex-direction: column; }
-.bt-studio { font-family: var(--font-display), Georgia, serif !important; font-size: 24px !important; font-weight: 500; letter-spacing: -.01em; color: var(--ink); padding-top: 2px !important; padding-bottom: 2px !important; }
-.bt-studio::placeholder { color: #b9bdc4; }
-.bt-contact { font-size: 14px !important; color: var(--muted); margin-top: 2px; }
-.bt-lines { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line-soft); display: grid; gap: 4px; }
-.bt-line { display: grid; grid-template-columns: 18px 1fr; align-items: start; gap: 10px; cursor: text; }
-.bt-line svg { width: 15px; height: 15px; margin-top: 8px; fill: none; stroke: #a2a7af; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.bt-addr { display: grid; gap: 0; min-width: 0; }
-.bt-addr .p-split { grid-template-columns: 1fr 1fr; }
+.bt-body { padding: 18px 20px 16px; display: flex; flex-direction: column; }
+.bt .p-input { margin: 0; width: 100%; height: 30px; padding: 0 8px; border-radius: 7px; font-size: 13.5px; }
+.bt .bt-studio { font-family: var(--font-display), Georgia, serif !important; font-size: 23px; font-weight: 500; letter-spacing: -.01em; height: 36px; margin-left: -8px; width: calc(100% + 8px); color: var(--ink); }
+.bt .bt-contact { font-size: 14px; height: 26px; margin-left: -8px; width: calc(100% + 8px); color: var(--muted); }
+.bt .bt-studio::placeholder { color: #b9bdc4; }
+.bt-lines { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line-soft); display: grid; gap: 8px; }
+.bt-line { display: grid; grid-template-columns: 28px 1fr; align-items: start; column-gap: 10px; cursor: text; }
+.bt-line svg { box-sizing: content-box; width: 13px; height: 13px; padding: 7.5px; border-radius: 50%; background: #f2f3f5; border: 1px solid #e8eaed;
+  fill: none; stroke: #7d838c; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.bt-addr { display: grid; gap: 4px; min-width: 0; }
+.bt-addr .p-split { display: grid; grid-template-columns: 1.4fr 1fr; gap: 8px; }
+.bt-addr .p-split .p-input { width: 100%; }
 .p-split { display: grid; grid-template-columns: 1fr 100px; gap: 10px; }
 .p-input {
   width: 100%; border: 1px solid transparent; background: transparent; border-radius: 8px;
