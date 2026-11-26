@@ -970,7 +970,7 @@ body { background: #eceef1; }
 .lines tr.optional td { background: #fbfcfd; }
 .lines tr.optional .l-main { color: var(--muted); }
 .lines tr.optional .amt { color: var(--faint); font-weight: 500; }
-.opt-tag { display: inline-block; margin-left: 8px; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: #16a35a; background: #e9f8ef; border-radius: 999px; padding: 2px 8px; vertical-align: 2px; }
+.opt-tag { display: inline-block; margin-left: 8px; font-size: 11px; font-weight: 600; letter-spacing: .01em; text-transform: none; color: #16a35a; background: #e9f8ef; border-radius: 999px; padding: 2px 8px; vertical-align: 2px; }
 
 .ctls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
 .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
