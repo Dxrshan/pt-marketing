@@ -538,11 +538,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
               <div className="cta-trust no-print">30-day money-back guarantee on your subscription</div>
             </div>
           </div>
-          <div className="terms-wide">
-            <h3>Payment terms</h3>
-            <p>Due on acceptance. Your subscription is covered by a 30-day money-back guarantee, and your rate stays fixed for as long as you stay subscribed. Feedback credits ({gbp(FEEDBACK_CREDIT)} each, up to {gbp(FEEDBACK_CREDIT_CAP)} a month) come off your next bill.</p>
-            <p className="fair-use">Unlimited clients and trainers. Photo, video and voice-note uploads are subject to a fair-use storage policy; we will contact you before any limit affects your account.</p>
-          </div>
           </div>
         </section>
 
