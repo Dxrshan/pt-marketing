@@ -320,18 +320,23 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
           <section className="panel bt">
             <h2 className="label">Prepared for</h2>
             <div className="bt-body">
-              <input id="bt-studio" className="p-input bt-studio" placeholder="Studio name" aria-label="Studio name" autoComplete="organization" value={studio} onChange={e => setStudio(e.target.value)} />
-              <input id="bt-contact" className="p-input bt-contact" placeholder="Owner or contact" aria-label="Owner or contact" autoComplete="name" value={contact} onChange={e => setContact(e.target.value)} />
+              <div className="bt-who">
+                <input id="bt-studio" className="p-input bt-studio" placeholder="Studio name" aria-label="Studio name" autoComplete="organization" value={studio} onChange={e => setStudio(e.target.value)} />
+                <input id="bt-contact" className="p-input bt-contact" placeholder="Owner or contact" aria-label="Owner or contact" autoComplete="name" value={contact} onChange={e => setContact(e.target.value)} />
+              </div>
               <div className="bt-lines">
                 <label className="bt-line">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z" /><circle cx="12" cy="10" r="2.3" /></svg>
-                  <span className="bt-addr">
-                    <input id="bt-addr" className="p-input" placeholder="Street address" aria-label="Street address" autoComplete="street-address" />
+                  <input id="bt-addr" className="p-input" placeholder="Street address" aria-label="Street address" autoComplete="street-address" />
+                </label>
+                <div className="bt-line">
+                  <span aria-hidden="true" />
+                  <span className="bt-two">
                     <input id="bt-city" className="p-input" placeholder="City" aria-label="City" autoComplete="address-level2" value={city} onChange={e => setCity(e.target.value)} />
                     <input className="p-input" placeholder="Postcode" aria-label="Postcode" autoComplete="postal-code" value={postcode} onChange={e => setPostcode(e.target.value)} />
                   </span>
-                </label>
-                <div className="bt-pair">
+                </div>
+                <div className="bt-two bt-contactrow">
                   <label className="bt-line">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2.2" /><path d="m4 7 8 6 8-6" /></svg>
                     <input id="bt-email" className="p-input" type="email" placeholder="Email" aria-label="Email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} />
@@ -367,24 +372,28 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
 
         {/* Quote */}
         <section className="part" id="quote">
-          {/* Billing term: a compact three-way switch instead of three big cards. */}
-          <div className="seg no-print" role="radiogroup" aria-label="Billing term">
-            {(Object.keys(PLANS) as Term[]).map(t => {
-              const p = PLANS[t]
-              const on = term === t
-              return (
-                <button key={t} type="button" role="radio" aria-checked={on} className={`seg-opt ${on ? 'on' : ''}`} onClick={() => setTerm(t)}>
-                  <span className="seg-name">{p.label}</span>
-                  <span className="seg-price num">£{p.rate}/mo{p.off ? <em>{p.off.replace(' OFF', ' off')}</em> : null}</span>
-                </button>
-              )
-            })}
-          </div>
 
 
           <table className="lines">
             <thead>
-              <tr><th><h2 className="th-title">Your plan</h2></th><th className="qty-col">Qty</th><th className="amt">Amount</th></tr>
+              <tr><th>
+                <div className="th-plan">
+                  <h2 className="th-title">Your plan</h2>
+                  {/* Billing term switch, compact, in the header row. */}
+                  <div className="seg no-print" role="radiogroup" aria-label="Billing term">
+                    {(Object.keys(PLANS) as Term[]).map(t => {
+                      const p = PLANS[t]
+                      const on = term === t
+                      return (
+                        <button key={t} type="button" role="radio" aria-checked={on} className={`seg-opt ${on ? 'on' : ''}`} onClick={() => setTerm(t)}>
+                          <span className="seg-name">{p.label}</span>
+                          <span className="seg-price num">£{p.rate}{p.off ? <em>−{p.off.replace('% OFF', '%')}</em> : null}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              </th><th className="qty-col">Qty</th><th className="amt">Amount</th></tr>
             </thead>
             <tbody>
               <tr>
@@ -628,7 +637,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
 
       <div className="print-wrap no-print">
         <button className="print-btn" onClick={() => window.print()}>Print proposal</button>
-        <button className="print-btn" style={{ marginLeft: 10 }} onClick={async () => { await fetch('/api/offer-auth', { method: 'DELETE' }); window.location.replace('/offer/login') }}>Sign out</button>
       </div>
 
       <footer className="foot no-print">© {new Date().getFullYear()} DNI Ltd · Registered in England &amp; Wales, no. 15630271</footer>
@@ -788,17 +796,17 @@ body { background: #eceef1; }
 .p-row:first-child { border-top: none; }
 .p-row dt { font-size: 12px; color: var(--faint); }
 .p-row dd { font-size: 13.5px; color: var(--ink); min-width: 0; }
-.bt-body { padding: 12px 18px 12px; display: flex; flex-direction: column; }
-.bt .p-input { margin: 0; width: 100%; height: 26px; padding: 0 6px; border-radius: 6px; font-size: 13px; min-width: 0; }
-.bt .bt-studio { font-family: var(--font-display), Georgia, serif !important; font-size: 19px; font-weight: 500; letter-spacing: -.01em; height: 30px; margin-left: -6px; width: calc(100% + 6px); color: var(--ink); }
+.bt-body { padding: 10px 18px 12px; display: flex; flex-direction: column; }
+.bt .p-input { margin: 0; width: 100%; height: 24px; padding: 0 6px; border-radius: 6px; font-size: 12.5px; min-width: 0; text-overflow: ellipsis; }
+.bt-who { display: flex; flex-direction: column; min-width: 0; }
+.bt .bt-studio { font-family: var(--font-display), Georgia, serif !important; font-size: 19px; font-weight: 500; letter-spacing: -.01em; height: 28px; margin-left: -6px; width: calc(100% + 6px); color: var(--ink); }
 .bt .bt-contact { font-size: 13px; height: 22px; margin-left: -6px; width: calc(100% + 6px); color: var(--muted); }
 .bt .bt-studio::placeholder { color: #b9bdc4; }
-.bt-lines { margin-top: 8px; padding-top: 9px; border-top: 1px solid var(--line-soft); display: grid; gap: 5px; }
-.bt-line { display: grid; grid-template-columns: 22px 1fr; align-items: center; column-gap: 6px; cursor: text; min-width: 0; }
-.bt-line svg { box-sizing: content-box; width: 11px; height: 11px; padding: 5px; border-radius: 50%; background: #f2f3f5; border: 1px solid #e8eaed;
-  fill: none; stroke: #7d838c; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.bt-addr { display: grid; grid-template-columns: 2fr 1.2fr 1fr; gap: 4px; min-width: 0; }
-.bt-pair { display: grid; grid-template-columns: 1.3fr 1fr; gap: 8px; }
+.bt-lines { margin-top: 6px; padding-top: 8px; border-top: 1px solid var(--line-soft); display: grid; gap: 3px; min-width: 0; }
+.bt-line { display: grid; grid-template-columns: 20px minmax(0, 1fr); align-items: center; column-gap: 6px; cursor: text; min-width: 0; }
+.bt-line svg { box-sizing: content-box; width: 10px; height: 10px; padding: 4px; border-radius: 50%; background: #f2f3f5; border: 1px solid #e8eaed;
+  fill: none; stroke: #7d838c; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.bt-two { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 8px; min-width: 0; }
 .p-split { display: grid; grid-template-columns: 1fr 100px; gap: 10px; }
 .p-input {
   width: 100%; border: 1px solid transparent; background: transparent; border-radius: 8px;
@@ -992,16 +1000,16 @@ body { background: #eceef1; }
 .terms-wide { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); }
 .terms-wide h3 { margin: 0 0 8px; }
 .terms-wide p { margin: 0 0 6px; max-width: none; }
-.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; margin-bottom: 14px; border-radius: 12px; background: #f1f3f5; border: 1px solid var(--line); }
-.seg-opt { all: unset; cursor: pointer; display: flex; align-items: baseline; justify-content: center; gap: 8px; padding: 9px 10px; border-radius: 9px; font-size: 13.5px; color: var(--muted); transition: background .2s ease, color .2s ease, box-shadow .2s ease; }
+.th-plan { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.seg { display: inline-grid; grid-auto-flow: column; gap: 2px; padding: 2px; border-radius: 8px; background: #eef0f2; border: 1px solid var(--line); text-transform: none; letter-spacing: 0; }
+.seg-opt { all: unset; cursor: pointer; display: inline-flex; align-items: baseline; gap: 5px; padding: 4px 9px; border-radius: 6px; font-size: 11px; color: var(--muted); white-space: nowrap; transition: background .2s ease, color .2s ease; }
 .seg-opt:hover { color: var(--ink); }
-.seg-opt.on { background: #111318; color: #fff; box-shadow: 0 4px 12px -6px rgba(0,0,0,.5); }
+.seg-opt.on { background: #111318; color: #fff; box-shadow: 0 2px 6px -3px rgba(0,0,0,.5); }
 .seg-name { font-weight: 700; }
-.seg-price { font-size: 12.5px; opacity: .85; }
-.seg-price em { font-style: normal; margin-left: 6px; font-size: 11px; font-weight: 700; color: #16a35a; }
+.seg-price { font-size: 10.5px; opacity: .85; }
+.seg-price em { font-style: normal; margin-left: 4px; font-size: 10px; font-weight: 700; color: #16a35a; }
 .seg-opt.on .seg-price em { color: #5be39a; }
 .seg-opt:focus-visible { outline: 2px solid #6d5dfc; outline-offset: 2px; }
-@media (max-width: 560px) { .seg-opt { flex-direction: column; align-items: center; gap: 2px; } }
 .terms-link { all: unset; cursor: pointer; color: var(--ink); text-decoration: underline; text-underline-offset: 2px; text-decoration-color: rgba(17,19,24,.3); }
 .terms-link:hover { text-decoration-color: currentColor; }
 .terms-toggle { display: flex; justify-content: center; margin: 18px 0; }
