@@ -276,6 +276,12 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
   // Terms are collapsed on screen (always printed in full as page 2).
   const [termsOpen, setTermsOpen] = useState(false)
   const openTerms = () => { setTermsOpen(true); setTimeout(() => document.getElementById('terms')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60) }
+  // The signature pad's Terms link asks the page to open them.
+  useEffect(() => {
+    const onOpen = () => openTerms()
+    window.addEventListener('dni:open-terms', onOpen)
+    return () => window.removeEventListener('dni:open-terms', onOpen)
+  }, [])
   const [clientSig, setClientSig] = useState<{ src: string; at: Date } | null>(null)
 
   // The one negotiable discount in the bill: "20%" or "50" / "£50", off today's payment.

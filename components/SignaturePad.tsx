@@ -161,7 +161,7 @@ export default function SignaturePad({ open, onClose, onSign, signer, reference 
             <header className="sp-head">
               <div>
                 <div className="sp-kicker">Acceptance</div>
-                <h2 id="sp-title" className="sp-title">Sign to accept this invoice</h2>
+                <h2 id="sp-title" className="sp-title">Sign to accept this proposal</h2>
               </div>
               <button type="button" className="sp-x" onClick={onClose} aria-label="Close">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
@@ -170,7 +170,7 @@ export default function SignaturePad({ open, onClose, onSign, signer, reference 
 
             <div className="sp-meta">
               <span><em>Signing for</em>{signer || 'Client'}</span>
-              <span><em>Invoice</em>{reference}</span>
+              <span><em>Reference</em>{reference}</span>
               <span><em>Date</em>{new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
             </div>
 
@@ -195,17 +195,13 @@ export default function SignaturePad({ open, onClose, onSign, signer, reference 
               </span>
               <span>
                 I&rsquo;ve read and agree to the{' '}
-                <a href="#terms" onClick={e => { e.preventDefault(); onClose(); setTimeout(() => document.getElementById('terms')?.scrollIntoView({ behavior: 'smooth' }), 350) }}>Terms &amp; Conditions</a>,
+                <a href="#terms" onClick={e => { e.preventDefault(); onClose(); setTimeout(() => window.dispatchEvent(new Event('dni:open-terms')), 350) }}>Terms &amp; Conditions</a>,
                 {' '}which form part of this agreement.
               </span>
             </label>
 
             <footer className="sp-foot">
               <div className="sp-tools">
-                <button type="button" className="sp-btn ghost" onClick={undo} disabled={!count}>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 14L4 9l5-5" /><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11" /></svg>
-                  Undo stroke
-                </button>
                 <button type="button" className="sp-btn ghost" onClick={clear} disabled={!count}>
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 21h10" /><path d="M5.5 14.5l8-8 5 5-8 8H8z" /><path d="M10.5 9.5l5 5" /></svg>
                   Clear
