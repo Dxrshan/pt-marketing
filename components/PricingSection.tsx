@@ -6,9 +6,9 @@ import { SectionHead, Icon, Reveal } from './fx'
 const EASE = [0.22, 1, 0.36, 1] as const
 
 const BILLING = {
-  monthly:   { price: 69, label: 'Billed monthly',             saving: null },
-  quarterly: { price: 59, label: 'Billed £177 every 3 months', saving: 'Save 14%' },
-  annual:    { price: 49, label: 'Billed £588 once a year',     saving: 'Save 29%' },
+  monthly:   { price: 79, label: 'Billed monthly',             saving: null },
+  quarterly: { price: 69, label: 'Billed £207 every 3 months', saving: 'Save 13%' },
+  annual:    { price: 59, label: 'Billed £708 once a year',     saving: 'Save 25%' },
 } as const
 
 type Term = keyof typeof BILLING

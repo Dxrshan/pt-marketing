@@ -6,12 +6,12 @@ import SignaturePad, { SIGNATURE_PAD_CSS } from '../../components/SignaturePad'
 
 /* ─── Pricing data ─────────────────────────────────────────────────────── */
 
-const LIST_MONTHLY = 69
+const LIST_MONTHLY = 79
 
 const PLANS = {
-  monthly:   { label: 'Monthly',   months: 1,  rate: 69, off: null,      tag: null,           perk: 'Full price, maximum flexibility', term: 'Rolling monthly, no lock-in', period: 'per month' },
-  quarterly: { label: 'Quarterly', months: 3,  rate: 59, off: '14% OFF', tag: 'Most popular', perk: null,                             term: 'Billed every 3 months',   period: 'every 3 months' },
-  annual:    { label: 'Annual',    months: 12, rate: 49, off: '29% OFF', tag: 'Best value',   perk: 'Over 3 months free',             term: 'Billed once a year',      period: 'per year' },
+  monthly:   { label: 'Monthly',   months: 1,  rate: 79, off: null,      tag: null,           perk: 'Full price, maximum flexibility', term: 'Rolling monthly, no lock-in', period: 'per month' },
+  quarterly: { label: 'Quarterly', months: 3,  rate: 69, off: '13% OFF', tag: 'Most popular', perk: null,                             term: 'Billed every 3 months',   period: 'every 3 months' },
+  annual:    { label: 'Annual',    months: 12, rate: 59, off: '25% OFF', tag: 'Best value',   perk: 'Over 3 months free',             term: 'Billed once a year',      period: 'per year' },
 } as const
 
 type Term = keyof typeof PLANS

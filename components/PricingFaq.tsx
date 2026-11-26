@@ -1,6 +1,6 @@
 const FAQS: [string, string][] = [
   ['How much does DNI Studios cost?',
-   'Founding studios pay £69 a month on the monthly plan, £59 a month on quarterly billing (£177 every 3 months) or £49 a month on annual billing (£588 a year). Every plan includes every feature.'],
+   '£79 a month on the monthly plan, £69 a month on quarterly billing (£207 every 3 months) or £59 a month on annual billing (£708 a year). Every plan includes every feature.'],
   ['Is there a money-back guarantee?',
    'Yes. If DNI Studios isn\'t right for you, cancel within 30 days of your first payment and we\'ll refund your subscription in full, no questions asked.'],
   ['Do you charge per trainer or per client?',

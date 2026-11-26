@@ -12,7 +12,7 @@ const display = Fraunces({
 
 export const metadata: Metadata = {
   title: 'Proposal',
-  description: 'DNI Studios pricing for PT studios: monthly, quarterly or annual plans from £49/month, with free onboarding and setup for founding studios.',
+  description: 'DNI Studios pricing for PT studios: monthly, quarterly or annual plans from £59/month, with free onboarding and setup for founding studios.',
   alternates: { canonical: '/offer' },
   // This is the editable invoice used on sales calls; the public pricing page is /pricing.
   robots: { index: false, follow: true },
