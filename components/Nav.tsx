@@ -120,20 +120,6 @@ export default function Nav() {
                   </a>
                 )
               })}
-              <a
-                href="/offer"
-                style={{
-                  background: 'none', border: 'none', cursor: 'pointer',
-                  color: '#e8eaee', fontSize: 14, fontWeight: 500,
-                  padding: '8px 16px', borderRadius: 8,
-                  transition: 'all 0.2s ease',
-                  textDecoration: 'none',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
-                onMouseLeave={e => (e.currentTarget.style.background = 'none')}
-              >
-                View Offer
-              </a>
             </div>
 
             {/* CTAs */}
@@ -221,17 +207,6 @@ export default function Nav() {
                 </a>
               )
             })}
-            <a
-              href="/offer"
-              style={{
-                display: 'block',
-                color: '#e8eaee', fontSize: 16, fontWeight: 500,
-                padding: '14px 0', textDecoration: 'none',
-                borderBottom: '1px solid rgba(255,255,255,0.06)',
-              }}
-            >
-              View Offer
-            </a>
             <a
               href="https://app.dnianalytics.com"
               style={{

@@ -88,7 +88,7 @@ export default function PricingSection({ bare = false }: { bare?: boolean }) {
                 </div>
               </div>
 
-              <a href="/offer" className="btn-spectrum" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, padding: 17, borderRadius: 14, fontSize: 16, textDecoration: 'none', marginTop: 30 }}>
+              <a href="/#waitlist" className="btn-spectrum" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, padding: 17, borderRadius: 14, fontSize: 16, textDecoration: 'none', marginTop: 30 }}>
                 Claim founding price <Icon name="arrow" size={17} />
               </a>
               <p style={{ fontSize: 13, color: 'var(--text-subtle)', textAlign: 'center', marginTop: 12 }}>30-day money-back guarantee · No lock-in · Unlimited clients</p>
