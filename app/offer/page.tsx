@@ -333,49 +333,6 @@ export default function OfferPage() {
           </section>
         </div>
 
-        {/* Included */}
-        <section className="part selection" id="included">
-          <h2 className="label">Included in every plan</h2>
-          <div className="inc">
-            <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
-              <defs>
-                <linearGradient id="inc-silver" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stopColor="#ffffff" /><stop offset=".5" stopColor="#c9cdd3" /><stop offset="1" stopColor="#7d838c" />
-                </linearGradient>
-              </defs>
-            </svg>
-            <div className="inc-head">
-              <div>
-                <div className="inc-kicker">The complete platform</div>
-                <h3 className="inc-title">Everything you need.<br /><span>Nothing held back.</span></h3>
-              </div>
-              <div className="inc-count num">
-                <strong>25+</strong>
-                <span>features across<br />6 core modules</span>
-              </div>
-            </div>
-            <ul className="features">
-              {FEATURES.map(f => (
-                <li key={f.name}>
-                  <span className="f-icon" aria-hidden="true">
-                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#inc-silver)" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">{FEATURE_ICONS[f.icon]}</svg>
-                  </span>
-                  <span className="f-name">{f.name}</span>
-                  <span className="f-det">{f.detail}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="inc-extras">
-              <span className="inc-extras-label">Also included</span>
-              {EXTRAS.map(x => <span key={x} className="inc-pill">{x}</span>)}
-            </div>
-            <div className="inc-foot">
-              {['No tiers', 'One optional add-on: AI Coach', 'No per-seat fees', 'Every update included'].map(t => (
-                <span key={t}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>{t}</span>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* Billing */}
         <section className="part selection" id="plan">
@@ -1176,7 +1133,7 @@ body { background: #eceef1; }
   .terms { break-before: page; }
   /* margin 0 drops the browser's own date/URL header and footer */
   @page { size: A4; margin: 0; }
-  #included.selection { display: block !important; }
+
   .sheet { zoom: .74; }
   .lines, .inc { break-inside: avoid; }
   .part { margin-top: 26px; }
