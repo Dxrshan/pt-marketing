@@ -483,7 +483,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
           <div className="summary">
             <div className="summary-note">
               <div className="bank-wrap">
-                <h3>Pay by bank transfer</h3>
                 <div className="bcard" role="group" aria-label="Bank transfer details">
                   <div className="bcard-top">
                     <span className="bcard-bank">{bank.bankName}</span>
