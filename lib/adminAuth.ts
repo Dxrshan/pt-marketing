@@ -9,7 +9,7 @@
 // changing your password or being demoted locks the page immediately.
 
 export const ADMIN_COOKIE = '__Host-dni_admin'
-export const ADMIN_COOKIE_MAX_AGE = 8 * 60 * 60 // seconds: a working day, then sign in again
+export const ADMIN_COOKIE_MAX_AGE = 60 * 60 // seconds: 1 hour, then sign in again
 
 const APP_API = (process.env.APP_API_URL || 'https://app.dnianalytics.com').replace(/\/+$/, '')
 // The platform owner's studio. Studio owners who are customers are super_admins of
