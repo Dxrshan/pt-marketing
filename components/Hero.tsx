@@ -215,54 +215,49 @@ function PhoneScreen() {
   )
 }
 
-/** The client app on a phone, crashed into a little crater of rocks. Desktop only. */
+/** The client app on a realistic phone, standing beside the dashboard. Desktop only. */
 export function PhoneInCrater({ style }: { style?: React.CSSProperties }) {
   return (
     <div className="phone-crater" aria-hidden="true" style={{ position: 'absolute', width: 230, height: 420, ...style }}>
-      {/* impact glow and dust */}
+      {/* soft coloured glow behind the phone */}
       <div style={{ position: 'absolute', left: -40, right: -40, bottom: -10, height: 120, background: 'radial-gradient(ellipse at 50% 70%, rgba(255,140,60,.35), rgba(139,92,255,.18) 45%, transparent 70%)', filter: 'blur(14px)' }} />
       {/* back rim of the crater */}
-      <svg viewBox="0 0 320 110" style={{ position: 'absolute', left: -45, bottom: 6, width: 320, height: 110 }}>
-        <defs>
-          <linearGradient id="rock-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#57504a" /><stop offset="1" stopColor="#151210" /></linearGradient>
-          <linearGradient id="rock-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#6a6258" /><stop offset=".5" stopColor="#2c2824" /><stop offset="1" stopColor="#0f0d0c" /></linearGradient>
-          <filter id="stone" x="-5%" y="-5%" width="110%" height="110%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="7" result="n" />
-            <feColorMatrix in="n" type="saturate" values="0" result="g" />
-            <feComponentTransfer in="g" result="g2"><feFuncA type="linear" slope="0.55" /></feComponentTransfer>
-            <feComposite in="g2" in2="SourceGraphic" operator="in" result="tex" />
-            <feBlend in="SourceGraphic" in2="tex" mode="multiply" />
-          </filter>
-        </defs>
-        <ellipse cx="160" cy="78" rx="140" ry="26" fill="#07080b" />
-        <path d="M30 70 L48 44 L70 50 L84 34 L104 46 L96 72 Z" fill="url(#rock-b)" filter="url(#stone)" /><path d="M48 44 L70 50 L84 34 L66 40 Z" fill="rgba(255,200,160,.18)" />
-        <path d="M210 72 L222 40 L246 30 L262 44 L280 48 L290 74 Z" fill="url(#rock-b)" filter="url(#stone)" /><path d="M222 40 L246 30 L240 44 Z" fill="rgba(255,200,160,.2)" />
-        <path d="M120 60 L132 46 L150 50 L146 66 Z" fill="url(#rock-a)" filter="url(#stone)" />
-      </svg>
-      {/* the phone, tilted back as if it landed */}
-      <div style={{ position: 'absolute', left: 18, bottom: 34, width: 190, height: 390, transform: 'perspective(1100px) rotateY(-22deg) rotateX(6deg) rotateZ(-8deg)', transformOrigin: '50% 100%', transformStyle: 'preserve-3d' }}>
-        {/* side edge: a slightly offset slab gives the frame real thickness */}
-        <div style={{ position: 'absolute', inset: 0, borderRadius: 38, transform: 'translate3d(7px, 3px, -8px)', background: 'linear-gradient(90deg,#2b2e35,#8d929c 40%,#3a3d44 75%,#1a1c21)', boxShadow: '30px 40px 70px -18px rgba(0,0,0,.95)' }} />
-      <div style={{ position: 'absolute', inset: 0, borderRadius: 38, padding: 7, background: 'linear-gradient(145deg,#eef0f3,#9ea3ad 28%,#4a4e57 62%,#b7bcc5 92%)', boxShadow: 'inset 0 0 0 1px rgba(255,255,255,.35), inset 0 -2px 3px rgba(0,0,0,.4)' }}>
-        <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: 32, overflow: 'hidden', background: '#000' }}>
-          <PhoneScreen />
-          <div style={{ position: 'absolute', top: 9, left: '50%', transform: 'translateX(-50%)', width: 58, height: 17, borderRadius: 10, background: '#000' }} />
-          <div style={{ position: 'absolute', inset: 0, borderRadius: 32, background: 'linear-gradient(115deg, rgba(255,255,255,.16), transparent 36%, transparent 70%, rgba(255,255,255,.05))', pointerEvents: 'none' }} />
+      {/* the phone, tilted back as if it landed. Built like the real thing: a thin
+          brushed-titanium band, a black glass bezel, and real depth made from stacked
+          layers of the same rounded shape (so the rounded corners stay rounded in 3D). */}
+      <div style={{ position: 'absolute', left: 20, bottom: 30, width: 188, height: 392, perspective: 1400 }}>
+        {/* soft contact shadow on the ground, not tilted with the phone */}
+        <div style={{ position: 'absolute', left: 10, right: -30, bottom: -14, height: 40, borderRadius: '50%', background: 'radial-gradient(ellipse at 45% 50%, rgba(0,0,0,.85), transparent 70%)', filter: 'blur(8px)' }} />
+        <div style={{ position: 'absolute', inset: 0, transformStyle: 'preserve-3d', transformOrigin: '50% 100%', transform: 'rotateX(10deg) rotateY(-26deg) rotateZ(-6deg)' }}>
+          {/* depth: 10 slices of the titanium band, darker towards the back */}
+          {Array.from({ length: 10 }, (_, i) => (
+            <div key={i} style={{ position: 'absolute', inset: 0, borderRadius: 40, transform: `translateZ(${-(i + 1)}px)`,
+              background: `linear-gradient(100deg, hsl(220 4% ${46 - i * 2.2}%), hsl(220 5% ${72 - i * 3}%) 38%, hsl(220 4% ${34 - i * 1.6}%) 62%, hsl(220 5% ${58 - i * 2.6}%))` }} />
+          ))}
+          {/* front: titanium band → black glass bezel → screen */}
+          <div style={{ position: 'absolute', inset: 0, borderRadius: 40, padding: 2.5,
+            background: 'linear-gradient(135deg,#d6d9de 0%,#8b9098 18%,#f1f2f4 34%,#5b6068 58%,#b3b7be 82%,#70757c 100%)',
+            boxShadow: '0 1px 0 rgba(255,255,255,.5) inset' }}>
+            <div style={{ width: '100%', height: '100%', borderRadius: 37.5, padding: 5, background: '#050506', boxShadow: 'inset 0 0 0 .6px rgba(255,255,255,.18)' }}>
+              <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: 32.5, overflow: 'hidden', background: '#000' }}>
+                <PhoneScreen />
+                {/* camera island */}
+                <div style={{ position: 'absolute', top: 8, left: '50%', transform: 'translateX(-50%)', width: 56, height: 16, borderRadius: 10, background: '#000', boxShadow: 'inset 0 0 0 .5px rgba(255,255,255,.06)' }}>
+                  <span style={{ position: 'absolute', right: 6, top: 4.5, width: 7, height: 7, borderRadius: '50%', background: 'radial-gradient(circle at 35% 35%, #2a3b55, #05070b 70%)' }} />
+                </div>
+                {/* glass: one broad soft reflection plus a faint edge sheen, like real cover glass */}
+                <div style={{ position: 'absolute', inset: 0, borderRadius: 32.5, pointerEvents: 'none',
+                  background: 'linear-gradient(118deg, rgba(255,255,255,.13) 0%, rgba(255,255,255,.05) 22%, transparent 23%, transparent 100%)' }} />
+                <div style={{ position: 'absolute', inset: 0, borderRadius: 32.5, pointerEvents: 'none', boxShadow: 'inset 0 0 18px rgba(0,0,0,.55)' }} />
+              </div>
+            </div>
+          </div>
+          {/* side buttons sit on the band, slightly proud of it */}
+          <span style={{ position: 'absolute', left: -1.5, top: 96, width: 2.5, height: 22, borderRadius: 2, transform: 'translateZ(-4px)', background: 'linear-gradient(90deg,#4b4f56,#c9ccd1)' }} />
+          <span style={{ position: 'absolute', left: -1.5, top: 128, width: 2.5, height: 38, borderRadius: 2, transform: 'translateZ(-4px)', background: 'linear-gradient(90deg,#4b4f56,#c9ccd1)' }} />
+          <span style={{ position: 'absolute', left: -1.5, top: 172, width: 2.5, height: 38, borderRadius: 2, transform: 'translateZ(-4px)', background: 'linear-gradient(90deg,#4b4f56,#c9ccd1)' }} />
         </div>
-        {/* side buttons */}
-        <span style={{ position: 'absolute', left: -2.5, top: 92, width: 3, height: 26, borderRadius: 2, background: 'linear-gradient(90deg,#55595f,#b5b9c0)' }} />
-        <span style={{ position: 'absolute', left: -2.5, top: 126, width: 3, height: 40, borderRadius: 2, background: 'linear-gradient(90deg,#55595f,#b5b9c0)' }} />
-        <span style={{ position: 'absolute', right: -2.5, top: 110, width: 3, height: 56, borderRadius: 2, background: 'linear-gradient(90deg,#b5b9c0,#55595f)' }} />
       </div>
-      </div>
-      {/* front rocks, overlapping the bottom of the phone */}
-      <svg viewBox="0 0 320 90" style={{ position: 'absolute', left: -45, bottom: -14, width: 320, height: 90 }}>
-        <path d="M0 86 L14 58 L40 50 L58 62 L72 52 L96 60 L110 86 Z" fill="url(#rock-b)" filter="url(#stone)" />
-        <path d="M86 86 L104 66 L132 60 L150 70 L176 62 L196 72 L206 86 Z" fill="url(#rock-a)" filter="url(#stone)" />
-        <path d="M190 86 L206 56 L232 46 L254 56 L276 50 L300 64 L320 86 Z" fill="url(#rock-b)" filter="url(#stone)" />
-        <path d="M40 50 L58 62 L50 66 Z M232 46 L254 56 L244 60 Z" fill="rgba(255,255,255,.12)" />
-        {[[70, 40], [250, 30], [150, 44], [30, 36], [290, 40]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r={1.4} fill="rgba(255,190,140,.6)" />)}
-      </svg>
     </div>
   )
 }
