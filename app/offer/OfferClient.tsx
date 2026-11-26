@@ -361,7 +361,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
               <div className="p-row"><dt>Plan</dt><dd>{plan.label}</dd></div>
               <div className="p-row"><dt>Billing</dt><dd>{plan.term}</dd></div>
               <div className="p-row"><dt>Payment</dt><dd>Bank transfer</dd></div>
-              <div className="p-row"><dt>Valid until</dt><dd>{issuedAt ? fmtDate(new Date(issuedAt.getTime() + 14 * 864e5)) : '—'}</dd></div>
             </dl>
           </section>
         </div>
