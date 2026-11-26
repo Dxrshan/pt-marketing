@@ -348,38 +348,21 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
         </div>
 
 
-        {/* Billing */}
-        <section className="part selection" id="plan">
-          <h2 className="label">Billing</h2>
-          <div className="plans" role="radiogroup" aria-label="Billing term">
+        {/* Quote */}
+        <section className="part" id="quote">
+          {/* Billing term: a compact three-way switch instead of three big cards. */}
+          <div className="seg no-print" role="radiogroup" aria-label="Billing term">
             {(Object.keys(PLANS) as Term[]).map(t => {
               const p = PLANS[t]
               const on = term === t
               return (
-                <button key={t} role="radio" aria-checked={on} className={`plan ${on ? 'on' : ''}`} onClick={() => setTerm(t)}>
-                  {p.tag && <span className={`plan-tag ${t}`}>{p.tag}</span>}
-                  <span className="radio" aria-hidden="true" />
-                  <span className="plan-name">{p.label}</span>
-                  <span className="plan-price num">
-                    {p.rate < LIST_MONTHLY && <s className="plan-was">£{LIST_MONTHLY}</s>}
-                    <strong>£{p.rate}</strong><span className="plan-per">/mo</span>
-                  </span>
-                  <span className="plan-term">{p.term}</span>
-                  <span className="plan-foot">
-                    {p.off && <span className="plan-save">{p.off}</span>}
-                    {p.rate < LIST_MONTHLY
-                      ? <span className="plan-keep">Keep £{yearlySaving(p.rate)} a year</span>
-                      : <span className="plan-keep muted">{p.perk}</span>}
-                  </span>
-                  {p.rate < LIST_MONTHLY && p.perk && <span className="plan-perk">{p.perk}</span>}
+                <button key={t} type="button" role="radio" aria-checked={on} className={`seg-opt ${on ? 'on' : ''}`} onClick={() => setTerm(t)}>
+                  <span className="seg-name">{p.label}</span>
+                  <span className="seg-price num">£{p.rate}/mo{p.off ? <em>{p.off.replace(' OFF', ' off')}</em> : null}</span>
                 </button>
               )
             })}
           </div>
-        </section>
-
-        {/* Quote */}
-        <section className="part" id="quote">
 
 
           <table className="lines">
@@ -543,7 +526,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
 
         {/* Acceptance */}
         <section className="part" id="signup">
-          <h2 className="label">Acceptance</h2>
           <p className="agree">By signing, {studio ? <strong>{studio}</strong> : 'the client named above'} accepts this proposal and the Terms &amp; Conditions that follow, which form part of this agreement.</p>
 
           <div className="signs">
@@ -950,6 +932,16 @@ body { background: #eceef1; }
 .terms-wide { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); }
 .terms-wide h3 { margin: 0 0 8px; }
 .terms-wide p { margin: 0 0 6px; max-width: none; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; margin-bottom: 14px; border-radius: 12px; background: #f1f3f5; border: 1px solid var(--line); }
+.seg-opt { all: unset; cursor: pointer; display: flex; align-items: baseline; justify-content: center; gap: 8px; padding: 9px 10px; border-radius: 9px; font-size: 13.5px; color: var(--muted); transition: background .2s ease, color .2s ease, box-shadow .2s ease; }
+.seg-opt:hover { color: var(--ink); }
+.seg-opt.on { background: #111318; color: #fff; box-shadow: 0 4px 12px -6px rgba(0,0,0,.5); }
+.seg-name { font-weight: 700; }
+.seg-price { font-size: 12.5px; opacity: .85; }
+.seg-price em { font-style: normal; margin-left: 6px; font-size: 11px; font-weight: 700; color: #16a35a; }
+.seg-opt.on .seg-price em { color: #5be39a; }
+.seg-opt:focus-visible { outline: 2px solid #6d5dfc; outline-offset: 2px; }
+@media (max-width: 560px) { .seg-opt { flex-direction: column; align-items: center; gap: 2px; } }
 .summary { display: grid; grid-template-columns: 1fr 340px; gap: 36px; align-items: start; margin-top: 36px; }
 .summary-note h3, .terms-wide h3 { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
 .bank-wrap { margin-bottom: 26px; }
