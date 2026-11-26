@@ -820,6 +820,7 @@ body { background: #eceef1; }
 .p-input:focus { outline: none; background: #fff; border-color: #c9cdd3; box-shadow: 0 0 0 3px rgba(17,19,24,.06); }
 
 .part { margin-top: 48px; scroll-margin-top: 24px; }
+#quote.part { margin-top: 22px; }
 
 /* Plans */
 .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
