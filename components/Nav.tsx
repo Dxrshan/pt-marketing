@@ -137,7 +137,7 @@ export default function Nav() {
               </a>
               <button
                 onClick={() => scrollTo('#waitlist')}
-                className="btn-spectrum magnetic"
+                className="btn-spectrum"
                 style={{
                   padding: '10px 20px', borderRadius: 999,
                   fontSize: 14, fontWeight: 600,
