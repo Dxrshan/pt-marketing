@@ -1003,6 +1003,7 @@ body { background: #eceef1; }
 .terms-wide h3 { margin: 0 0 8px; }
 .terms-wide p { margin: 0 0 6px; max-width: none; }
 .th-plan { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.th-plan .seg { margin: 0 auto; } /* centred in the space between 'Your plan' and Qty */
 .seg { display: inline-grid; grid-auto-flow: column; gap: 2px; padding: 2px; border-radius: 8px; background: #eef0f2; border: 1px solid var(--line); text-transform: none; letter-spacing: 0; }
 .seg-opt { all: unset; cursor: pointer; display: inline-flex; align-items: baseline; gap: 5px; padding: 4px 9px; border-radius: 6px; font-size: 11px; color: var(--muted); white-space: nowrap; transition: background .2s ease, color .2s ease; }
 .seg-opt:hover { color: var(--ink); }
