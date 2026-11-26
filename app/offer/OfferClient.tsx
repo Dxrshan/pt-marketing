@@ -901,15 +901,11 @@ body { background: #eceef1; }
 .lines .qty-col { text-align: center; white-space: nowrap; width: 1%; color: var(--ink); font-weight: 600; padding-left: 12px; padding-right: 0; }
 .lines th.qty-col { color: var(--faint); }
 .amt-sub { font-size: 11px; font-weight: 500; color: var(--faint); margin-top: 3px; }
-.sw { position: relative; width: 50px; height: 30px; border-radius: 999px; border: none; padding: 0; cursor: pointer; vertical-align: middle;
-  background: linear-gradient(180deg, #d9dde3, #eceff3); box-shadow: inset 0 1.5px 3px rgba(0,0,0,.22), inset 0 0 0 1px rgba(0,0,0,.08);
-  transition: background .3s ease, box-shadow .3s ease; }
-.sw.on { background: linear-gradient(180deg, #13b85f, #2bd477); box-shadow: inset 0 1.5px 3px rgba(0,0,0,.25), 0 0 0 3px rgba(43,212,119,.16), 0 4px 14px -4px rgba(19,184,95,.7); }
-.sw-knob { position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #ffffff, #f1f3f6 45%, #c9ced6 100%);
-  box-shadow: 0 2px 5px rgba(0,0,0,.28), 0 0 0 .5px rgba(0,0,0,.12), inset 0 1px 0 #fff;
-  transition: transform .32s cubic-bezier(.3,1.5,.5,1); }
-.sw.on .sw-knob { transform: translateX(20px); }
+.sw { position: relative; width: 44px; height: 26px; border-radius: 9px; border: 1px solid var(--line); padding: 0; cursor: pointer; vertical-align: top;
+  background: #fff; transition: background .2s ease, border-color .2s ease; }
+.sw.on { background: #111318; border-color: #111318; }
+.sw-knob { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 6px; background: #d5d9df; transition: transform .2s ease, background .2s ease; }
+.sw.on .sw-knob { transform: translateX(18px); background: #fff; }
 .sw:focus-visible { outline: 2px solid #6d5dfc; outline-offset: 3px; }
 .qty { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: #fff; }
 .qty-btn { all: unset; cursor: pointer; width: 26px; height: 26px; display: grid; place-items: center; font-size: 15px; color: var(--muted); }
