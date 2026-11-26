@@ -155,7 +155,7 @@ export function CineHero() {
           </h1>
           <div className="hero-in hero-in-cta" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 40 }}>
             <a href="#waitlist" className="btn-spectrum magnetic" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 30px', borderRadius: 999, fontSize: 16, textDecoration: 'none' }}>
-              Get early access <Icon name="arrow" size={17} />
+              Book a demo <Icon name="arrow" size={17} />
             </a>
           </div>
         </motion.div>
@@ -199,7 +199,7 @@ export function ProductReveal() {
   const glow = useTransform(p, [0.1, 0.4], [0, 1])
 
   return (
-    <section ref={ref} id="story" className="cine-story" style={{ position: 'relative' }}>
+    <section ref={ref} id="story" data-scroll-at="0.25" className="cine-story" style={{ position: 'relative' }}>
       <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#050607' }}>
         <div style={{ position: 'absolute', top: '9vh', left: 0, right: 0, height: 110, zIndex: 3 }}>
           {CAPTIONS.map((c, i) => <Caption key={c} text={c} i={i} p={p} />)}

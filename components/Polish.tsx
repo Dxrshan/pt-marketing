@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useReducedMotion } from 'framer-motion'
 import Lenis from 'lenis'
+import { scrollToSection } from '../lib/scrollTarget'
 
 /** Buttery inertia scrolling; anchor links glide too. */
 export function SmoothScroll() {
@@ -22,12 +23,18 @@ export function SmoothScroll() {
       if (!a) return
       const url = new URL(a.href)
       if (url.pathname !== window.location.pathname || !url.hash) return
-      const el = document.querySelector(url.hash)
+      const el = document.querySelector<HTMLElement>(url.hash)
       if (!el) return
       e.preventDefault()
-      lenis.scrollTo(el as HTMLElement, { offset: 0, duration: 1.8 })
+      scrollToSection(el)
     }
     document.addEventListener('click', onClick)
+    // Arriving from another page with a #section link: land where that section
+    // actually shows something (see lib/scrollTarget).
+    if (window.location.hash) {
+      const target = document.querySelector<HTMLElement>(window.location.hash)
+      if (target?.dataset.scrollAt) requestAnimationFrame(() => scrollToSection(target, { immediate: true }))
+    }
     return () => { cancelAnimationFrame(raf); lenis.destroy(); delete (window as unknown as { __lenis?: Lenis }).__lenis; document.removeEventListener('click', onClick) }
   }, [reduce])
   return null

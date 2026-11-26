@@ -18,7 +18,7 @@ export default function Footer() {
       { label: 'Log in', href: 'https://app.dnianalytics.com', external: true },
     ] },
     { title: 'Company', links: [
-      { label: 'Get early access', href: '/#waitlist', onClick: toSignup },
+      { label: 'Book a demo', href: '/#waitlist', onClick: toSignup },
       { label: 'Contact us', href: 'mailto:darshan.mashru@dnianalytics.com' },
     ] },
     { title: 'Legal', links: [

@@ -57,13 +57,13 @@ export async function POST(req: NextRequest) {
     const notify = await resend.emails.send({
       from:    FROM,
       to:      'darshan.mashru@dnianalytics.com',
-      subject: `New early access signup: ${cleanEmail}`,
+      subject: `New demo request: ${cleanEmail}`,
       html: emailShell(`
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
           <tr><td style="padding:32px 32px 20px;text-align:center;">
             <div style="font-size:34px;margin-bottom:12px;">🎉</div>
-            <div style="font-size:20px;font-weight:800;color:#ffffff;letter-spacing:-0.4px;">New early access signup</div>
-            <div style="font-size:13.5px;color:#8b8ba3;margin-top:4px;">Someone just joined the founding members list</div>
+            <div style="font-size:20px;font-weight:800;color:#ffffff;letter-spacing:-0.4px;">New demo request</div>
+            <div style="font-size:13.5px;color:#8b8ba3;margin-top:4px;">Someone wants a demo. Reply within 24 hours.</div>
           </td></tr>
           <tr><td style="padding:0 24px 24px;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#191927;border-radius:14px;overflow:hidden;">
@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
     const confirm = await resend.emails.send({
       from:    FROM,
       to:      cleanEmail,
-      subject: `You're on the list${firstName ? `, ${firstName}` : ''}! 🎉`,
+      subject: `Your DNI Studios demo${firstName ? `, ${firstName}` : ''}`,
       html: emailShell(`
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
           <tr><td style="padding:40px 32px 8px;text-align:center;">
@@ -99,8 +99,8 @@ export async function POST(req: NextRequest) {
             <div style="font-size:24px;font-weight:800;color:#ffffff;letter-spacing:-0.5px;">You're in${firstName ? `, ${firstName}` : ''}!</div>
           </td></tr>
           <tr><td style="padding:14px 32px 0;text-align:center;">
-            <p style="margin:0 0 12px;font-size:15px;line-height:1.7;color:#a3a3b8;">Thanks for joining the <span style="color:#c7d2fe;font-weight:700;">DNI Studios</span> founding members list.</p>
-            <p style="margin:0;font-size:15px;line-height:1.7;color:#a3a3b8;">Your founding member pricing is locked in — we'll be in touch soon with your early access details.</p>
+            <p style="margin:0 0 12px;font-size:15px;line-height:1.7;color:#a3a3b8;">Thanks for booking a <span style="color:#c7d2fe;font-weight:700;">DNI Studios</span> demo.</p>
+            <p style="margin:0;font-size:15px;line-height:1.7;color:#a3a3b8;">I'll be in touch within 24 hours to find a time that suits you. Founding pricing is held for you until then.</p>
           </td></tr>
           <tr><td style="padding:28px 32px 8px;text-align:center;">
             <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">

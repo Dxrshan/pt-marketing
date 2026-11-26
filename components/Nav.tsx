@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import BrandLogo from './BrandLogo'
+import { scrollToSection } from '../lib/scrollTarget'
 
 // Each link is a real page/URL (crawlable, works from any page). On a page that
 // also contains the matching section, clicking scrolls to it instead.
@@ -42,8 +43,8 @@ export default function Nav() {
 
   const scrollTo = (href: string) => {
     setMobileOpen(false)
-    const el = document.querySelector(href)
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
+    const el = document.querySelector<HTMLElement>(href)
+    if (el) scrollToSection(el)
     else window.location.href = '/' + href
   }
 
@@ -54,7 +55,7 @@ export default function Nav() {
     if (el && window.location.pathname === '/') {
       e.preventDefault()
       setMobileOpen(false)
-      el.scrollIntoView({ behavior: 'smooth' })
+      scrollToSection(el)
     }
   }
 
@@ -144,7 +145,7 @@ export default function Nav() {
                   position: 'relative', zIndex: 1,
                 }}
               >
-                Get Early Access
+                Book a demo
               </button>
 
               {/* Mobile hamburger */}

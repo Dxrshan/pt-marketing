@@ -43,10 +43,10 @@ export default function EmailCaptureSection() {
         <motion.div initial={{ opacity: 0, y: 30, filter: 'blur(6px)' }} whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }} viewport={{ once: true }} transition={{ duration: 0.9, ease: EASE }}>
           <span className="badge badge-blue" style={{ marginBottom: 26 }}><span className="live-dot" /> Limited founding spots</span>
           <h2 style={{ fontSize: 'clamp(40px, 6vw, 76px)', fontWeight: 800, letterSpacing: '-0.045em', lineHeight: 1, marginBottom: 22 }}>
-            <span className="steel-text">Join the</span><br /><span className="spectrum-text">founding studios.</span>
+            <span className="steel-text">See it with</span><br /><span className="spectrum-text">your own clients.</span>
           </h2>
           <p style={{ fontSize: 18, color: 'var(--text-muted)', lineHeight: 1.65, marginBottom: 40 }}>
-            Get early access, lock in founding pricing for life, and help shape what DNI Studios becomes.
+            Book a free demo. We'll walk you through DNI Studios set up for your studio, and you can lock in founding pricing for life.
           </p>
         </motion.div>
 
@@ -89,7 +89,7 @@ export default function EmailCaptureSection() {
 
               <button type="submit" disabled={loading} className="btn-spectrum"
                 style={{ width: '100%', padding: 17, borderRadius: 14, fontSize: 16, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 10, opacity: loading ? 0.75 : 1 }}>
-                {loading ? 'Securing your spot…' : <>Secure my founding spot <Icon name="arrow" size={17} /></>}
+                {loading ? 'Booking…' : <>Book my demo <Icon name="arrow" size={17} /></>}
               </button>
               <p style={{ fontSize: 13, color: 'var(--text-subtle)', marginTop: 14, textAlign: 'center' }}>
                 30-day money-back guarantee · No lock-in
@@ -102,9 +102,9 @@ export default function EmailCaptureSection() {
                 style={{ width: 64, height: 64, borderRadius: 20, margin: '0 auto 18px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0b0c0f', background: 'linear-gradient(180deg,#fff,#b9bec6)', boxShadow: '0 12px 40px -10px rgba(220,226,235,.5)' }}>
                 <Icon name="check" size={30} stroke={2.4} />
               </motion.span>
-              <h3 className="steel-text" style={{ fontSize: 30, fontWeight: 800, marginBottom: 12 }}>You&apos;re in.</h3>
+              <h3 className="steel-text" style={{ fontSize: 30, fontWeight: 800, marginBottom: 12 }}>Demo requested.</h3>
               <p style={{ fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.7 }}>
-                Welcome to the founding studios. We&apos;ll be in touch shortly with your early access and everything you need to get started.
+                Thanks! We&apos;ll be in touch within 24 hours to find a time that suits you.
               </p>
               <p style={{ fontSize: 14, color: 'var(--text-subtle)', marginTop: 16 }}>
                 The app is live now: <a href="https://app.dnianalytics.com" style={{ color: 'var(--steel-1)' }}>open DNI Studios</a>
