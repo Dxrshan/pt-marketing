@@ -35,6 +35,25 @@ const AI_ADDON_RATE = 12
 const FEEDBACK_CREDIT = 1
 const FEEDBACK_CREDIT_CAP = 10
 
+// Trust badges under the bank card. Only claims that are true today:
+//  - price lock and cancel-any-time: Terms clauses 2 and 3
+//  - UK GDPR processor terms (DPA): Terms clause 6
+//  - export: built into the app and Terms clause 6
+//  - encryption: HTTPS everywhere, passwords hashed, files in a private bucket
+//  - registered company: Companies House no. 15630271
+// Add your ICO registration number to ICO_REG_NO once you have it and an
+// "ICO registered" badge appears.
+const ICO_REG_NO = ''
+const TRUST_BADGES: { label: string; icon: React.ReactNode }[] = [
+  { label: 'Price locked for life', icon: <><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5" /><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" /></> },
+  { label: 'Cancel any time', icon: <path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4" /> },
+  { label: 'GDPR data agreement', icon: <><path d="M12 3l8 3v6c0 4.8-3.4 8-8 9-4.6-1-8-4.2-8-9V6z" /><path d="M8.8 12.2l2.2 2.2 4.2-4.3" /></> },
+  { label: 'Encrypted & private', icon: <><circle cx="12" cy="12" r="8.5" /><path d="M3.5 12h17M12 3.5c2.4 2.4 3.6 5.2 3.6 8.5s-1.2 6.1-3.6 8.5c-2.4-2.4-3.6-5.2-3.6-8.5S9.6 5.9 12 3.5z" /></> },
+  { label: 'Export your data', icon: <><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5" /><path d="M4.5 19.5h15" /></> },
+  { label: 'UK registered company', icon: <><path d="M3 9.5 12 4l9 5.5" /><path d="M5 10v7M9.5 10v7M14.5 10v7M19 10v7M3.5 20h17" /></> },
+  ...(ICO_REG_NO ? [{ label: `ICO registered · ${ICO_REG_NO}`, icon: <><rect x="4" y="3.5" width="16" height="17" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" /></> }] : []),
+]
+
 const EXTRAS = ['Diet & meal plans', 'Form-check video review', 'Messaging & voice notes', 'Community feed & leaderboard']
 
 const FEATURE_ICONS = {
@@ -489,6 +508,28 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                   </div>
                 </div>
               </div>
+              {/* Reassurance: every badge here is backed by the terms below or by how the app works. */}
+              <div className="trust">
+                <div className="trust-main">
+                  <svg width="34" height="38" viewBox="0 0 24 27" fill="none" aria-hidden="true">
+                    <path d="M12 1.5 21.5 5v7.2c0 6.3-4.1 10.9-9.5 12.6C6.6 23.1 2.5 18.5 2.5 12.2V5z" fill="url(#trust-g)" stroke="#16a35a" strokeWidth="1.2" />
+                    <path d="M7.8 13.2 10.8 16.2 16.4 10.4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <defs><linearGradient id="trust-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#2ad07a" /><stop offset="1" stopColor="#14924f" /></linearGradient></defs>
+                  </svg>
+                  <div>
+                    <div className="trust-title">30-day money-back guarantee</div>
+                    <div className="trust-sub">Not right for your studio? Full refund of your first subscription payment.</div>
+                  </div>
+                </div>
+                <div className="trust-grid">
+                  {TRUST_BADGES.map(b => (
+                    <div key={b.label} className="trust-badge">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{b.icon}</svg>
+                      <span>{b.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
             <div className="sum-card num">
               <div className="b-title">Your bill</div>
@@ -516,7 +557,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                 <span>You&rsquo;re saving</span>
                 <strong>{gbp(totals.discountTotal + totals.waivedValue)}</strong>
               </div>
-              <div className="cta-trust no-print">30-day money-back guarantee on your subscription</div>
             </div>
           </div>
           </div>
@@ -942,7 +982,15 @@ body { background: #eceef1; }
 @media (max-width: 560px) { .seg-opt { flex-direction: column; align-items: center; gap: 2px; } }
 .summary { display: grid; grid-template-columns: 1fr 340px; gap: 36px; align-items: start; margin-top: 36px; }
 .summary-note h3, .terms-wide h3 { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
-.bank-wrap { margin-bottom: 26px; }
+.bank-wrap { margin-bottom: 18px; }
+.trust { border: 1px solid var(--line); border-radius: 14px; padding: 14px; background: #fff; break-inside: avoid; }
+.trust-main { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--line-soft); }
+.trust-main svg { flex-shrink: 0; filter: drop-shadow(0 4px 8px rgba(22,163,90,.25)); }
+.trust-title { font-size: 14px; font-weight: 700; color: var(--ink); }
+.trust-sub { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.45; }
+.trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; }
+.trust-badge { display: flex; align-items: center; gap: 7px; white-space: nowrap; font-size: 12px; font-weight: 500; color: var(--text); }
+.trust-badge svg { color: #16a35a; flex-shrink: 0; }
 .bcard {
   position: relative; overflow: hidden; width: 100%; max-width: 380px; aspect-ratio: 1.586; border-radius: 18px; padding: 20px 22px;
   display: flex; flex-direction: column; justify-content: space-between; color: #eef1f4;
