@@ -33,7 +33,7 @@ const FEATURES: { name: string; detail: string; icon: keyof typeof FEATURE_ICONS
 const FEEDBACK_CREDIT = 1
 const FEEDBACK_CREDIT_CAP = 10
 
-// Social media credit: one-off £5 off today's bill for joining our social media content.
+// Social media credit: £5 off every month for taking part in our social media content (see Terms, clause 9).
 const SOCIAL_CREDIT = 5
 
 // Trust badges under the bank card. Only claims that are true today:
@@ -247,6 +247,9 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
       discAmounts[d.id] = amt
       recurringDisc += amt
     }
+    // Social media credit: £5 for every month in the billing cycle, on every bill.
+    const socialCredit = socialOn ? Math.min(SOCIAL_CREDIT * plan.months, Math.max(recurringBase - recurringDisc, 0)) : 0
+    recurringDisc += socialCredit
     const recurringTotal = Math.max(recurringBase - recurringDisc, 0)
 
     const firstBase = recurringTotal + onceExtras
@@ -260,8 +263,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
       onceDisc += amt
     }
     // Social media credit: one-off, off today's payment only.
-    const socialCredit = socialOn ? Math.min(SOCIAL_CREDIT, Math.max(firstBase - onceDisc, 0)) : 0
-    onceDisc += socialCredit
 
     return {
       listSub, termSaving, onceExtras, discAmounts, recurringTotal, socialCredit,
@@ -488,10 +489,10 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
               {(creditsOpen || socialOn) && <tr className={socialOn ? '' : 'optional'}>
                 <td>
                   <div className="l-main">Social media feature{!socialOn && <span className="opt-tag">Optional</span>}</div>
-                  <div className="l-sub" style={{ whiteSpace: 'nowrap' }}>{`Join our social media content, ${gbp(SOCIAL_CREDIT)} off (one-off)`}</div>
+                  <div className="l-sub" style={{ whiteSpace: 'nowrap' }}>{`Take part in our social media videos, ${gbp(SOCIAL_CREDIT)} off every month`}</div>
                 </td>
                 <td className="qty-col"><Switch on={socialOn} onChange={setSocialOn} label="Social media feature" /></td>
-                <td className="amt num">{socialOn ? `−${gbp(SOCIAL_CREDIT)}` : '—'}<div className="amt-sub">off today</div></td>
+                <td className="amt num">{socialOn ? `−${gbp(SOCIAL_CREDIT)}/mo` : '—'}<div className="amt-sub">every month</div></td>
               </tr>}
 
             </tbody>
@@ -693,30 +694,35 @@ const CLAUSES = [
   { num: '8.', title: 'Custom Changes & Feature Requests', paras: [
     'Priority feature requests and custom changes are delivered at our reasonable discretion as to scope, design and timing. We have no obligation to build any particular feature. All software, features and improvements we create, including those made at your request, remain our property and may be made available to other customers.',
   ]},
-  { num: '9.', title: 'Service Availability & Changes', paras: [
+  { num: '9.', title: 'Social Media Credit', paras: [
+    'If you choose the Social Media Credit in this proposal, you receive £5 off your subscription for every month of each billing cycle while you take part. In return, you agree to take part in social media content with us: making yourself and your studio available for filming (for example short videos, photos and testimonials about how you use the Service) at least once every three months, at a reasonable time agreed with us, at your studio or remotely.',
+    'You grant us a non-exclusive, royalty-free, worldwide licence to use, edit and publish that content, including your name, likeness, voice and studio name, in our marketing on any channel. You are responsible for getting the consent of anyone else who appears, such as your staff or clients, and we will not show any client personal data from the Service on screen. After the credit ends, we will stop using content featuring you in new posts within 30 days of your written request, but we are not required to remove content already published.',
+    'You may stop taking part at any time by giving us 14 days\' written notice; the credit then ends from your next billing cycle. If you do not take part when reasonably asked, we may end the credit from your next billing cycle by giving you notice. The credit cannot exceed your subscription fee, has no cash value and does not affect any other part of this agreement.',
+  ]},
+  { num: '10.', title: 'Service Availability & Changes', paras: [
     'We aim to keep the Service available but do not guarantee uninterrupted or error-free operation. Planned maintenance will be communicated in advance where reasonably possible. We are not responsible for outages or failures of third-party services, networks or devices outside our control.',
     'As an early-stage platform, features may be added, changed or withdrawn as the product develops. We will give reasonable notice of any change that materially reduces the core functionality you use.',
   ]},
-  { num: '10.', title: 'Acceptable Use', paras: [
+  { num: '11.', title: 'Acceptable Use', paras: [
     'You must use the Service only for lawful purposes connected with your fitness business. You must not copy, reverse-engineer, resell, sublicense or attempt to gain unauthorised access to the Service, or upload unlawful, infringing or harmful content.',
   ]},
-  { num: '11.', title: 'Intellectual Property & Confidentiality', paras: [
+  { num: '12.', title: 'Intellectual Property & Confidentiality', paras: [
     'All software, design, branding and know-how associated with the Service remain the exclusive property of DNI Ltd. You receive a non-exclusive, non-transferable licence to use the Service during your subscription. Each party will keep the other\'s confidential information confidential and use it only for the purposes of this agreement.',
   ]},
-  { num: '12.', title: 'Limitation of Liability', paras: [
+  { num: '13.', title: 'Limitation of Liability', paras: [
     'Nothing in this agreement limits liability for death or personal injury caused by negligence, for fraud or fraudulent misrepresentation, or any other liability that cannot be limited by law.',
     'Subject to that, the Service is provided "as is", and we are not liable for any loss of profits, revenue, business, goodwill, anticipated savings or data, or for any indirect or consequential loss. Our total liability arising from or in connection with this agreement, whether in contract, tort (including negligence) or otherwise, is limited to the total fees paid by you in the 12 months before the event giving rise to the claim.',
   ]},
-  { num: '13.', title: 'Indemnity', paras: [
+  { num: '14.', title: 'Indemnity', paras: [
     'You will indemnify us against any claims, losses and costs (including reasonable legal fees) arising from claims by your clients, staff or any third party in connection with the services you provide to them, the data or content you upload, or your breach of these terms or of data protection law.',
   ]},
-  { num: '14.', title: 'Suspension & Termination', paras: [
-    'We may suspend or terminate your access immediately if you fail to pay any amount when due, materially breach these terms, misuse the Service, or become insolvent. Either party may end this agreement by cancellation under Clause 3. Clauses 5, 6, 11, 12, 13 and 16 survive termination.',
+  { num: '15.', title: 'Suspension & Termination', paras: [
+    'We may suspend or terminate your access immediately if you fail to pay any amount when due, materially breach these terms, misuse the Service, or become insolvent. Either party may end this agreement by cancellation under Clause 3. Clauses 5, 6, 12, 13, 14 and 17 survive termination.',
   ]},
-  { num: '15.', title: 'Changes to These Terms', paras: [
+  { num: '16.', title: 'Changes to These Terms', paras: [
     'We may update these terms by giving you at least 30 days\' written notice. Changes will not alter your founding subscription price. If you do not accept a change, you may cancel before it takes effect.',
   ]},
-  { num: '16.', title: 'General', paras: [
+  { num: '17.', title: 'General', paras: [
     'This agreement, comprising this proposal and these terms, is the entire agreement between us and supersedes any prior discussions. Neither party is liable for delays caused by events beyond its reasonable control. If any provision is found unenforceable, the remainder continues in effect. No failure or delay in exercising a right is a waiver of it. You may not assign this agreement without our consent. No third party has rights under it. Signatures given electronically are valid and binding.',
     'This agreement is governed by the laws of England and Wales, and the courts of England and Wales have exclusive jurisdiction over any dispute arising from it.',
   ]},
