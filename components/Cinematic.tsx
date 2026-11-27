@@ -112,7 +112,7 @@ function RotatingWord() {
   const [i, setI] = useState(0)
   useEffect(() => {
     if (reduce) return
-    const t = setInterval(() => setI(v => (v + 1) % HERO_WORDS.length), 2800)
+    const t = setInterval(() => setI(v => (v + 1) % HERO_WORDS.length), 1600)
     return () => clearInterval(t)
   }, [reduce])
   return (
@@ -122,7 +122,7 @@ function RotatingWord() {
           initial={{ y: '0.45em', opacity: 0, filter: 'blur(6px)' }}
           animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
           exit={{ y: '-0.45em', opacity: 0, filter: 'blur(6px)' }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
           style={{ display: 'block', whiteSpace: 'nowrap', paddingBottom: '0.08em' }}>
           {HERO_WORDS[i]}
         </motion.span>
