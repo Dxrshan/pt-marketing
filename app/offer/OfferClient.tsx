@@ -566,7 +566,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                 <span className="sc-term">{plan.label}</span>
               </div>
               <div className="sc-total t-due-num">{gbp(dueShown)}</div>
-              <div className="sc-then">Then <strong>{gbp(totals.recurringOngoing)}</strong> {plan.period}</div>
               <div className="sc-lines">
                 {totals.waivedValue > 0 && (
                   <div className="b-row save"><span>Founding studio discount</span><span>−{gbp(totals.waivedValue)}</span></div>
@@ -1041,8 +1040,8 @@ body { background: #eceef1; }
 /* Both columns end on the same line: the bill stretches to the left column's height,
    with the saving pinned to its bottom. */
 .summary { align-items: stretch; }
-.summary > .sum-card { display: flex; flex-direction: column; }
-.summary > .sum-card .t-saved { margin-top: auto; }
+.summary > .sum-card { display: flex; flex-direction: column; align-self: start; }
+.summary > .sum-card .t-saved { margin-top: 4px; }
 .summary > .sum-card .sc-lines { margin-bottom: 14px; }
 .summary-note h3, .terms-wide h3 { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
 .bank-wrap { margin-bottom: 18px; }
