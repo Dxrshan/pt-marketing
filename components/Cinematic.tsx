@@ -1,5 +1,6 @@
 'use client'
 // Full-screen, scroll-driven scenes for the home page (Apple-style product story).
+import { Garland, Baubles } from './Christmas'
 import React, { useEffect, useRef, useState, type ReactNode } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion, useMotionValue, useSpring, useMotionTemplate, type MotionValue } from 'framer-motion'
 import BrandLogo from './BrandLogo'
@@ -149,11 +150,13 @@ export function CineHero() {
 
   return (
     <section ref={ref} id="hero" className="cine-hero" style={{ position: 'relative' }}>
-      <div className="grain" style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse 80% 60% at 50% 38%, #1a1d23 0%, #0b0c0f 55%, #050607 100%)' }}>
+      <div className="grain cine-stage" style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(ellipse 80% 60% at 50% 38%, #1a1d23 0%, #0b0c0f 55%, #050607 100%)' }}>
         <CursorLight size={900} opacity={0.07} />
         <DotGrid />
         <Aurora colors={['rgba(47,123,255,0.55)', 'rgba(139,92,255,0.5)', 'rgba(255,79,163,0.42)', 'rgba(255,138,61,0.35)']} style={{ inset: '-10% 5% 15%', opacity: 0.6 }} />
         <Dust />
+        <Garland />
+        <Baubles />
         {/* Rotating light beams */}
         <div aria-hidden="true" className="beams" style={{
           position: 'absolute', top: '38%', left: '50%', width: 1600, height: 1600, marginLeft: -800, marginTop: -800, pointerEvents: 'none', opacity: 0.55,
@@ -161,7 +164,7 @@ export function CineHero() {
           WebkitMaskImage: 'radial-gradient(circle, #000 0%, transparent 60%)', maskImage: 'radial-gradient(circle, #000 0%, transparent 60%)',
         }} />
 
-        <motion.div style={{ scale: markScale, opacity: markOpacity, position: 'relative', zIndex: 1 }}>
+        <motion.div className="cine-mark" style={{ scale: markScale, opacity: markOpacity, position: 'relative', zIndex: 1 }}>
           <div className="hero-in hero-in-mark">
             <div style={{ position: 'absolute', inset: '-30%', borderRadius: '50%', background: 'conic-gradient(from 0deg, rgba(47,123,255,0.45), rgba(139,92,255,0.45), rgba(255,79,163,0.4), rgba(255,138,61,0.38), rgba(47,123,255,0.45))', filter: 'blur(60px)', opacity: 0.8 }} />
             <InteractiveMark height={markH} />

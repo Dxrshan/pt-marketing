@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import BrandLogo from './BrandLogo'
-import { Snowfall, XmasBanner } from './Christmas'
+import { Snowfall, XmasBanner, SantaHat } from './Christmas'
 import { scrollToSection } from '../lib/scrollTarget'
 
 // Each link is a real page/URL (crawlable, works from any page). On a page that
@@ -82,7 +82,8 @@ export default function Nav() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 60 }}>
             {/* Logo */}
-            <a href="/" aria-label="DNI Studios home" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
+            <a href="/" aria-label="DNI Studios home" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10, position: 'relative' }}>
+              <SantaHat style={{ left: -8, top: -15, transform: 'rotate(-18deg)' }} />
               <BrandLogo height={32} className="logo-wide" />
               <BrandLogo variant="mark" height={34} className="logo-narrow" />
             </a>

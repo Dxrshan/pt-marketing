@@ -449,3 +449,21 @@ html.lenis, html.lenis body { height: auto; }
   background: rgba(226,196,138,.08); border: 1px solid rgba(226,196,138,.35); box-shadow: 0 0 22px -8px rgba(226,196,138,.5); }
 .xmas-note span { color: #f0d9a2; }
 @media (max-width: 640px) { .xmas-banner-link { font-size: 11.5px; gap: 5px; } .xmas-dim, .xmas-cta, .xmas-sep { display: none; } }
+
+/* Heavier Christmas: room for the banner, lights, baubles, festive ring and glow */
+html[data-xmas-banner] .cine-stage { padding-top: 112px; }
+html[data-xmas-banner] .cine-mark > div { zoom: .82; }
+html[data-xmas] .cine-stage { background: radial-gradient(ellipse 70% 50% at 50% 30%, rgba(200,16,46,.16), transparent 60%), radial-gradient(ellipse 60% 45% at 20% 80%, rgba(31,122,74,.14), transparent 60%), radial-gradient(ellipse 80% 60% at 50% 38%, #1a1d23 0%, #0b0c0f 55%, #050607 100%) !important; }
+html[data-xmas] .btn-spectrum::before { background: conic-gradient(from var(--angle), #c8102e, #f0d9a2, #1f7a4a, #fbefc9, #ff4d5e, #c8102e); }
+html[data-xmas] .btn-spectrum { box-shadow: 0 10px 40px -8px rgba(200,16,46,.5), 0 6px 30px -10px rgba(240,217,162,.45); }
+html:not([data-xmas-banner]) { --garland-top: 80px; }
+html[data-xmas-banner] .scroll-hint { display: none !important; }
+@media (max-width: 640px) { html { --garland-top: 158px; } html:not([data-xmas-banner]) { --garland-top: 82px; } }
+.xmas-bulb { filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 10px currentColor); animation: xmas-twinkle 2.4s ease-in-out infinite; }
+@keyframes xmas-twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+.xmas-baubles { position: absolute; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 1; }
+.xmas-bauble { position: absolute; top: 0; transform-origin: 50% 0; animation: xmas-swing 5s ease-in-out infinite; }
+@keyframes xmas-swing { 0%, 100% { transform: rotate(3deg); } 50% { transform: rotate(-3deg); } }
+@media (max-width: 900px) { .xmas-baubles { display: none; } }
+@media (max-width: 640px) { html[data-xmas-banner] .cine-stage { padding-top: 96px; } }
+@media (prefers-reduced-motion: reduce) { .xmas-bulb, .xmas-bauble { animation: none; } }
