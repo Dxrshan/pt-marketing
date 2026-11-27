@@ -457,19 +457,41 @@ function TrialVisual() {
 }
 
 /* One app: five scattered tools pull into one tile. */
+// The tools a PT juggles today, drawn as phone-style app icons (generic look-alikes,
+// not the real trademarked logos): a spreadsheet, a green chat app, notes, messages,
+// a calendar and a banking app. They get pulled into the DNI icon.
+function ToolIcon({ kind }: { kind: string }) {
+  const tile = (bg: string, child: ReactNode) => (
+    <div style={{ width: 52, height: 52, borderRadius: 13, background: bg, display: 'grid', placeItems: 'center', boxShadow: 'inset 0 1px 0 rgba(255,255,255,.35), inset 0 -2px 4px rgba(0,0,0,.15), 0 10px 24px rgba(0,0,0,.55)' }}>{child}</div>
+  )
+  switch (kind) {
+    case 'sheet': return tile('linear-gradient(160deg,#2fb36b,#16824a)',
+      <svg width="30" height="30" viewBox="0 0 30 30"><rect x="9" y="4" width="18" height="22" rx="2" fill="#fff" opacity=".95" /><path d="M9 11h18M9 18h18M18 4v22" stroke="#16824a" strokeWidth="1.2" /><rect x="3" y="8.5" width="13" height="13" rx="2" fill="#0f6b3b" /><path d="M6.4 11.6l6.2 6.8M12.6 11.6l-6.2 6.8" stroke="#fff" strokeWidth="1.9" strokeLinecap="round" /></svg>)
+    case 'whatsapp': return tile('linear-gradient(160deg,#5ee27a,#21b04b)',
+      <svg width="30" height="30" viewBox="0 0 30 30"><path d="M15 4.5a10.5 10.5 0 0 0-9 15.9L4.6 25.4l5.2-1.4A10.5 10.5 0 1 0 15 4.5z" fill="none" stroke="#fff" strokeWidth="2.1" strokeLinejoin="round" /><path d="M11.3 10.4c.3-.6.6-.6 1-.6h.6c.2 0 .4.1.5.4l.8 1.9c.1.3 0 .5-.1.7l-.6.7c-.1.2-.2.4 0 .6.6 1 1.4 1.9 2.4 2.5.2.1.5.1.6-.1l.7-.8c.2-.2.4-.3.7-.2l1.9.9c.3.1.4.3.4.5 0 .9-.6 1.8-1.5 2-1 .3-2.4 0-4.2-1.2a10.5 10.5 0 0 1-3.2-3.6c-.8-1.5-.6-2.8 0-3.7z" fill="#fff" /></svg>)
+    case 'notes': return tile('linear-gradient(180deg,#fff 0%,#fff 30%,#fbfaf3 30%)',
+      <svg width="30" height="30" viewBox="0 0 30 30"><rect x="0" y="0" width="30" height="7" rx="2" fill="#f7c948" /><path d="M5 13h20M5 18h20M5 23h13" stroke="#c9c2a6" strokeWidth="1.3" strokeLinecap="round" /></svg>)
+    case 'messages': return tile('linear-gradient(160deg,#6ef08a,#1fc244)',
+      <svg width="30" height="30" viewBox="0 0 30 30"><path d="M15 6c-6.4 0-11 3.9-11 8.6 0 2.6 1.4 4.9 3.7 6.5-.2 1.4-.9 2.7-2 3.6 2.2.1 4.2-.6 5.6-1.8 1.2.3 2.4.4 3.7.4 6.4 0 11-3.9 11-8.7S21.4 6 15 6z" fill="#fff" /></svg>)
+    case 'calendar': return tile('#fff',
+      <div style={{ textAlign: 'center', lineHeight: 1, fontFamily: '-apple-system, Inter, sans-serif' }}><div style={{ fontSize: 8.5, fontWeight: 700, color: '#f0443a', letterSpacing: '.04em' }}>FRI</div><div style={{ fontSize: 24, fontWeight: 300, color: '#111', marginTop: 1 }}>27</div></div>)
+    default: return tile('linear-gradient(160deg,#3a3f8f,#1e2263)',
+      <svg width="30" height="30" viewBox="0 0 30 30"><rect x="4" y="8" width="22" height="15" rx="2.6" fill="none" stroke="#fff" strokeWidth="1.8" /><path d="M4 12.5h22" stroke="#fff" strokeWidth="2.4" /><path d="M8 19h5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" /></svg>)
+  }
+}
+
 function OneAppVisual() {
   const tools = [
-    { n: 'chat', x: -125, y: -30 }, { n: 'sheet', x: -78, y: 62 }, { n: 'calendar', x: 0, y: -82 },
-    { n: 'bank', x: 78, y: 62 }, { n: 'note', x: 125, y: -30 },
+    { n: 'whatsapp', x: -132, y: -34 }, { n: 'sheet', x: -86, y: 62 }, { n: 'calendar', x: -40, y: -84 },
+    { n: 'notes', x: 40, y: -84 }, { n: 'bank', x: 86, y: 62 }, { n: 'messages', x: 132, y: -34 },
   ]
   return (
     <div style={{ position: 'relative', width: '100%', height: 200 }}>
       {tools.map((t, i) => (
-        <motion.div key={t.n} initial={{ x: t.x * 1.25, y: t.y * 1.25, opacity: 1, scale: 1 }} whileInView={{ x: [t.x * 1.25, 0, t.x], y: [t.y * 1.25, 0, t.y], opacity: [1, 0, 0.35], scale: [1, 0.4, 0.7] }} viewport={{ once: true, margin: '-60px' }}
+        <motion.div key={t.n} initial={{ x: t.x * 1.25, y: t.y * 1.25, opacity: 1, scale: 1 }} whileInView={{ x: [t.x * 1.25, 0, t.x], y: [t.y * 1.25, 0, t.y], opacity: [1, 0, 0.55], scale: [1, 0.4, 0.72] }} viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 2.2, times: [0, 0.45, 1], delay: 0.6 + i * 0.08, ease: [0.7, 0, 0.3, 1] }}
-          style={{ position: 'absolute', left: '50%', top: '50%', marginLeft: -26, marginTop: -26, width: 52, height: 52, borderRadius: 15, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: '#16181d', border: '1px solid rgba(255,255,255,0.1)', color: '#aab0b9', boxShadow: '0 10px 24px rgba(0,0,0,.5)' }}>
-          <Icon name={t.n} size={22} />
+          style={{ position: 'absolute', left: '50%', top: '50%', marginLeft: -26, marginTop: -26, width: 52, height: 52 }}>
+          <ToolIcon kind={t.n} />
         </motion.div>
       ))}
       <motion.div initial={{ opacity: 0, scale: 0.5 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: '-60px' }}
@@ -505,7 +527,7 @@ export function BigNumbers() {
           <StatCard tone="pink" span={5} delay={0.1} num={<Counter to={30} duration={2} />} unit="days" label="money-back guarantee" sub="Every feature from day one. Not for you? Cancel within 30 days for a full refund of your subscription.">
             <TrialVisual />
           </StatCard>
-          <StatCard tone="amber" span={7} delay={0.2} num={<Counter to={1} duration={1.2} />} unit="app" label="instead of five" sub="Bookings, payments, programmes, check-ins and chat, all in one place.">
+          <StatCard tone="amber" span={7} delay={0.2} num={<Counter to={1} duration={1.2} />} unit="app" label="instead of six" sub="No more spreadsheets, WhatsApp threads, notes apps and separate calendars. Bookings, payments, programmes, check-ins and chat, all in one place.">
             <OneAppVisual />
           </StatCard>
         </div>

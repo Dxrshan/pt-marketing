@@ -75,8 +75,8 @@ type Extra = { id: string; label: string; amount: number; list: number; qty: num
 type Discount = { id: string; label: string; mode: 'pct' | 'fixed'; value: number; scope: Kind }
 
 const DEFAULT_EXTRAS: Extra[] = [
-  { id: 'onboard', label: 'Onboarding & data migration',     amount: 99,  list: 99, qty: 0, kind: 'once', status: 'charge', custom: false },
-  { id: 'call',    label: '1:1 setup call with the team',    amount: 75,  list: 75, qty: 0, kind: 'once', status: 'charge', custom: false },
+  { id: 'onboard', label: 'Onboarding & data migration',     amount: 149, list: 149, qty: 0, kind: 'once', status: 'charge', custom: false },
+  { id: 'call',    label: '1:1 setup call with the team',    amount: 39,  list: 39, qty: 0, kind: 'once', status: 'charge', custom: false },
 ]
 
 // Whole pounds by default (£441); pence only when there are some (£273.60).
@@ -937,20 +937,21 @@ body { background: #eceef1; }
 /* Line items */
 .lines { width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
 .lines th {
-  font-size: 10.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--faint);
-  text-align: left; padding: 14px 20px 12px; background: #fafbfc; border-bottom: 1px solid var(--line);
+  font-size: 10.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #c9cdd3;
+  text-align: left; padding: 12px 20px; border-bottom: 1px solid #0a0b0d;
+  background: radial-gradient(140% 160% at 0% 0%, #30343c 0%, var(--steel-1) 35%, var(--steel-2) 75%, #0a0b0d 100%);
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
 .lines td { padding: 15px 20px; border-top: 1px solid var(--line-soft); vertical-align: top; font-size: 14.5px; background: #fff; }
 .lines tbody tr:first-child td { border-top: none; }
 .lines tbody tr:nth-child(even) td { background: #fafbfc; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-.lines th.amt { color: var(--faint); }
+.lines th.amt { color: #c9cdd3; }
 .l-incl { list-style: none; margin: 12px 0 2px; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 18px; }
 .l-incl li { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--muted); }
 .l-incl svg { color: #16a35a; flex-shrink: 0; }
 @media (max-width: 560px) { .l-incl { grid-template-columns: 1fr; } }
 .lines .qty-col { text-align: center; white-space: nowrap; width: 1%; color: var(--ink); font-weight: 600; padding-left: 12px; padding-right: 0; }
-.lines th.qty-col { color: var(--faint); }
+.lines th.qty-col { color: #c9cdd3; }
 .amt-sub { font-size: 11px; font-weight: 500; color: var(--faint); margin-top: 3px; }
 .sw { position: relative; width: 44px; height: 26px; border-radius: 9px; border: 1px solid var(--line); padding: 0; cursor: pointer; vertical-align: top;
   background: #fff; transition: background .2s ease, border-color .2s ease; }
@@ -1004,14 +1005,14 @@ body { background: #eceef1; }
 .terms-wide p { margin: 0 0 6px; max-width: none; }
 .th-plan { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .th-plan .seg { margin: 0 auto; } /* centred in the space between 'Your plan' and Qty */
-.seg { display: inline-grid; grid-auto-flow: column; gap: 2px; padding: 2px; border-radius: 8px; background: #eef0f2; border: 1px solid var(--line); text-transform: none; letter-spacing: 0; }
-.seg-opt { all: unset; cursor: pointer; display: inline-flex; align-items: baseline; gap: 5px; padding: 4px 9px; border-radius: 6px; font-size: 11px; color: var(--muted); white-space: nowrap; transition: background .2s ease, color .2s ease; }
-.seg-opt:hover { color: var(--ink); }
-.seg-opt.on { background: #111318; color: #fff; box-shadow: 0 2px 6px -3px rgba(0,0,0,.5); }
+.seg { display: inline-grid; grid-auto-flow: column; gap: 2px; padding: 2px; border-radius: 8px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); text-transform: none; letter-spacing: 0; }
+.seg-opt { all: unset; cursor: pointer; display: inline-flex; align-items: baseline; gap: 5px; padding: 4px 9px; border-radius: 6px; font-size: 11px; color: #aeb3bb; white-space: nowrap; transition: background .2s ease, color .2s ease; }
+.seg-opt:hover { color: #fff; }
+.seg-opt.on { background: linear-gradient(180deg, #f4f5f7, #d9dce1); color: #111318; box-shadow: 0 2px 6px -3px rgba(0,0,0,.6); }
 .seg-name { font-weight: 700; }
 .seg-price { font-size: 10.5px; opacity: .85; }
-.seg-price em { font-style: normal; margin-left: 4px; font-size: 10px; font-weight: 700; color: #16a35a; }
-.seg-opt.on .seg-price em { color: #5be39a; }
+.seg-price em { font-style: normal; margin-left: 4px; font-size: 10px; font-weight: 700; color: #5be39a; }
+.seg-opt.on .seg-price em { color: #16a35a; }
 .seg-opt:focus-visible { outline: 2px solid #6d5dfc; outline-offset: 2px; }
 .terms-link { all: unset; cursor: pointer; color: var(--ink); text-decoration: underline; text-underline-offset: 2px; text-decoration-color: rgba(17,19,24,.3); }
 .terms-link:hover { text-decoration-color: currentColor; }
