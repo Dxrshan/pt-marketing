@@ -33,6 +33,9 @@ const FEATURES: { name: string; detail: string; icon: keyof typeof FEATURE_ICONS
 const FEEDBACK_CREDIT = 1
 const FEEDBACK_CREDIT_CAP = 10
 
+// Social media credit: one-off £5 off today's bill for joining our social media content.
+const SOCIAL_CREDIT = 5
+
 // Trust badges under the bank card. Only claims that are true today:
 //  - cancel any time: Terms clause 3
 //  - GDPR: processor terms in Terms clause 6 (register with the ICO to keep this true)
@@ -202,6 +205,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
   const [extras, setExtras] = useState<Extra[]>(DEFAULT_EXTRAS)
   const [discounts, setDiscounts] = useState<Discount[]>([])
   const [feedbackOn, setFeedbackOn] = useState(false)
+  const [socialOn, setSocialOn] = useState(false)
 
   const [studio, setStudio] = useState('')
   const [contact, setContact] = useState('')
@@ -253,9 +257,12 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
       discAmounts[d.id] = amt
       onceDisc += amt
     }
+    // Social media credit: one-off, off today's payment only.
+    const socialCredit = socialOn ? Math.min(SOCIAL_CREDIT, Math.max(firstBase - onceDisc, 0)) : 0
+    onceDisc += socialCredit
 
     return {
-      listSub, termSaving, onceExtras, discAmounts, recurringTotal,
+      listSub, termSaving, onceExtras, discAmounts, recurringTotal, socialCredit,
       // What each renewal costs from the next period on (feedback credits come off later bills, so not included).
       recurringOngoing: Math.max(recurringBase - recurringDisc, 0),
       dueToday: Math.max(firstBase - onceDisc, 0),
@@ -264,7 +271,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
       setupList: charged.reduce((s, e) => s + Math.max(e.list, e.amount) * e.qty, 0),
       discountTotal: termSaving + recurringDisc + onceDisc,
     }
-  }, [plan, extras, discounts])
+  }, [plan, extras, discounts, socialOn])
 
   const dueShown = totals.dueToday // no count-up: a ticking total made prices feel like they were climbing
 
@@ -471,6 +478,15 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                 <td className="amt num">{feedbackOn ? 'Included' : '—'}<div className="amt-sub">from next bill</div></td>
               </tr>
 
+              <tr className={socialOn ? '' : 'optional'}>
+                <td>
+                  <div className="l-main">Social media feature{!socialOn && <span className="opt-tag">Optional</span>}</div>
+                  <div className="l-sub" style={{ whiteSpace: 'nowrap' }}>{`Join our social media content, ${gbp(SOCIAL_CREDIT)} off (one-off)`}</div>
+                </td>
+                <td className="qty-col"><Switch on={socialOn} onChange={setSocialOn} label="Social media feature" /></td>
+                <td className="amt num">{socialOn ? `−${gbp(SOCIAL_CREDIT)}` : '—'}<div className="amt-sub">off today</div></td>
+              </tr>
+
             </tbody>
           </table>
 
@@ -547,6 +563,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
               {totals.waivedValue > 0 && (
                 <div className="b-row save"><span>Founding studio discount</span><span>−{gbp(totals.waivedValue)}</span></div>
               )}
+              <div className="b-row save"><span>Social media credit</span><span>{totals.socialCredit > 0 ? `−${gbp(totals.socialCredit)}` : '—'}</span></div>
               <div className="b-row save b-disc">
                 <span>Discount{manual && manual.mode === 'pct' ? <em>{manual.value}%</em> : null}</span>
                 <DiscountField
