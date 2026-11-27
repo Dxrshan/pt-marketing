@@ -560,30 +560,28 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
               </div>
             </div>
             <div className="sum-card num">
-              <div className="b-title">Your bill</div>
-              <div className="b-row"><span>{plan.label} plan <em>{plan.months === 1 ? '1 month' : `${plan.months} months`}</em></span><span>{gbp(plan.rate * plan.months)}</span></div>
-              {/* Rows stay put whether or not they're in use, so the box never jumps in size mid-conversation. */}
-              {/* Same items, same order as the table above. */}
-              {extras.filter(x => x.status !== 'removed').map(x => (
-                <div key={x.id} className="b-row"><span>{x.label}{x.qty > 1 ? <em>× {x.qty}</em> : null}</span><span>{x.qty > 0 ? gbp(Math.max(x.list, x.amount) * x.qty) : '—'}</span></div>
-              ))}
-              {totals.waivedValue > 0 && (
-                <div className="b-row save"><span>Founding studio discount</span><span>−{gbp(totals.waivedValue)}</span></div>
-              )}
-              <div className="b-row save"><span>Social media credit</span><span>{totals.socialCredit > 0 ? `−${gbp(totals.socialCredit)}` : '—'}</span></div>
-              <div className="b-row save b-disc">
-                <span>Discount{manual && manual.mode === 'pct' ? <em>{manual.value}%</em> : null}</span>
-                <DiscountField
-                  amount={manual ? totals.discAmounts[manual.id] ?? 0 : 0}
-                  current={manual ? (manual.mode === 'pct' ? `${manual.value}%` : String(manual.value)) : ''}
-                  onSet={setManual}
-                />
+              <div className="sc-head">
+                <span className="sc-label">Total due today</span>
+                <span className="sc-term">{plan.label}</span>
               </div>
-              <div className="b-total">
-                <span className="b-total-label">Total due today</span>
-                <span className="t-due-num">{gbp(dueShown)}</span>
+              <div className="sc-total t-due-num">{gbp(dueShown)}</div>
+              <div className="sc-then">Then <strong>{gbp(totals.recurringOngoing)}</strong> {plan.period}</div>
+              <div className="sc-lines">
+                {totals.waivedValue > 0 && (
+                  <div className="b-row save"><span>Founding studio discount</span><span>−{gbp(totals.waivedValue)}</span></div>
+                )}
+                {totals.socialCredit > 0 && (
+                  <div className="b-row save"><span>Social media credit</span><span>−{gbp(totals.socialCredit)}</span></div>
+                )}
+                <div className="b-row save b-disc">
+                  <span>Discount{manual && manual.mode === 'pct' ? <em>{manual.value}%</em> : null}</span>
+                  <DiscountField
+                    amount={manual ? totals.discAmounts[manual.id] ?? 0 : 0}
+                    current={manual ? (manual.mode === 'pct' ? `${manual.value}%` : String(manual.value)) : ''}
+                    onSet={setManual}
+                  />
+                </div>
               </div>
-              <div className="t-then">Then {gbp(totals.recurringOngoing)} {plan.period}</div>
               <div className="t-saved" style={{ visibility: totals.discountTotal + totals.waivedValue > 0 ? 'visible' : 'hidden' }}>
                 <span>You&rsquo;re saving</span>
                 <strong>{gbp(totals.discountTotal + totals.waivedValue)}</strong>
@@ -1039,7 +1037,7 @@ body { background: #eceef1; }
 .summary { align-items: stretch; }
 .summary > .sum-card { display: flex; flex-direction: column; }
 .summary > .sum-card .t-saved { margin-top: auto; }
-.summary > .sum-card .t-then { margin-bottom: 14px; }
+.summary > .sum-card .sc-lines { margin-bottom: 14px; }
 .summary-note h3, .terms-wide h3 { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
 .bank-wrap { margin-bottom: 18px; }
 .trust { position: relative; overflow: hidden; border-radius: 18px; padding: 18px 18px 16px; color: #efe9dc; break-inside: avoid;
@@ -1149,6 +1147,14 @@ body { background: #eceef1; }
 .b-total .t-due-num { font-size: 34px; white-space: nowrap; }
 @media print { .b-disc:has(.b-add) { display: none; } }
 .t-then { margin-top: 6px; text-align: right; font-size: 13px; color: #b9bec6; }
+.sc-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.sc-label { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #9ba1aa; }
+.sc-term { font-size: 11.5px; font-weight: 600; color: #e3e6ea; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); }
+.sum-card .sc-total { font-size: 56px; margin-top: 14px; white-space: nowrap; }
+.sc-then { font-size: 13.5px; color: #9ba1aa; margin-top: 6px; }
+.sc-then strong { color: #e3e6ea; font-weight: 600; }
+.sc-lines { margin-top: 20px; border-top: 1px solid rgba(255,255,255,.1); }
+.sc-lines .b-row:last-child { border-bottom: none; }
 .t-saved { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding: 10px 12px; border-radius: 10px; background: rgba(91,227,154,.1); border: 1px solid rgba(91,227,154,.25); font-size: 13px; color: #a7f0c8; }
 .t-saved strong { color: #5be39a; font-size: 15px; }
 .cta-trust { margin-top: 10px; text-align: center; font-size: 11.5px; color: #8d939c; }
