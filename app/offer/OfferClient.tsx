@@ -206,6 +206,8 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
   const [discounts, setDiscounts] = useState<Discount[]>([])
   const [feedbackOn, setFeedbackOn] = useState(false)
   const [socialOn, setSocialOn] = useState(false)
+  // Credits sit behind a subtle chevron; a credit that's switched on stays visible.
+  const [creditsOpen, setCreditsOpen] = useState(false)
 
   const [studio, setStudio] = useState('')
   const [contact, setContact] = useState('')
@@ -469,23 +471,34 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                 </tr>
               ))}
 
-              <tr className={feedbackOn ? '' : 'optional'}>
+              <tr className="credits-toggle no-print">
+                <td colSpan={3}>
+                  <button type="button" onClick={() => setCreditsOpen(o => !o)} aria-expanded={creditsOpen} aria-label={creditsOpen ? 'Hide credits' : 'Show credits'}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
+                      style={{ transform: creditsOpen ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }}>
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+
+              {(creditsOpen || feedbackOn) && <tr className={feedbackOn ? '' : 'optional'}>
                 <td>
                   <div className="l-main">Feedback credit{!feedbackOn && <span className="opt-tag">Optional</span>}</div>
                   <div className="l-sub" style={{ whiteSpace: 'nowrap' }}>{`${gbp(FEEDBACK_CREDIT)} off per fix or feature you suggest, up to ${gbp(FEEDBACK_CREDIT_CAP)}/month`}</div>
                 </td>
                 <td className="qty-col"><Switch on={feedbackOn} onChange={setFeedbackOn} label="Feedback credit" /></td>
                 <td className="amt num">{feedbackOn ? 'Included' : '—'}<div className="amt-sub">from next bill</div></td>
-              </tr>
+              </tr>}
 
-              <tr className={socialOn ? '' : 'optional'}>
+              {(creditsOpen || socialOn) && <tr className={socialOn ? '' : 'optional'}>
                 <td>
                   <div className="l-main">Social media feature{!socialOn && <span className="opt-tag">Optional</span>}</div>
                   <div className="l-sub" style={{ whiteSpace: 'nowrap' }}>{`Join our social media content, ${gbp(SOCIAL_CREDIT)} off (one-off)`}</div>
                 </td>
                 <td className="qty-col"><Switch on={socialOn} onChange={setSocialOn} label="Social media feature" /></td>
                 <td className="amt num">{socialOn ? `−${gbp(SOCIAL_CREDIT)}` : '—'}<div className="amt-sub">off today</div></td>
-              </tr>
+              </tr>}
 
             </tbody>
           </table>
@@ -955,6 +968,9 @@ body { background: #eceef1; }
 .l-incl li { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--muted); }
 .l-incl svg { color: #16a35a; flex-shrink: 0; }
 @media (max-width: 560px) { .l-incl { grid-template-columns: 1fr; } }
+.lines tbody tr.credits-toggle td { padding: 0; background: #fff; text-align: center; }
+.credits-toggle button { display: block; width: 100%; padding: 4px 0; border: 0; background: none; color: #c3c8cf; cursor: pointer; line-height: 0; }
+.credits-toggle button:hover { color: #8a9099; }
 .lines .qty-col { text-align: center; white-space: nowrap; width: 1%; color: var(--ink); font-weight: 600; padding-left: 12px; padding-right: 0; }
 .lines th.qty-col { color: #c9cdd3; }
 .amt-sub { font-size: 11px; font-weight: 500; color: var(--faint); margin-top: 3px; }
