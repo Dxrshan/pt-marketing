@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: 'Simple pricing for PT studios: one plan with every feature, from £59/month. Unlimited trainers and clients, 30-day money-back guarantee, no setup fees for founding studios.',
   alternates: { canonical: '/pricing' },
   openGraph: {
-    title: 'DNI Studios Pricing: one plan, everything included', url: '/pricing', siteName: 'DNI Studios', type: 'website', locale: 'en_GB',
+    title: 'DNI Studios Pricing: one plan, every feature included', url: '/pricing', siteName: 'DNI Studios', type: 'website', locale: 'en_GB',
     images: [{ url: '/og-image.png?v=4', width: 1200, height: 630, alt: 'DNI Studios' }],
   },
 }

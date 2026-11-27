@@ -18,7 +18,7 @@ const INCLUDED = [
   'Live session logger with PB tracking',
   'Client app for every client',
   'Daily wellness & progress tracking',
-  'AI assistant (staff + client)',
+  'AI assistant (staff + client), fair use',
   'Lead pipeline & CRM',
   'Payments, invoicing & receipts',
   'Smart dashboard & action items',
@@ -38,7 +38,7 @@ export default function PricingSection({ bare = false }: { bare?: boolean }) {
         {!bare && <SectionHead
           eyebrow="Founding pricing"
           title="One price."
-          accent="Everything included."
+          accent="Every feature included."
           sub="No tiers, no per-seat fees, no surprises."
         />}
 

@@ -28,8 +28,6 @@ const FEATURES: { name: string; detail: string; icon: keyof typeof FEATURE_ICONS
   { name: 'Unlimited trainers & clients', detail: 'Branded client app, no per-seat fees', icon: 'users' },
 ]
 
-// Paid add-on, on top of any plan, billed with the subscription.
-const AI_ADDON_RATE = 12
 
 // Feedback credit: £1 off the next bill per fix or new feature suggested, capped per month.
 const FEEDBACK_CREDIT = 1
@@ -55,7 +53,7 @@ const TRUST_BADGES: { label: string; icon: React.ReactNode }[] = [
   ...(ICO_REG_NO ? [{ label: `ICO registered · ${ICO_REG_NO}`, icon: <><rect x="4.5" y="3.5" width="15" height="17" rx="2.2" /><path d="M8 8.5h8M8 12h8M8 15.5h5" /></> }] : []),
 ]
 
-const EXTRAS = ['Diet & meal plans', 'Form-check video review', 'Messaging & voice notes', 'Community feed & leaderboard']
+const EXTRAS = ['AI Coach (fair use)', 'Diet & meal plans', 'Form-check video review', 'Messaging & voice notes', 'Community feed & leaderboard']
 
 const FEATURE_ICONS = {
   calendar: <><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" /><path d="M8 3v4M16 3v4M3.5 10h17M8 14h3" /></>,
@@ -203,7 +201,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
   const [term, setTerm] = useState<Term>('quarterly')
   const [extras, setExtras] = useState<Extra[]>(DEFAULT_EXTRAS)
   const [discounts, setDiscounts] = useState<Discount[]>([])
-  const [aiQty, setAiQty] = useState(0)
   const [feedbackOn, setFeedbackOn] = useState(false)
 
   const [studio, setStudio] = useState('')
@@ -232,9 +229,8 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
 
     // Recurring discounts come off the recurring subtotal; one-off discounts
     // come off whatever is left on the first payment.
-    const aiAddon = AI_ADDON_RATE * aiQty * plan.months
     // Feedback credits come off the subscription, capped per month of the term.
-    const recurringBase = listSub - termSaving + recurringExtras + aiAddon
+    const recurringBase = listSub - termSaving + recurringExtras
     const discAmounts: Record<string, number> = {}
     let recurringDisc = 0
     for (const d of discounts.filter(d => d.scope === 'recurring')) {
@@ -259,16 +255,16 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
     }
 
     return {
-      listSub, termSaving, onceExtras, discAmounts, recurringTotal, aiAddon,
+      listSub, termSaving, onceExtras, discAmounts, recurringTotal,
       // What each renewal costs from the next period on (feedback credits come off later bills, so not included).
       recurringOngoing: Math.max(recurringBase - recurringDisc, 0),
       dueToday: Math.max(firstBase - onceDisc, 0),
-      subtotal: listSub + recurringExtras + aiAddon + onceExtras,
+      subtotal: listSub + recurringExtras + onceExtras,
       waivedValue: charged.reduce((s, e) => s + Math.max(e.list - e.amount, 0) * e.qty, 0),
       setupList: charged.reduce((s, e) => s + Math.max(e.list, e.amount) * e.qty, 0),
       discountTotal: termSaving + recurringDisc + onceDisc,
     }
-  }, [plan, extras, discounts, aiQty])
+  }, [plan, extras, discounts])
 
   const dueShown = totals.dueToday // no count-up: a ticking total made prices feel like they were climbing
 
@@ -466,14 +462,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                 </tr>
               ))}
 
-              <tr className={`compact ${aiQty > 0 ? '' : 'optional'}`}>
-                <td>
-                  <div className="l-main">AI Coach add-on{aiQty === 0 && <span className="opt-tag">Optional</span>}</div>
-                </td>
-                <td className="qty-col"><QtyStepper value={aiQty} label="AI Coach add-on" onChange={setAiQty} /></td>
-                <td className="amt num">{aiQty > 0 ? gbp(totals.aiAddon) : `${gbp(AI_ADDON_RATE)}/mo`}</td>
-              </tr>
-
               <tr className={feedbackOn ? '' : 'optional'}>
                 <td>
                   <div className="l-main">Feedback credit{!feedbackOn && <span className="opt-tag">Optional</span>}</div>
@@ -556,7 +544,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
               {extras.filter(x => x.status !== 'removed').map(x => (
                 <div key={x.id} className="b-row"><span>{x.label}{x.qty > 1 ? <em>× {x.qty}</em> : null}</span><span>{x.qty > 0 ? gbp(Math.max(x.list, x.amount) * x.qty) : '—'}</span></div>
               ))}
-              <div className="b-row"><span>AI Coach add-on <em>{plan.months === 1 ? '1 month' : `${plan.months} months`}</em></span><span>{totals.aiAddon > 0 ? gbp(totals.aiAddon) : '—'}</span></div>
               {totals.waivedValue > 0 && (
                 <div className="b-row save"><span>Founding studio discount</span><span>−{gbp(totals.waivedValue)}</span></div>
               )}
