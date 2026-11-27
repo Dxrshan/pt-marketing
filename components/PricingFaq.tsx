@@ -6,7 +6,7 @@ const FAQS: [string, string][] = [
   ['Do you charge per trainer or per client?',
    'No. Unlimited trainers and unlimited clients are included. There are no per-seat fees, ever.'],
   ['Are there setup fees?',
-   'Not for founding studios. Onboarding and data migration, a 1:1 setup call and priority support for your first 90 days are included free.'],
+   'Not for founding studios (and this Christmas, free for every studio that joins before 31 Dec). Onboarding and data migration, a 1:1 setup call and priority support for your first 90 days are included free.'],
   ['Can I cancel?',
    'Yes. It is a rolling agreement with no fixed term beyond the billing cycle you choose, and you can cancel with 14 days’ notice. There is also a 30-day money-back guarantee.'],
   ['Will my price go up?',

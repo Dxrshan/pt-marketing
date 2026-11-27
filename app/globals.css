@@ -429,3 +429,23 @@ html.lenis, html.lenis body { height: auto; }
 @keyframes hero-eyebrow { from { opacity: 0; letter-spacing: 0.6em; } to { opacity: 1; letter-spacing: 0.32em; } }
 @keyframes hero-line { from { opacity: 0; transform: translateY(40px); filter: blur(14px); } to { opacity: 1; transform: none; filter: none; } }
 @keyframes hero-cta { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+/* ── Christmas (luxury, subtle) ─────────────────────────────────────── */
+.xmas-banner { pointer-events: auto; max-width: 980px; margin: 0 auto 10px; display: flex; align-items: center; gap: 6px;
+  border-radius: 999px; padding: 3px 6px 3px 4px; border: 1px solid transparent;
+  background: linear-gradient(rgba(16,14,10,.78), rgba(16,14,10,.78)) padding-box,
+              linear-gradient(90deg, rgba(240,217,162,.75), rgba(255,255,255,.08) 40%, rgba(255,255,255,.08) 60%, rgba(212,178,122,.7)) border-box;
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 10px 30px -14px rgba(226,196,138,.45); }
+.xmas-banner-link { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; padding: 6px 10px;
+  color: #e9e3d6; font-size: 13px; text-decoration: none; text-align: center; }
+.xmas-star { color: #f0d9a2; text-shadow: 0 0 10px rgba(240,217,162,.8); }
+.xmas-gold { font-weight: 700; letter-spacing: .02em; background: linear-gradient(90deg, #fbefc9, #e2c48a 50%, #f3dfae); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.xmas-sep { color: rgba(240,217,162,.5); }
+.xmas-dim { color: #a7a196; }
+.xmas-cta { font-weight: 700; color: #fbefc9; white-space: nowrap; }
+.xmas-close { all: unset; cursor: pointer; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; color: #a7a196; font-size: 16px; }
+.xmas-close:hover { color: #fff; background: rgba(255,255,255,.06); }
+.xmas-note { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 600; color: #f3e6c4;
+  background: rgba(226,196,138,.08); border: 1px solid rgba(226,196,138,.35); box-shadow: 0 0 22px -8px rgba(226,196,138,.5); }
+.xmas-note span { color: #f0d9a2; }
+@media (max-width: 640px) { .xmas-banner-link { font-size: 11.5px; gap: 5px; } .xmas-dim, .xmas-cta, .xmas-sep { display: none; } }

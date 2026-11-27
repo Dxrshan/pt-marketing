@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SectionHead, Icon, Reveal } from './fx'
+import { XmasSaleNote } from './Christmas'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -41,6 +42,8 @@ export default function PricingSection({ bare = false }: { bare?: boolean }) {
           accent="Every feature included."
           sub="No tiers, no per-seat fees, no surprises."
         />}
+
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 28 }}><XmasSaleNote /></div>
 
         {/* Billing toggle with sliding pill */}
         <Reveal delay={0.1} style={{ display: 'flex', justifyContent: 'center', marginTop: 48 }}>

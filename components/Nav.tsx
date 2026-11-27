@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import BrandLogo from './BrandLogo'
+import { Snowfall, XmasBanner } from './Christmas'
 import { scrollToSection } from '../lib/scrollTarget'
 
 // Each link is a real page/URL (crawlable, works from any page). On a page that
@@ -63,12 +64,14 @@ export default function Nav() {
 
   return (
     <>
+      <Snowfall />
       <motion.nav
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         style={{ position: 'fixed', top: 14, left: 0, right: 0, zIndex: 100, padding: '0 16px', pointerEvents: 'none' }}
       >
+        <XmasBanner />
         <div style={{
           maxWidth: scrolled ? 1040 : 1240, margin: '0 auto', padding: '0 10px 0 22px', pointerEvents: 'auto',
           borderRadius: 999, transition: 'max-width .6s cubic-bezier(.22,1,.36,1), background .4s ease, border-color .4s ease, box-shadow .4s ease',
