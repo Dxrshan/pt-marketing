@@ -969,7 +969,7 @@ body { background: #eceef1; }
 .l-incl svg { color: #16a35a; flex-shrink: 0; }
 @media (max-width: 560px) { .l-incl { grid-template-columns: 1fr; } }
 .lines tbody tr.credits-toggle td { padding: 0; background: #fff; text-align: center; }
-.credits-toggle button { display: block; width: 100%; padding: 4px 0; border: 0; background: none; color: #c3c8cf; cursor: pointer; line-height: 0; }
+.credits-toggle button { display: flex; justify-content: center; align-items: center; width: 100%; padding: 4px 0; border: 0; background: none; color: #c3c8cf; cursor: pointer; line-height: 0; }
 .credits-toggle button:hover { color: #8a9099; }
 .lines .qty-col { text-align: center; white-space: nowrap; width: 1%; color: var(--ink); font-weight: 600; padding-left: 12px; padding-right: 0; }
 .lines th.qty-col { color: #c9cdd3; }
