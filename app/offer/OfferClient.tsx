@@ -333,30 +333,30 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
             <dl>
               <div className="p-row">
                 <dt><label htmlFor="bt-studio">Studio</label></dt>
-                <dd><input id="bt-studio" className="p-input bt-studio" placeholder="—" autoComplete="organization" value={studio} onChange={e => setStudio(e.target.value)} /></dd>
+                <dd><input id="bt-studio" className="p-input bt-studio" placeholder="Studio name" autoComplete="organization" value={studio} onChange={e => setStudio(e.target.value)} /></dd>
               </div>
               <div className="p-row">
                 <dt><label htmlFor="bt-contact">Contact</label></dt>
-                <dd><input id="bt-contact" className="p-input" placeholder="—" autoComplete="name" value={contact} onChange={e => setContact(e.target.value)} /></dd>
+                <dd><input id="bt-contact" className="p-input" placeholder="Full name" autoComplete="name" value={contact} onChange={e => setContact(e.target.value)} /></dd>
               </div>
               <div className="p-row">
                 <dt><label htmlFor="bt-addr">Address</label></dt>
-                <dd><input id="bt-addr" className="p-input" placeholder="—" autoComplete="street-address" /></dd>
+                <dd><input id="bt-addr" className="p-input" placeholder="Street address" autoComplete="street-address" /></dd>
               </div>
               <div className="p-row">
                 <dt><label htmlFor="bt-city">City</label></dt>
                 <dd className="bt-split">
-                  <input id="bt-city" className="p-input" placeholder="—" autoComplete="address-level2" value={city} onChange={e => setCity(e.target.value)} />
+                  <input id="bt-city" className="p-input" placeholder="City" autoComplete="address-level2" value={city} onChange={e => setCity(e.target.value)} />
                   <input className="p-input bt-post" placeholder="Postcode" aria-label="Postcode" autoComplete="postal-code" value={postcode} onChange={e => setPostcode(e.target.value)} />
                 </dd>
               </div>
               <div className="p-row">
                 <dt><label htmlFor="bt-email">Email</label></dt>
-                <dd><input id="bt-email" className="p-input" type="email" placeholder="—" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} /></dd>
+                <dd><input id="bt-email" className="p-input" type="email" placeholder="name@studio.com" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} /></dd>
               </div>
               <div className="p-row">
                 <dt><label htmlFor="bt-phone">Phone</label></dt>
-                <dd><input id="bt-phone" className="p-input" type="tel" placeholder="—" autoComplete="tel" /></dd>
+                <dd><input id="bt-phone" className="p-input" type="tel" placeholder="07123 456789" autoComplete="tel" /></dd>
               </div>
             </dl>
           </section>
