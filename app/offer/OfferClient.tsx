@@ -582,10 +582,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                   />
                 </div>
               </div>
-              <div className="t-saved" style={{ visibility: totals.discountTotal + totals.waivedValue > 0 ? 'visible' : 'hidden' }}>
-                <span>You&rsquo;re saving</span>
-                <strong>{gbp(totals.discountTotal + totals.waivedValue)}</strong>
-              </div>
             </div>
           </div>
           </div>
@@ -1042,7 +1038,6 @@ body { background: #eceef1; }
 .summary { align-items: stretch; }
 .summary > .sum-card { display: flex; flex-direction: column; align-self: start; }
 .summary > .sum-card .t-saved { margin-top: 4px; }
-.summary > .sum-card .sc-lines { margin-bottom: 14px; }
 .summary-note h3, .terms-wide h3 { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
 .bank-wrap { margin-bottom: 18px; }
 .trust { position: relative; overflow: hidden; border-radius: 18px; padding: 18px 18px 16px; color: #efe9dc; break-inside: avoid;
