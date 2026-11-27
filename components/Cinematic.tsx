@@ -1,7 +1,7 @@
 'use client'
 // Full-screen, scroll-driven scenes for the home page (Apple-style product story).
 import React, { useEffect, useRef, useState, type ReactNode } from 'react'
-import { motion, useScroll, useTransform, useReducedMotion, useMotionValue, useSpring, useMotionTemplate, type MotionValue } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion, useMotionValue, useSpring, useMotionTemplate, type MotionValue } from 'framer-motion'
 import BrandLogo from './BrandLogo'
 import { DashboardMockup, LiveToasts, LiveSessionCard, PhoneInCrater } from './Hero'
 import { LoggerDemo, ChatDemo, RevenueDemo, PipelineDemo, PhoneDemo } from './FeaturesSection'
@@ -104,6 +104,33 @@ function DotGrid() {
 }
 
 /* ── 1. Opening: giant metal mark, huge headline, fly-through on scroll ── */
+// Second hero line: cycles through short words with a soft slide-and-fade. The line
+// keeps a fixed height, so nothing below it moves; reduced-motion users see one word.
+const HERO_WORDS = ['Effortlessly.', 'Smarter.', 'Your way.', 'Profitably.', 'Confidently.', 'Seamlessly.', 'Stress-free.', 'Like a pro.', 'Brilliantly.', 'Faster.', 'Properly.', 'Without chaos.']
+function RotatingWord() {
+  const reduce = useReducedMotion()
+  const [i, setI] = useState(0)
+  useEffect(() => {
+    if (reduce) return
+    const t = setInterval(() => setI(v => (v + 1) % HERO_WORDS.length), 2800)
+    return () => clearInterval(t)
+  }, [reduce])
+  return (
+    <span style={{ position: 'relative', display: 'block', height: '1.08em', overflow: 'hidden' }}>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span key={HERO_WORDS[i]} className="spectrum-text"
+          initial={{ y: '0.45em', opacity: 0, filter: 'blur(6px)' }}
+          animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
+          exit={{ y: '-0.45em', opacity: 0, filter: 'blur(6px)' }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          style={{ display: 'block', whiteSpace: 'nowrap', paddingBottom: '0.08em' }}>
+          {HERO_WORDS[i]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  )
+}
+
 export function CineHero() {
   const ref = useRef<HTMLElement>(null)
   const reduce = useReducedMotion()
@@ -149,8 +176,8 @@ export function CineHero() {
             <span className="steel-text hero-in hero-in-line" style={{ display: 'block', animationDelay: '.7s' }}>
               Run your studio.
             </span>
-            <span className="spectrum-text hero-in hero-in-line" style={{ display: 'block', animationDelay: '.95s' }}>
-              Beautifully.
+            <span className="hero-in hero-in-line" style={{ display: 'block', animationDelay: '.95s' }}>
+              <RotatingWord />
             </span>
           </h1>
           <div className="hero-in hero-in-cta" style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginTop: 40 }}>
