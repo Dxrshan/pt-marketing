@@ -496,6 +496,26 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
               </tr>}
 
             </tbody>
+            <tfoot>
+              <tr className="tot-row">
+                <td colSpan={2}>
+                  <div className="tot-label">Total due today</div>
+                  <div className="tot-adj">
+                    {totals.waivedValue > 0 && <span className="tot-chip">Founding discount −{gbp(totals.waivedValue)}</span>}
+                    {totals.socialCredit > 0 && <span className="tot-chip">Social media credit −{gbp(totals.socialCredit)}</span>}
+                    <span className="tot-chip b-disc">
+                      Discount{manual && manual.mode === 'pct' ? ` ${manual.value}%` : ''}
+                      <DiscountField
+                        amount={manual ? totals.discAmounts[manual.id] ?? 0 : 0}
+                        current={manual ? (manual.mode === 'pct' ? `${manual.value}%` : String(manual.value)) : ''}
+                        onSet={setManual}
+                      />
+                    </span>
+                  </div>
+                </td>
+                <td className="amt num"><span className="tot-num t-due-num">{gbp(dueShown)}</span></td>
+              </tr>
+            </tfoot>
           </table>
 
           <div className="p2-wrap">
@@ -557,29 +577,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                       <span>{b.label}</span>
                     </div>
                   ))}
-                </div>
-              </div>
-            </div>
-            <div className="sum-card num">
-              <div className="sc-head">
-                <span className="sc-label">Total due today</span>
-                <span className="sc-term">{plan.label}</span>
-              </div>
-              <div className="sc-total t-due-num">{gbp(dueShown)}</div>
-              <div className="sc-lines">
-                {totals.waivedValue > 0 && (
-                  <div className="b-row save"><span>Founding studio discount</span><span>−{gbp(totals.waivedValue)}</span></div>
-                )}
-                {totals.socialCredit > 0 && (
-                  <div className="b-row save"><span>Social media credit</span><span>−{gbp(totals.socialCredit)}</span></div>
-                )}
-                <div className="b-row save b-disc">
-                  <span>Discount{manual && manual.mode === 'pct' ? <em>{manual.value}%</em> : null}</span>
-                  <DiscountField
-                    amount={manual ? totals.discAmounts[manual.id] ?? 0 : 0}
-                    current={manual ? (manual.mode === 'pct' ? `${manual.value}%` : String(manual.value)) : ''}
-                    onSet={setManual}
-                  />
                 </div>
               </div>
             </div>
@@ -1032,14 +1029,26 @@ body { background: #eceef1; }
 .terms-toggle button:hover { color: var(--ink); }
 .terms-collapsed { display: none; }
 @media print { .terms-collapsed { display: block !important; } }
-.summary { display: grid; grid-template-columns: 1fr 340px; gap: 36px; align-items: start; margin-top: 36px; }
+.summary { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; margin-top: 36px; }
 /* Both columns end on the same line: the bill stretches to the left column's height,
    with the saving pinned to its bottom. */
 .summary { align-items: stretch; }
 .summary > .sum-card { display: flex; flex-direction: column; align-self: start; }
 .summary > .sum-card .t-saved { margin-top: 4px; }
 .summary-note h3, .terms-wide h3 { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
-.bank-wrap { margin-bottom: 18px; }
+.bank-wrap { margin-bottom: 0; }
+.summary-note { display: contents; }
+.tot-row td { border-top: none; vertical-align: middle; padding-top: 20px; padding-bottom: 20px; color: #c8ccd2;
+  background: linear-gradient(180deg, #23262c 0%, #16181c 55%, #0f1013 100%) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.tot-label { font-size: 10.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #c9cdd3; }
+.tot-adj { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
+.tot-adj:empty { display: none; }
+.tot-chip { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; color: #5be39a; padding: 4px 10px; border-radius: 999px; background: rgba(91,227,154,.1); border: 1px solid rgba(91,227,154,.22); }
+.tot-chip.b-disc { color: #c9cdd3; background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.12); }
+.tot-chip.b-disc .amt-edit { color: #5be39a; }
+.tot-chip .b-add { padding: 0 2px; border: 0; font-size: 12.5px; }
+.tot-chip .b-disc-input { width: 90px; font-size: 12.5px; padding: 2px 6px; }
+.lines .tot-row .tot-num { font-size: 40px; white-space: nowrap; display: inline-block; }
 .trust { position: relative; overflow: hidden; border-radius: 18px; padding: 18px 18px 16px; color: #efe9dc; break-inside: avoid;
   border: 1px solid transparent;
   background:
