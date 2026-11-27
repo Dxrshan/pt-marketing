@@ -498,7 +498,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
             </tbody>
             <tfoot>
               <tr className="tot-row">
-                <td colSpan={2}>
+                <td colSpan={3}><div className="tot-inner"><div>
                   <div className="tot-label">Total due today</div>
                   <div className="tot-adj">
                     {totals.waivedValue > 0 && <span className="tot-chip">Founding discount −{gbp(totals.waivedValue)}</span>}
@@ -512,8 +512,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                       />
                     </span>
                   </div>
-                </td>
-                <td className="amt num"><span className="tot-num t-due-num">{gbp(dueShown)}</span></td>
+                </div><span className="tot-num t-due-num num">{gbp(dueShown)}</span></div></td>
               </tr>
             </tfoot>
           </table>
@@ -1040,6 +1039,10 @@ body { background: #eceef1; }
 .summary-note { display: contents; }
 .tot-row td { border-top: none; vertical-align: middle; padding-top: 20px; padding-bottom: 20px; color: #c8ccd2;
   background: linear-gradient(180deg, #23262c 0%, #16181c 55%, #0f1013 100%) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.tot-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.lines thead th + th { position: relative; }
+.lines thead th + th::before { content: ""; position: absolute; top: 0; bottom: 0; left: -1px; width: 2px; pointer-events: none;
+  background: linear-gradient(180deg, #23262c 0%, #16181c 55%, #0f1013 100%); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .tot-label { font-size: 10.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #c9cdd3; }
 .tot-adj { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
 .tot-adj:empty { display: none; }
