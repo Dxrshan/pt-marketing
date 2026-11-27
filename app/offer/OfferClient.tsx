@@ -1274,7 +1274,7 @@ body { background: #eceef1; }
   .sheet { box-shadow: none; max-width: none; border-radius: 0; }
   .sheet + .sheet { margin-top: 0; }
   .lines tr.removed, .lines tr.optional { display: none; }
-  .p-input::placeholder { color: transparent; }
+  .p-input::placeholder, .bt .p-input::placeholder, .bt .bt-post::placeholder { color: transparent; }
   .letterhead, .sum-card, .plan.on { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .print-only { display: inline; }
   div.print-only { display: block; }
@@ -1287,10 +1287,12 @@ body { background: #eceef1; }
   .part { margin-top: 26px; }
   .sheet-body { padding: 0 48px 40px; }
   .letterhead { padding: 34px 48px 30px; }
-  .p2-wrap { break-before: page; padding-top: 40px; }
+  /* One-page proposal: everything up to the signatures fits on page 1; terms follow. */
+  .p2-wrap { break-before: auto; padding-top: 0; }
   .sheet-foot { padding: 20px 48px; }
   .lh-due b, .t-due-num { background: none !important; -webkit-text-fill-color: #fff; color: #fff; }
-  .p2-head.print-only { display: flex; }
+  .p2-head.print-only { display: none; }
+  .summary { margin-top: 22px; }
   .summary { align-items: start; }
   .doc-title, .inc-title, .inc-title span, .inc-count strong, .t-due-num {
     background: none !important; -webkit-background-clip: border-box !important; background-clip: border-box !important;
