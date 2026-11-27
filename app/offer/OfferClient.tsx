@@ -332,31 +332,25 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
             <h2 className="label">Prepared for</h2>
             <dl>
               <div className="p-row">
-                <dt><label htmlFor="bt-studio">Studio</label></dt>
-                <dd><input id="bt-studio" className="p-input bt-studio" placeholder="Studio name" autoComplete="organization" value={studio} onChange={e => setStudio(e.target.value)} /></dd>
+                <dd><input id="bt-studio" aria-label="Studio" className="p-input bt-studio" placeholder="Studio name" autoComplete="organization" value={studio} onChange={e => setStudio(e.target.value)} /></dd>
               </div>
               <div className="p-row">
-                <dt><label htmlFor="bt-contact">Contact</label></dt>
-                <dd><input id="bt-contact" className="p-input" placeholder="Full name" autoComplete="name" value={contact} onChange={e => setContact(e.target.value)} /></dd>
+                <dd><input id="bt-contact" aria-label="Contact" className="p-input" placeholder="Full name" autoComplete="name" value={contact} onChange={e => setContact(e.target.value)} /></dd>
               </div>
               <div className="p-row">
-                <dt><label htmlFor="bt-addr">Address</label></dt>
-                <dd><input id="bt-addr" className="p-input" placeholder="Street address" autoComplete="street-address" /></dd>
+                <dd><input id="bt-addr" aria-label="Address" className="p-input" placeholder="Street address" autoComplete="street-address" /></dd>
               </div>
               <div className="p-row">
-                <dt><label htmlFor="bt-city">City</label></dt>
                 <dd className="bt-split">
-                  <input id="bt-city" className="p-input" placeholder="City" autoComplete="address-level2" value={city} onChange={e => setCity(e.target.value)} />
+                  <input id="bt-city" aria-label="City" className="p-input" placeholder="City" autoComplete="address-level2" value={city} onChange={e => setCity(e.target.value)} />
                   <input className="p-input bt-post" placeholder="Postcode" aria-label="Postcode" autoComplete="postal-code" value={postcode} onChange={e => setPostcode(e.target.value)} />
                 </dd>
               </div>
               <div className="p-row">
-                <dt><label htmlFor="bt-email">Email</label></dt>
-                <dd><input id="bt-email" className="p-input" type="email" placeholder="name@studio.com" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} /></dd>
+                <dd><input id="bt-email" aria-label="Email" className="p-input" type="email" placeholder="name@studio.com" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} /></dd>
               </div>
               <div className="p-row">
-                <dt><label htmlFor="bt-phone">Phone</label></dt>
-                <dd><input id="bt-phone" className="p-input" type="tel" placeholder="07123 456789" autoComplete="tel" /></dd>
+                <dd><input id="bt-phone" aria-label="Phone" className="p-input" type="tel" placeholder="07123 456789" autoComplete="tel" /></dd>
               </div>
             </dl>
           </section>
@@ -818,6 +812,7 @@ body { background: #eceef1; }
   padding: 4px 0; border-top: 1px solid var(--line-soft); min-height: 32px;
 }
 .p-row:first-child { border-top: none; }
+.bt .p-row { grid-template-columns: 1fr; }
 .p-row dt { font-size: 12px; color: var(--faint); }
 .p-row dd { font-size: 13.5px; color: var(--ink); min-width: 0; }
 .bt .bt-studio { font-family: var(--font-display), Georgia, serif !important; font-size: 15.5px; font-weight: 600; letter-spacing: -.005em; }
