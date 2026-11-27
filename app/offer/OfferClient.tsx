@@ -347,10 +347,10 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                 </dd>
               </div>
               <div className="p-row">
-                <dd><input id="bt-email" aria-label="Email" className="p-input" type="email" placeholder="name@studio.com" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} /></dd>
+                <dd><input id="bt-email" aria-label="Email" className="p-input" type="email" placeholder="Email address" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} /></dd>
               </div>
               <div className="p-row">
-                <dd><input id="bt-phone" aria-label="Phone" className="p-input" type="tel" placeholder="07123 456789" autoComplete="tel" /></dd>
+                <dd><input id="bt-phone" aria-label="Phone" className="p-input" type="tel" placeholder="Mobile" autoComplete="tel" /></dd>
               </div>
             </dl>
           </section>
