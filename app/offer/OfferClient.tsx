@@ -1010,15 +1010,15 @@ body { background: #eceef1; }
 .terms-wide { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); }
 .terms-wide h3 { margin: 0 0 8px; }
 .terms-wide p { margin: 0 0 6px; max-width: none; }
-.th-plan { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-.th-plan .seg { margin: 0; }
+.th-plan { display: flex; align-items: center; gap: 12px; flex-wrap: nowrap; }
+.th-plan .seg { margin: 0 auto; } /* centred between "Your plan" and Qty */
 .seg { display: inline-grid; grid-auto-flow: column; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); text-transform: none; letter-spacing: 0; }
-.seg-opt { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 999px; font-size: 12.5px; color: #d4d8dd; white-space: nowrap; transition: background .2s ease, color .2s ease; }
+.seg-opt { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: 999px; font-size: 12px; color: #d4d8dd; white-space: nowrap; transition: background .2s ease, color .2s ease; }
 .seg-opt:hover { color: #fff; background: rgba(255,255,255,.08); }
 .seg-opt.on { background: #fff; color: #111318; box-shadow: 0 4px 14px -4px rgba(0,0,0,.6); }
 .seg-name { font-weight: 700; }
-.seg-price { font-size: 12px; font-weight: 500; display: inline-flex; align-items: center; }
-.seg-price em { font-style: normal; margin-left: 5px; font-size: 10.5px; font-weight: 700; color: #5be39a; padding: 2px 7px; border-radius: 999px; background: rgba(91,227,154,.14); }
+.seg-price { font-size: 11.5px; font-weight: 500; display: inline-flex; align-items: center; }
+.seg-price em { font-style: normal; margin-left: 4px; font-size: 10px; font-weight: 700; color: #5be39a; padding: 1px 6px; border-radius: 999px; background: rgba(91,227,154,.14); }
 .seg-opt.on .seg-price em { color: #0d7a42; background: #dcf6e8; }
 .seg-opt:focus-visible { outline: 2px solid #6d5dfc; outline-offset: 2px; }
 .terms-link { all: unset; cursor: pointer; color: var(--ink); text-decoration: underline; text-underline-offset: 2px; text-decoration-color: rgba(17,19,24,.3); }
