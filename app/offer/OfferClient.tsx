@@ -1037,6 +1037,12 @@ body { background: #eceef1; }
 .summary-note h3, .terms-wide h3 { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
 .bank-wrap { margin-bottom: 0; }
 .summary-note { display: contents; }
+/* Promise card matches the bank card exactly: same width cap and card ratio. */
+.summary .trust { justify-self: end; width: 100%; max-width: 380px; aspect-ratio: 1.586; display: flex; flex-direction: column; justify-content: space-between; padding: 16px 18px; }
+.summary .trust .trust-main { padding-bottom: 12px; margin-bottom: 0; gap: 12px; }
+.summary .trust .trust-title { font-size: 17px; }
+.summary .trust .trust-grid { gap: 9px 12px; }
+.summary .trust .trust-badge { font-size: 10px; gap: 7px; }
 .tot-row td { border-top: none; vertical-align: middle; padding-top: 20px; padding-bottom: 20px; color: #c8ccd2;
   background: linear-gradient(180deg, #23262c 0%, #16181c 55%, #0f1013 100%) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .tot-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
