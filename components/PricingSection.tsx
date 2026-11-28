@@ -43,7 +43,16 @@ export default function PricingSection({ bare = false }: { bare?: boolean }) {
           sub="No tiers, no per-seat fees, no surprises."
         />}
 
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 28 }}><XmasSaleNote /></div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, marginTop: 28 }}>
+          <XmasSaleNote />
+          {/* Referral offer: pricing page only, styled like the sale note. */}
+          {bare && (
+            <div className="xmas-note referral-note">
+              <span aria-hidden="true">✦</span>
+              <span className="referral-text"><strong>Refer a PT, get £25 off.</strong> For every PT you refer who signs up and pays, you get £25 off your next invoice. No limit.</span>
+            </div>
+          )}
+        </div>
 
         {/* Billing toggle with sliding pill */}
         <Reveal delay={0.1} style={{ display: 'flex', justifyContent: 'center', marginTop: 48 }}>
