@@ -426,14 +426,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                 <td>
                   <div className="l-main">DNI Studios PT Portal + Client Portal</div>
                   <div className="l-sub num">{`${plan.months} ${plan.months === 1 ? 'month' : 'months'} at ${gbp(plan.rate)} · Recurring`}</div>
-                  <ul className="l-incl" aria-label="Included">
-                    {INCLUDED.map(f => (
-                      <li key={f.t}>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
-                        <span><b>{f.t}</b><span className="l-incl-d">{f.d}</span></span>
-                      </li>
-                    ))}
-                  </ul>
                 </td>
                 <td className="qty-col num">1</td>
                 <td className="amt num">
@@ -441,6 +433,19 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                   {plan.rate < LIST_MONTHLY && (
                     <div className="amt-note">Save {gbp((LIST_MONTHLY - plan.rate) * plan.months)}</div>
                   )}
+                </td>
+              </tr>
+              {/* What's included: its own full-width row so it uses the space under Qty and Amount. */}
+              <tr className="incl-row">
+                <td colSpan={3}>
+                    <ul className="l-incl" aria-label="Included">
+                    {INCLUDED.map(f => (
+                      <li key={f.t}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+                        <span><b>{f.t}</b><span className="l-incl-d">{f.d}</span></span>
+                      </li>
+                    ))}
+                  </ul>
                 </td>
               </tr>
 
@@ -982,17 +987,19 @@ body { background: #eceef1; }
 }
 .lines td { padding: 15px 20px; border-top: 1px solid var(--line-soft); vertical-align: top; font-size: 14.5px; background: #fff; }
 .lines tbody tr:first-child td { border-top: none; }
-.lines tbody tr:nth-child(even) td { background: #fafbfc; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.lines tbody tr:nth-child(even of :not(.incl-row)) td { background: #fafbfc; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .lines th.amt { color: #c9cdd3; }
 .lines thead { background: linear-gradient(180deg, #23262c 0%, #16181c 55%, #0f1013 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.07), inset 0 -1px 0 rgba(0,0,0,.6);
   -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-.l-incl { list-style: none; margin: 14px 0 2px; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; }
+.l-incl { list-style: none; margin: 0 0 2px; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 24px; }
 .l-incl li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--muted); line-height: 1.35; }
 .l-incl li svg { margin-top: 3px; }
 .l-incl b { display: block; font-weight: 600; color: var(--ink); font-size: 13.5px; }
 .l-incl-d { display: block; font-size: 12.5px; color: var(--muted); margin-top: 1px; }
 .l-incl svg { color: #16a35a; flex-shrink: 0; }
+@media (max-width: 760px) { .l-incl { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .l-incl { grid-template-columns: 1fr; } }
+.lines tbody tr.incl-row td { border-top: none; padding-top: 0; background: #fff; }
 .lines tbody tr.credits-toggle td { padding: 0; background: #fff; text-align: center; }
 .credits-toggle button { display: flex; justify-content: center; align-items: center; width: 100%; padding: 4px 0; border: 0; background: none; color: #c3c8cf; cursor: pointer; line-height: 0; }
 .credits-toggle button:hover { color: #8a9099; }
