@@ -504,7 +504,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
               {(creditsOpen || feedbackOn) && <tr className={feedbackOn ? '' : 'optional'}>
                 <td>
                   <div className="l-main">Feedback credit{!feedbackOn && <span className="opt-tag">Optional</span>}</div>
-                  <div className="l-sub" style={{ whiteSpace: 'nowrap' }}>{`${gbp(FEEDBACK_CREDIT)} off per fix or feature you suggest, up to ${gbp(FEEDBACK_CREDIT_CAP)}/month`}</div>
+                  <div className="l-sub">{`${gbp(FEEDBACK_CREDIT)} off per fix or feature you suggest, up to ${gbp(FEEDBACK_CREDIT_CAP)}/month`}</div>
                 </td>
                 <td className="qty-col"><Switch on={feedbackOn} onChange={setFeedbackOn} label="Feedback credit" /></td>
                 <td className="amt num">{feedbackOn ? 'Included' : '—'}<div className="amt-sub">from next bill</div></td>
@@ -513,7 +513,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
               {(creditsOpen || socialOn) && <tr className={socialOn ? '' : 'optional'}>
                 <td>
                   <div className="l-main">Social media feature{!socialOn && <span className="opt-tag">Optional</span>}</div>
-                  <div className="l-sub" style={{ whiteSpace: 'nowrap' }}>{`Take part in our social media videos, ${gbp(SOCIAL_CREDIT)} off every month`}</div>
+                  <div className="l-sub">{`Take part in our social media videos, ${gbp(SOCIAL_CREDIT)} off every month`}</div>
                 </td>
                 <td className="qty-col"><Switch on={socialOn} onChange={setSocialOn} label="Social media feature" /></td>
                 <td className="amt num">{socialOn ? `−${gbp(SOCIAL_CREDIT)}/mo` : '—'}<div className="amt-sub">every month</div></td>
@@ -525,7 +525,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                   <div className="l-sub">{`For every PT you refer who signs up and pays, you each get ${gbp(REFERRAL_CREDIT)} off your next invoice. No limit.`}</div>
                 </td>
                 <td className="qty-col"><Switch on={referralOn} onChange={setReferralOn} label="Referral credit" /></td>
-                <td className="amt num">{referralOn ? `−${gbp(REFERRAL_CREDIT)}` : '—'}<div className="amt-sub">per referral, later bill</div></td>
+                <td className="amt num">{referralOn ? `−${gbp(REFERRAL_CREDIT)}` : '—'}<div className="amt-sub">per referral</div></td>
               </tr>}
 
             </tbody>
@@ -1305,8 +1305,8 @@ body { background: #eceef1; }
   .offer *, .offer *::before, .offer *::after { transition: none !important; }
 }
 
-/* Phones: the plan table stacks (item on top, qty and amount underneath) so nothing runs off the screen. */
-@media screen and (max-width: 640px) {
+/* Phones, tablets and narrow windows: the plan table stacks (item on top, qty and amount underneath) so nothing runs off the screen. */
+@media screen and (max-width: 899px) {
   .lines, .lines thead, .lines tbody, .lines tfoot { display: block; width: 100%; }
   .lines tr { display: grid; grid-template-columns: 1fr auto; align-items: center; }
   .lines tr > th, .lines tr > td { display: block; padding-left: 14px; padding-right: 14px; }
@@ -1320,8 +1320,6 @@ body { background: #eceef1; }
   .th-plan .seg { display: flex; width: 100%; margin: 0; }
   .seg-opt { flex: 1; justify-content: center; padding: 7px 6px; font-size: 12px; }
   .seg-price em { display: none; }
-  .summary { grid-template-columns: 1fr; gap: 16px; }
-  .summary .bcard { max-width: none; }
   .lines tbody td { background: transparent !important; }
   .lines tbody tr:nth-child(even of :not(.incl-row)) { background: #fafbfc; }
   .lines tbody tr:first-child td.qty-col { visibility: hidden; }
@@ -1329,6 +1327,10 @@ body { background: #eceef1; }
   .sum-line .num { white-space: nowrap; }
   .sum-card .tot-num { font-size: 34px; }
   .sum-card .tot-label { letter-spacing: .12em; }
+}
+@media screen and (max-width: 640px) {
+  .summary { grid-template-columns: 1fr; gap: 16px; }
+  .summary .bcard { max-width: none; }
 }
 @media screen and (max-width: 380px) {
   .summary .bcard { aspect-ratio: auto; gap: 14px; padding: 18px; }
