@@ -20,10 +20,17 @@ export function Snowfall() {
     if (!theme || !c || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const ctx = c.getContext('2d')!
     let w = 0, h = 0, raf = 0
-    const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    const small = innerWidth < 700
+    // Phones: lower resolution and fewer flakes, so scrolling stays smooth.
+    const dpr = small ? 1 : Math.min(window.devicePixelRatio || 1, 1.5)
     const resize = () => { w = c.width = innerWidth * dpr; h = c.height = innerHeight * dpr; c.style.width = innerWidth + 'px'; c.style.height = innerHeight + 'px' }
     resize(); window.addEventListener('resize', resize)
-    const count = innerWidth < 700 ? 60 : 140
+    // One soft flake drawn once, then stamped for every flake (no per-frame gradients).
+    const sprite = document.createElement('canvas'); sprite.width = sprite.height = 32
+    const sg = sprite.getContext('2d')!, grad = sg.createRadialGradient(16, 16, 0, 16, 16, 16)
+    grad.addColorStop(0, 'rgba(255,255,255,1)'); grad.addColorStop(1, 'rgba(255,255,255,0)')
+    sg.fillStyle = grad; sg.fillRect(0, 0, 32, 32)
+    const count = small ? 32 : 110
     // mostly fine flakes, a few big soft ones up close (depth)
     const flakes = Array.from({ length: count }, (_, i) => {
       const near = i % 9 === 0
@@ -37,14 +44,16 @@ export function Snowfall() {
       for (const f of flakes) {
         f.y += f.vy; f.x += Math.sin(t / 2400 + f.drift) * .25 * dpr
         if (f.y > h + 6) { f.y = -6; f.x = Math.random() * w }
-        const g = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * 2.2)
-        g.addColorStop(0, `rgba(255,255,255,${f.a})`); g.addColorStop(1, 'rgba(255,255,255,0)')
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(f.x, f.y, f.r * 2.2, 0, Math.PI * 2); ctx.fill()
+        const d = f.r * 4.4
+        ctx.globalAlpha = f.a; ctx.drawImage(sprite, f.x - d / 2, f.y - d / 2, d, d)
       }
       raf = requestAnimationFrame(tick)
     }
+    // Stop drawing while the tab is in the background.
+    const onVis = () => { cancelAnimationFrame(raf); if (!document.hidden) raf = requestAnimationFrame(tick) }
+    document.addEventListener('visibilitychange', onVis)
     raf = requestAnimationFrame(tick)
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize) }
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); document.removeEventListener('visibilitychange', onVis) }
   }, [theme])
   if (!theme) return null
   return <canvas ref={ref} aria-hidden="true" style={{ position: 'fixed', inset: 0, zIndex: 90, pointerEvents: 'none' }} />
