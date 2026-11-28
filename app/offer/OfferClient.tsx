@@ -532,17 +532,29 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
             <tfoot>
               <tr className="tot-row">
                 <td colSpan={3}>
-                  <div className="tot-inner">
+                  {/* Written out as a simple sum so anyone can follow it line by line. */}
+                  <div className="sum-line"><span>{plan.label} plan{plan.months > 1 ? ` (${plan.months} months)` : ''}</span><span className="num">{gbp(plan.rate * plan.months)}</span></div>
+                  {totals.subtotal - totals.listSub > 0 && (
+                    <div className="sum-line"><span>Add-ons</span><span className="num">{gbp(totals.subtotal - totals.listSub)}</span></div>
+                  )}
+                  {totals.socialCredit > 0 && (
+                    <div className="sum-line minus"><span>Social media credit</span><span className="num">−{gbp(totals.socialCredit)}</span></div>
+                  )}
+                  <div className="tot-inner sum-total">
                     <div className="tot-label">Total due today</div>
-                    <div className="tot-right">
-                      <span className="tot-num t-due-num num">{gbp(dueShown)}</span>
-                      {totals.discountTotal + totals.waivedValue > 0 && <div className="tot-save num">You save {gbp(totals.discountTotal + totals.waivedValue)}</div>}
-                    </div>
+                    <span className="tot-num t-due-num num">{gbp(dueShown)}</span>
                   </div>
                   {(feedbackOn || referralOn) && totals.nextBillLow < totals.recurringOngoing && (
-                    <div className="tot-inner tot-next">
-                      <div className="tot-label">After credits</div>
-                      <span className="tot-next-num num">{gbp(totals.nextBillLow)}</span>
+                    <div className="sum-after">
+                      {totals.recurringOngoing !== dueShown && (
+                        <div className="sum-line"><span>Regular bill</span><span className="num">{gbp(totals.recurringOngoing)}</span></div>
+                      )}
+                      {feedbackOn && <div className="sum-line minus"><span>Feedback credit (max)</span><span className="num">−{gbp(FEEDBACK_CREDIT_CAP * plan.months)}</span></div>}
+                      {referralOn && <div className="sum-line minus"><span>Referral credit (1 referral)</span><span className="num">−{gbp(REFERRAL_CREDIT)}</span></div>}
+                      <div className="tot-inner sum-total">
+                        <div className="tot-label">After credits</div>
+                        <span className="tot-next-num num">{gbp(totals.nextBillLow)}</span>
+                      </div>
                     </div>
                   )}
                 </td>
@@ -1088,6 +1100,10 @@ body { background: #eceef1; }
 .tot-row td { border-top: none; vertical-align: middle; padding-top: 20px; padding-bottom: 20px; color: #c8ccd2;
   background: linear-gradient(180deg, #23262c 0%, #16181c 55%, #0f1013 100%) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .tot-right { text-align: right; }
+.sum-line { display: flex; justify-content: space-between; gap: 16px; font-size: 13.5px; color: #c9cdd3; padding: 3px 0; }
+.sum-line.minus .num { color: #5be39a; }
+.sum-total { margin-top: 8px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.14); align-items: center; }
+.sum-after { margin-top: 16px; padding-top: 12px; border-top: 1px dashed rgba(255,255,255,.14); }
 .tot-next { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.1); }
 .tot-next-num { font-size: 22px; font-weight: 700; color: #e3e6ea; white-space: nowrap; }
 .th-title { white-space: nowrap; }
