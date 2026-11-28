@@ -516,16 +516,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
               <tr className="tot-row">
                 <td colSpan={3}><div className="tot-inner"><div>
                   <div className="tot-label">Total due today</div>
-                  <div className="tot-adj">
-                    <span className="tot-chip b-disc">
-                      Discount{manual && manual.mode === 'pct' ? ` ${manual.value}%` : ''}
-                      <DiscountField
-                        amount={manual ? totals.discAmounts[manual.id] ?? 0 : 0}
-                        current={manual ? (manual.mode === 'pct' ? `${manual.value}%` : String(manual.value)) : ''}
-                        onSet={setManual}
-                      />
-                    </span>
-                  </div>
                 </div><div className="tot-right">
                   <span className="tot-num t-due-num num">{gbp(dueShown)}</span>
                   {totals.discountTotal + totals.waivedValue > 0 && <div className="tot-save num">You save {gbp(totals.discountTotal + totals.waivedValue)}</div>}
