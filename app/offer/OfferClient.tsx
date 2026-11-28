@@ -31,12 +31,16 @@ const FEATURES: { name: string; detail: string; icon: keyof typeof FEATURE_ICONS
 
 // What's in the plan, as outcomes rather than a feature dump. Shown on the proposal line item.
 const INCLUDED: { t: string; d: string }[] = [
-  { t: 'Hours of admin back every week', d: 'Bookings, calendar and reminders' },
-  { t: 'Get paid on time', d: 'Card payments and overdue alerts' },
-  { t: 'Turn enquiries into clients', d: 'Every lead tracked and followed up' },
-  { t: 'Keep clients for longer', d: 'Your own branded client app' },
-  { t: 'An AI assistant on the team', d: 'Books sessions, chases payments' },
-  { t: 'Grow without the bill growing', d: 'Unlimited trainers, no per-seat fees' },
+  { t: 'Smart Scheduling', d: 'Bookings and auto-reminders' },
+  { t: 'Payments & Invoicing', d: 'Card payments, overdue alerts' },
+  { t: 'Live Session Logger', d: 'Every set, rep and PB, logged live' },
+  { t: 'Progress & Analytics', d: 'Body metrics, photos, KPIs' },
+  { t: 'Lead Pipeline (CRM)', d: 'From enquiry to paying client' },
+  { t: 'AI Studio Assistant', d: 'Books and chases for you' },
+  { t: 'Branded Client App', d: 'Workouts, meal plans, chat' },
+  { t: 'Form-Check Video Review', d: 'Coach technique remotely' },
+  { t: 'Community & Leaderboards', d: 'Streaks that build loyalty' },
+  { t: 'Unlimited Trainers & Clients', d: 'No per-seat fees. Ever.' },
 ]
 
 // Feedback credit: £1 off the next bill per fix or new feature suggested, capped per month.
