@@ -419,7 +419,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                     })}
                   </div>
                 </div>
-              </th><th className="qty-col">Qty</th><th className="amt">Amount</th></tr>
+              </th><th className="qty-col" aria-label="Quantity"></th><th className="amt">Amount</th></tr>
             </thead>
             <tbody>
               <tr>
@@ -1030,7 +1030,14 @@ body { background: #eceef1; }
 .terms-wide h3 { margin: 0 0 8px; }
 .terms-wide p { margin: 0 0 6px; max-width: none; }
 .th-plan { display: flex; align-items: center; gap: 12px; flex-wrap: nowrap; }
-.th-plan .seg { margin: 0 auto; } /* centred between "Your plan" and Qty */
+.th-plan .seg { margin: 0 auto; }
+/* Laptop and up: the plan switcher sits dead centre of the header bar. */
+@media screen and (min-width: 900px) {
+  .lines thead tr { position: relative; }
+  .lines thead th:first-child { position: static; }
+  .th-plan .seg { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); margin: 0; z-index: 2; }
+  .lines thead th { height: 60px; }
+}
 .seg { display: inline-grid; grid-auto-flow: column; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); text-transform: none; letter-spacing: 0; }
 .seg-opt { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: 999px; font-size: 12px; color: #d4d8dd; white-space: nowrap; transition: background .2s ease, color .2s ease; }
 .seg-opt:hover { color: #fff; background: rgba(255,255,255,.08); }
