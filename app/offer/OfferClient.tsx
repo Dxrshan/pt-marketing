@@ -258,6 +258,9 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
 
     const firstBase = recurringTotal + onceExtras
     let onceDisc = 0
+    // Referral credit: £25 off today's payment for a studio that was referred to us.
+    const referralCredit = referralOn ? Math.min(REFERRAL_CREDIT, firstBase) : 0
+    onceDisc += referralCredit
     for (const d of discounts.filter(d => d.scope === 'once')) {
       const amt = Math.min(
         d.mode === 'pct' ? (firstBase * d.value) / 100 : d.value,
@@ -269,7 +272,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
     // Social media credit: one-off, off today's payment only.
 
     return {
-      listSub, termSaving, onceExtras, discAmounts, recurringTotal, socialCredit,
+      listSub, termSaving, onceExtras, discAmounts, recurringTotal, socialCredit, referralCredit,
       // What each renewal costs from the next period on (feedback credits come off later bills, so not included).
       recurringOngoing: Math.max(recurringBase - recurringDisc, 0),
       dueToday: Math.max(firstBase - onceDisc, 0),
@@ -278,7 +281,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
       setupList: charged.reduce((s, e) => s + Math.max(e.list, e.amount) * e.qty, 0),
       discountTotal: termSaving + recurringDisc + onceDisc,
     }
-  }, [plan, extras, discounts, socialOn])
+  }, [plan, extras, discounts, socialOn, referralOn])
 
   const dueShown = totals.dueToday // no count-up: a ticking total made prices feel like they were climbing
 
@@ -505,7 +508,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                   <div className="l-sub">{`For every PT you refer who signs up and pays, you each get ${gbp(REFERRAL_CREDIT)} off your next invoice. No limit.`}</div>
                 </td>
                 <td className="qty-col"><Switch on={referralOn} onChange={setReferralOn} label="Referral credit" /></td>
-                <td className="amt num">{referralOn ? `−${gbp(REFERRAL_CREDIT)}` : '—'}<div className="amt-sub">per referral</div></td>
+                <td className="amt num">{referralOn ? `−${gbp(REFERRAL_CREDIT)}` : '—'}<div className="amt-sub">{referralOn ? 'off today' : 'per referral'}</div></td>
               </tr>}
 
             </tbody>
@@ -516,6 +519,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                   <div className="tot-adj">
                     {totals.waivedValue > 0 && <span className="tot-chip">Founding discount −{gbp(totals.waivedValue)}</span>}
                     {totals.socialCredit > 0 && <span className="tot-chip">Social media credit −{gbp(totals.socialCredit)}</span>}
+                    {totals.referralCredit > 0 && <span className="tot-chip">Referral credit −{gbp(totals.referralCredit)}</span>}
                     <span className="tot-chip b-disc">
                       Discount{manual && manual.mode === 'pct' ? ` ${manual.value}%` : ''}
                       <DiscountField
@@ -704,8 +708,8 @@ const CLAUSES = [
     'You may stop taking part at any time by giving us 14 days\' written notice; the credit then ends from your next billing cycle. If you do not take part when reasonably asked, we may end the credit from your next billing cycle by giving you notice. The credit cannot exceed your subscription fee, has no cash value and does not affect any other part of this agreement.',
   ]},
   { num: '10.', title: 'Referral Credit', paras: [
-    'If you choose the Referral Credit in this proposal: for each personal trainer or studio you refer to us who signs up and pays their first subscription fee, you and they each receive a £25 credit off your next invoice. There is no limit on the number of referrals. A referral counts only if the new customer names you when they sign up and was not already a customer or in talks with us.',
-    'Credits are applied to the next invoice after the referred customer\'s first payment clears. If their first payment is refunded, including under the money-back guarantee, the credit is withdrawn. Credits cannot exceed the invoice they are applied to (any balance carries forward), have no cash value, and lapse if your subscription ends. We may change or end the referral scheme by giving 30 days\' notice; credits already earned are unaffected.',
+    'If you choose the Referral Credit in this proposal: for each personal trainer or studio you refer to us who signs up and pays their first subscription fee, they receive £25 off their first payment and you receive £25 off your next invoice. There is no limit on the number of referrals. A referral counts only if the new customer names you when they sign up and was not already a customer or in talks with us.',
+    'Your credit is applied to your next invoice after the referred customer\'s first payment clears. If their first payment is refunded, including under the money-back guarantee, the credit is withdrawn. Credits cannot exceed the invoice they are applied to (any balance carries forward), have no cash value, and lapse if your subscription ends. We may change or end the referral scheme by giving 30 days\' notice; credits already earned are unaffected.',
   ]},
   { num: '11.', title: 'Service Availability & Changes', paras: [
     'We aim to keep the Service available but do not guarantee uninterrupted or error-free operation. Planned maintenance will be communicated in advance where reasonably possible. We are not responsible for outages or failures of third-party services, networks or devices outside our control.',
