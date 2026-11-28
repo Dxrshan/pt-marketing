@@ -209,6 +209,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
   const [discounts, setDiscounts] = useState<Discount[]>([])
   const [feedbackOn, setFeedbackOn] = useState(false)
   const [socialOn, setSocialOn] = useState(false)
+  const [referralOn, setReferralOn] = useState(false)
   // Credits sit behind a subtle chevron; a credit that's switched on stays visible.
   const [creditsOpen, setCreditsOpen] = useState(false)
 
@@ -498,15 +499,14 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                 <td className="amt num">{socialOn ? `−${gbp(SOCIAL_CREDIT)}/mo` : '—'}<div className="amt-sub">every month</div></td>
               </tr>}
 
-              {/* Referral offer: always part of the deal, shown with the credits on screen and always printed. */}
-              <tr className={`referral-row${creditsOpen ? '' : ' screen-hide'}`}>
+              {(creditsOpen || referralOn) && <tr className={referralOn ? '' : 'optional'}>
                 <td>
-                  <div className="l-main">Refer a PT, you both get {gbp(REFERRAL_CREDIT)} off<span className="opt-tag inc-tag">Included</span></div>
+                  <div className="l-main">Refer a PT, you both get {gbp(REFERRAL_CREDIT)} off{!referralOn && <span className="opt-tag">Optional</span>}</div>
                   <div className="l-sub">{`For every PT you refer who signs up and pays, you each get ${gbp(REFERRAL_CREDIT)} off your next invoice. No limit.`}</div>
                 </td>
-                <td className="qty-col"></td>
-                <td className="amt num">−{gbp(REFERRAL_CREDIT)}<div className="amt-sub">per referral</div></td>
-              </tr>
+                <td className="qty-col"><Switch on={referralOn} onChange={setReferralOn} label="Referral credit" /></td>
+                <td className="amt num">{referralOn ? `−${gbp(REFERRAL_CREDIT)}` : '—'}<div className="amt-sub">per referral</div></td>
+              </tr>}
 
             </tbody>
             <tfoot>
@@ -704,7 +704,7 @@ const CLAUSES = [
     'You may stop taking part at any time by giving us 14 days\' written notice; the credit then ends from your next billing cycle. If you do not take part when reasonably asked, we may end the credit from your next billing cycle by giving you notice. The credit cannot exceed your subscription fee, has no cash value and does not affect any other part of this agreement.',
   ]},
   { num: '10.', title: 'Referral Credit', paras: [
-    'For each personal trainer or studio you refer to us who signs up and pays their first subscription fee, you and they each receive a £25 credit off your next invoice. There is no limit on the number of referrals. A referral counts only if the new customer names you when they sign up and was not already a customer or in talks with us.',
+    'If you choose the Referral Credit in this proposal: for each personal trainer or studio you refer to us who signs up and pays their first subscription fee, you and they each receive a £25 credit off your next invoice. There is no limit on the number of referrals. A referral counts only if the new customer names you when they sign up and was not already a customer or in talks with us.',
     'Credits are applied to the next invoice after the referred customer\'s first payment clears. If their first payment is refunded, including under the money-back guarantee, the credit is withdrawn. Credits cannot exceed the invoice they are applied to (any balance carries forward), have no cash value, and lapse if your subscription ends. We may change or end the referral scheme by giving 30 days\' notice; credits already earned are unaffected.',
   ]},
   { num: '11.', title: 'Service Availability & Changes', paras: [
@@ -1062,9 +1062,6 @@ body { background: #eceef1; }
 .summary .trust .trust-badge { font-size: 10px; gap: 7px; }
 .tot-row td { border-top: none; vertical-align: middle; padding-top: 20px; padding-bottom: 20px; color: #c8ccd2;
   background: linear-gradient(180deg, #23262c 0%, #16181c 55%, #0f1013 100%) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-.lines tbody tr.referral-row td { background: #fff; }
-@media screen { .lines tr.screen-hide { display: none; } }
-.inc-tag { background: #eef2ff !important; color: #4f46e5 !important; }
 .tot-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .lines thead th + th { position: relative; }
 .lines thead th + th::before { content: ""; position: absolute; top: 0; bottom: 0; left: -1px; width: 2px; pointer-events: none;
