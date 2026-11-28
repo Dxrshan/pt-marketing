@@ -517,9 +517,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                 <td colSpan={3}><div className="tot-inner"><div>
                   <div className="tot-label">Total due today</div>
                   <div className="tot-adj">
-                    {totals.waivedValue > 0 && <span className="tot-chip">Founding discount −{gbp(totals.waivedValue)}</span>}
-                    {totals.socialCredit > 0 && <span className="tot-chip">Social media credit −{gbp(totals.socialCredit)}</span>}
-                    {totals.referralCredit > 0 && <span className="tot-chip">Referral credit −{gbp(totals.referralCredit)}</span>}
                     <span className="tot-chip b-disc">
                       Discount{manual && manual.mode === 'pct' ? ` ${manual.value}%` : ''}
                       <DiscountField
@@ -529,7 +526,10 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                       />
                     </span>
                   </div>
-                </div><span className="tot-num t-due-num num">{gbp(dueShown)}</span></div></td>
+                </div><div className="tot-right">
+                  <span className="tot-num t-due-num num">{gbp(dueShown)}</span>
+                  {totals.discountTotal + totals.waivedValue > 0 && <div className="tot-save num">You save {gbp(totals.discountTotal + totals.waivedValue)}</div>}
+                </div></div></td>
               </tr>
             </tfoot>
           </table>
@@ -1066,6 +1066,8 @@ body { background: #eceef1; }
 .summary .trust .trust-badge { font-size: 10px; gap: 7px; }
 .tot-row td { border-top: none; vertical-align: middle; padding-top: 20px; padding-bottom: 20px; color: #c8ccd2;
   background: linear-gradient(180deg, #23262c 0%, #16181c 55%, #0f1013 100%) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.tot-right { text-align: right; }
+.tot-save { margin-top: 4px; font-size: 13px; font-weight: 600; color: #5be39a; white-space: nowrap; }
 .tot-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .lines thead th + th { position: relative; }
 .lines thead th + th::before { content: ""; position: absolute; top: 0; bottom: 0; left: -1px; width: 2px; pointer-events: none;
