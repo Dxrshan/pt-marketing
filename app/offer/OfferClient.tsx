@@ -285,13 +285,15 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
       listSub, termSaving, onceExtras, discAmounts, recurringTotal, socialCredit,
       // What each renewal costs from the next period on (feedback credits come off later bills, so not included).
       recurringOngoing: Math.max(recurringBase - recurringDisc, 0),
+      // Best case for the next bill: full feedback credit for the cycle plus one referral.
+      nextBillLow: Math.max(recurringBase - recurringDisc - (feedbackOn ? FEEDBACK_CREDIT_CAP * plan.months : 0) - (referralOn ? REFERRAL_CREDIT : 0), 0),
       dueToday: Math.max(firstBase - onceDisc, 0),
       subtotal: listSub + recurringExtras + onceExtras,
       waivedValue: charged.reduce((s, e) => s + Math.max(e.list - e.amount, 0) * e.qty, 0),
       setupList: charged.reduce((s, e) => s + Math.max(e.list, e.amount) * e.qty, 0),
       discountTotal: termSaving + recurringDisc + onceDisc,
     }
-  }, [plan, extras, discounts, socialOn])
+  }, [plan, extras, discounts, socialOn, feedbackOn, referralOn])
 
   const dueShown = totals.dueToday // no count-up: a ticking total made prices feel like they were climbing
 
@@ -526,6 +528,12 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
               <tr className="tot-row">
                 <td colSpan={3}><div className="tot-inner"><div>
                   <div className="tot-label">Total due today</div>
+                  {(feedbackOn || referralOn) && totals.nextBillLow < totals.recurringOngoing && (
+                    <div className="tot-next">
+                      Next bill could be as low as <strong className="num">{gbp(totals.nextBillLow)}</strong>
+                      <span>{[feedbackOn && `full feedback credit (up to ${gbp(FEEDBACK_CREDIT_CAP * plan.months)})`, referralOn && `1 referral (${gbp(REFERRAL_CREDIT)})`].filter(Boolean).join(' + ')}</span>
+                    </div>
+                  )}
                 </div><div className="tot-right">
                   <span className="tot-num t-due-num num">{gbp(dueShown)}</span>
                   {totals.discountTotal + totals.waivedValue > 0 && <div className="tot-save num">You save {gbp(totals.discountTotal + totals.waivedValue)}</div>}
@@ -1070,6 +1078,10 @@ body { background: #eceef1; }
 .tot-row td { border-top: none; vertical-align: middle; padding-top: 20px; padding-bottom: 20px; color: #c8ccd2;
   background: linear-gradient(180deg, #23262c 0%, #16181c 55%, #0f1013 100%) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .tot-right { text-align: right; }
+.tot-next { margin-top: 10px; font-size: 13px; color: #c9cdd3; }
+.tot-next strong { color: #fff; font-weight: 700; font-size: 15px; margin-left: 2px; }
+.tot-next span { display: block; margin-top: 3px; font-size: 11.5px; color: #8d939c; }
+.th-title { white-space: nowrap; }
 .tot-save { margin-top: 4px; font-size: 13px; font-weight: 600; color: #5be39a; white-space: nowrap; }
 .tot-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .lines thead th + th { position: relative; }
