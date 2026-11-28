@@ -507,7 +507,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                   <div className="l-sub">{`${gbp(FEEDBACK_CREDIT)} off per fix or feature you suggest, up to ${gbp(FEEDBACK_CREDIT_CAP)}/month`}</div>
                 </td>
                 <td className="qty-col"><Switch on={feedbackOn} onChange={setFeedbackOn} label="Feedback credit" /></td>
-                <td className="amt num">{feedbackOn ? 'Included' : '—'}<div className="amt-sub">from next bill</div></td>
+                <td className="amt num">{feedbackOn ? <span className="amt-credit">−{gbp(FEEDBACK_CREDIT_CAP)}/mo</span> : '—'}<div className="amt-sub">up to, from next bill</div></td>
               </tr>}
 
               {(creditsOpen || socialOn) && <tr className={socialOn ? '' : 'optional'}>
@@ -516,7 +516,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                   <div className="l-sub">{`Take part in our social media videos, ${gbp(SOCIAL_CREDIT)} off every month`}</div>
                 </td>
                 <td className="qty-col"><Switch on={socialOn} onChange={setSocialOn} label="Social media feature" /></td>
-                <td className="amt num">{socialOn ? `−${gbp(SOCIAL_CREDIT)}/mo` : '—'}<div className="amt-sub">every month</div></td>
+                <td className="amt num">{socialOn ? <span className="amt-credit">−{gbp(SOCIAL_CREDIT)}/mo</span> : '—'}<div className="amt-sub">every month</div></td>
               </tr>}
 
               {(creditsOpen || referralOn) && <tr className={referralOn ? '' : 'optional'}>
@@ -525,7 +525,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                   <div className="l-sub">{`For every PT you refer who signs up and pays, you each get ${gbp(REFERRAL_CREDIT)} off your next invoice. No limit.`}</div>
                 </td>
                 <td className="qty-col"><Switch on={referralOn} onChange={setReferralOn} label="Referral credit" /></td>
-                <td className="amt num">{referralOn ? `−${gbp(REFERRAL_CREDIT)}` : '—'}<div className="amt-sub">per referral</div></td>
+                <td className="amt num">{referralOn ? <span className="amt-credit">−{gbp(REFERRAL_CREDIT)}</span> : '—'}<div className="amt-sub">per referral</div></td>
               </tr>}
 
             </tbody>
@@ -981,6 +981,7 @@ body { background: #eceef1; }
 .credits-toggle button:hover { color: #8a9099; }
 .lines .qty-col { text-align: center; white-space: nowrap; width: 1%; color: var(--ink); font-weight: 600; padding-left: 12px; padding-right: 0; }
 .lines th.qty-col { color: #c9cdd3; }
+.amt-credit { color: #16a35a; }
 .amt-sub { font-size: 11px; font-weight: 500; color: var(--faint); margin-top: 3px; }
 .sw { position: relative; width: 44px; height: 26px; border-radius: 9px; border: 1px solid var(--line); padding: 0; cursor: pointer; vertical-align: top;
   background: #fff; transition: background .2s ease, border-color .2s ease; }
