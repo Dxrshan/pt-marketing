@@ -1305,6 +1305,41 @@ body { background: #eceef1; }
   .offer *, .offer *::before, .offer *::after { transition: none !important; }
 }
 
+/* Phones: the plan table stacks (item on top, qty and amount underneath) so nothing runs off the screen. */
+@media screen and (max-width: 640px) {
+  .lines, .lines thead, .lines tbody, .lines tfoot { display: block; width: 100%; }
+  .lines tr { display: grid; grid-template-columns: 1fr auto; align-items: center; }
+  .lines tr > th, .lines tr > td { display: block; padding-left: 14px; padding-right: 14px; }
+  .lines tr > :first-child { grid-column: 1 / -1; }
+  .lines thead th.qty-col, .lines thead th.amt { display: none; }
+  .lines tbody td.qty-col, .lines tbody td.amt { border-top: none; padding-top: 0; width: auto; }
+  .lines tbody tr > td:first-child:not([colspan]) { padding-bottom: 8px; }
+  .lines td.qty-col { justify-self: stretch; text-align: left; }
+  .lines .l-sub { white-space: normal !important; }
+  .th-plan { flex-wrap: wrap; gap: 10px; }
+  .th-plan .seg { display: flex; width: 100%; margin: 0; }
+  .seg-opt { flex: 1; justify-content: center; padding: 7px 6px; font-size: 12px; }
+  .seg-price em { display: none; }
+  .summary { grid-template-columns: 1fr; gap: 16px; }
+  .summary .bcard { max-width: none; }
+  .lines tbody td { background: transparent !important; }
+  .lines tbody tr:nth-child(even of :not(.incl-row)) { background: #fafbfc; }
+  .lines tbody tr:first-child td.qty-col { visibility: hidden; }
+  .sum-card { padding: 18px; }
+  .sum-line .num { white-space: nowrap; }
+  .sum-card .tot-num { font-size: 34px; }
+  .sum-card .tot-label { letter-spacing: .12em; }
+}
+@media screen and (max-width: 380px) {
+  .summary .bcard { aspect-ratio: auto; gap: 14px; padding: 18px; }
+  .bcard-nums { gap: 18px; }
+  .bcard-v { white-space: nowrap; font-size: 16px !important; }
+  .sum-card .tot-num { font-size: 30px; }
+  .sum-card .tot-label { font-size: 10px; letter-spacing: .08em; }
+  .sum-line { font-size: 12.5px; }
+  .seg-opt { flex-direction: column; gap: 1px; padding: 6px 2px; font-size: 11.5px; }
+  .seg-price { font-size: 11px; }
+}
 /* Print: the invoice and terms, without the choosing steps or controls */
 @media print {
   .no-print, .selection { display: none !important; }
