@@ -541,7 +541,7 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                   </div>
                   {(feedbackOn || referralOn) && totals.nextBillLow < totals.recurringOngoing && (
                     <div className="tot-inner tot-next">
-                      <div className="tot-label">Next bill from</div>
+                      <div className="tot-label">After credits</div>
                       <span className="tot-next-num num">{gbp(totals.nextBillLow)}</span>
                     </div>
                   )}
