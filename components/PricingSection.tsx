@@ -49,7 +49,7 @@ export default function PricingSection({ bare = false }: { bare?: boolean }) {
           {bare && (
             <div className="xmas-note referral-note">
               <span aria-hidden="true">✦</span>
-              <span className="referral-text"><strong>Refer a PT, get £25 off.</strong> For every PT you refer who signs up and pays, you get £25 off your next invoice. No limit.</span>
+              <span className="referral-text"><strong>Refer a PT, you both get £25 off.</strong> For every PT you refer who signs up and pays, you each get £25 off your next invoice. No limit.</span>
             </div>
           )}
         </div>
