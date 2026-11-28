@@ -591,38 +591,6 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                   </div>
                 </div>
               </div>
-              {/* Reassurance: every badge here is backed by the terms below or by how the app works. */}
-              <div className="trust">
-                <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
-                  <defs>
-                    <linearGradient id="trust-silver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#f7e7bd" /><stop offset=".5" stopColor="#d4b27a" /><stop offset="1" stopColor="#9c7a45" /></linearGradient>
-                    <linearGradient id="trust-emerald" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#fbefc9" /><stop offset=".35" stopColor="#e2c48a" /><stop offset=".65" stopColor="#b8914f" /><stop offset="1" stopColor="#f0d9a2" /></linearGradient>
-                    <linearGradient id="trust-rim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#fff6dc" /><stop offset=".5" stopColor="#a9854b" /><stop offset="1" stopColor="#f3dfae" /></linearGradient>
-                  </defs>
-                </svg>
-                <div className="trust-main">
-                  <span className="trust-seal" aria-hidden="true">
-                    <svg width="30" height="33" viewBox="0 0 24 27" fill="none">
-                      <path d="M12 1.5 21.5 5v7.2c0 6.3-4.1 10.9-9.5 12.6C6.6 23.1 2.5 18.5 2.5 12.2V5z" fill="url(#trust-emerald)" stroke="url(#trust-rim)" strokeWidth="1.3" />
-                      <path d="M12 3.4 19.6 6.2v6c0 2.6-.8 4.8-2.2 6.5" stroke="rgba(255,255,255,.35)" strokeWidth=".8" fill="none" />
-                      <path d="M7.8 13.2 10.8 16.2 16.4 10.4" stroke="#1a1408" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </span>
-                  <div>
-                    <div className="trust-eyebrow">Our promise</div>
-                    <div className="trust-title">30-day money-back guarantee</div>
-                    <div className="trust-sub">Not right for your studio? Full refund of your first subscription payment.</div>
-                  </div>
-                </div>
-                <div className="trust-grid">
-                  {TRUST_BADGES.map(b => (
-                    <div key={b.label} className="trust-badge">
-                      <span className="trust-ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="url(#trust-silver)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{b.icon}</svg></span>
-                      <span>{b.label}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
           </div>
