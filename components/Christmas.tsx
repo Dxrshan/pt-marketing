@@ -66,7 +66,8 @@ export function XmasBanner() {
         <span className="xmas-star" aria-hidden="true">✦</span>
         <span className="xmas-gold">Christmas sale</span>
         <span className="xmas-sep" aria-hidden="true">·</span>
-        <span>Free onboarding &amp; data migration <span className="xmas-dim">(worth £{XMAS.onboardingWorth})</span> when you join before 31 Dec</span>
+        <span className="xmas-long">Free onboarding &amp; data migration <span className="xmas-dim">(worth £{XMAS.onboardingWorth})</span> when you join before 31 Dec</span>
+        <span className="xmas-short">Free onboarding before 31 Dec</span>
         <span className="xmas-cta">Book a demo →</span>
       </a>
       <button type="button" className="xmas-close" aria-label="Dismiss" onClick={() => { setHidden(true); try { sessionStorage.setItem('dni-xmas-banner', 'closed') } catch {} }}>×</button>

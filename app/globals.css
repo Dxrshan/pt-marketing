@@ -414,6 +414,7 @@ html.lenis, html.lenis body { height: auto; }
   .cine-hero { height: 135vh; }
   .cine-story { height: 240vh; }
 }
+@media (max-width: 640px) { .cine-hero { height: 112vh; } }
 @media (max-width: 760px), (max-height: 760px) { .scroll-hint { display: none !important; } }
 
 .footer-link { font-size: 14.5px; color: rgba(255,255,255,0.55); text-decoration: none; transition: color .2s ease; }
@@ -448,7 +449,18 @@ html.lenis, html.lenis body { height: auto; }
 .xmas-note { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 600; color: #f3e6c4;
   background: rgba(226,196,138,.08); border: 1px solid rgba(226,196,138,.35); box-shadow: 0 0 22px -8px rgba(226,196,138,.5); }
 .xmas-note span { color: #f0d9a2; }
-@media (max-width: 640px) { .xmas-banner-link { font-size: 11.5px; gap: 5px; } .xmas-dim, .xmas-cta, .xmas-sep { display: none; } }
+.xmas-short { display: none; }
+.xmas-banner { transition: max-height .35s ease, opacity .25s ease, margin .35s ease, padding .35s ease; max-height: 120px; }
+/* Phones: one-line banner that tucks away once you scroll, and a solid nav pill so text
+   scrolling underneath never shows through. */
+@media (max-width: 640px) {
+  .xmas-banner-link { font-size: 12px; gap: 6px; flex-wrap: nowrap; white-space: nowrap; padding: 5px 6px; }
+  .xmas-long, .xmas-cta, .xmas-sep { display: none; }
+  .xmas-short { display: inline; }
+  .xmas-close { width: 22px; height: 22px; font-size: 15px; }
+  .nav-scrolled .xmas-banner { max-height: 0; opacity: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0; border-width: 0; overflow: hidden; pointer-events: none; }
+  .site-nav { --nav-bg-scrolled: rgba(10, 11, 14, 0.94); }
+}
 
 /* Heavier Christmas: room for the banner, lights, baubles, festive ring and glow */
 html[data-xmas-banner] .cine-stage { padding-top: 112px; }

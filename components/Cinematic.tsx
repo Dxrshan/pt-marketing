@@ -132,14 +132,28 @@ function RotatingWord() {
   )
 }
 
+/** True on phone-width screens. Used to stop the scroll animations leaving blank black screens there. */
+function useNarrow() {
+  const [narrow, setNarrow] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 640px)')
+    const set = () => setNarrow(mq.matches)
+    set(); mq.addEventListener('change', set)
+    return () => mq.removeEventListener('change', set)
+  }, [])
+  return narrow
+}
+
 export function CineHero() {
   const ref = useRef<HTMLElement>(null)
   const reduce = useReducedMotion()
+  const narrow = useNarrow()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
-  const markScale = useTransform(scrollYProgress, [0, 0.6], reduce ? [1, 1] : [1, 2.8])
-  const markOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
-  const textOpacity = useTransform(scrollYProgress, [0, 0.28], [1, 0])
-  const textY = useTransform(scrollYProgress, [0, 0.3], [0, -120])
+  const markScale = useTransform(scrollYProgress, [0, 0.6], reduce ? [1, 1] : narrow ? [1, 1.35] : [1, 2.8])
+  // On phones the hero stays visible while it scrolls away, instead of fading to black early.
+  const markOpacity = useTransform(scrollYProgress, narrow ? [0, 0.95] : [0, 0.6], [1, 0])
+  const textOpacity = useTransform(scrollYProgress, narrow ? [0, 0.5] : [0, 0.28], [1, 0])
+  const textY = useTransform(scrollYProgress, [0, 0.3], narrow ? [0, -40] : [0, -120])
   const textScale = useTransform(scrollYProgress, [0, 0.3], reduce ? [1, 1] : [1, 1.12])
   const [markH, setMarkH] = useState(240)
   useEffect(() => {
@@ -221,11 +235,13 @@ function Caption({ text, i, p }: { text: string; i: number; p: MotionValue<numbe
 export function ProductReveal() {
   const ref = useRef<HTMLElement>(null)
   const reduce = useReducedMotion()
+  const narrow = useNarrow()
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ['start start', 'end end'] })
-  const y = useTransform(p, [0, 0.3], reduce ? ['0vh', '0vh'] : ['38vh', '6vh'])
+  const y = useTransform(p, [0, 0.3], reduce ? ['0vh', '0vh'] : narrow ? ['10vh', '4vh'] : ['38vh', '6vh'])
   const rotateX = useTransform(p, [0, 0.35], reduce ? [0, 0] : [48, 0])
   const scale = useTransform(p, [0, 0.35, 1], reduce ? [1, 1, 1] : [0.62, 0.92, 1.04])
-  const opacity = useTransform(p, [0, 0.1], [0, 1])
+  // On phones the dashboard is visible as it scrolls in, so there's no black gap after the hero.
+  const opacity = useTransform(p, [0, 0.1], narrow ? [1, 1] : [0, 1])
   const glow = useTransform(p, [0.1, 0.4], [0, 1])
 
   return (

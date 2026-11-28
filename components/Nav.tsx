@@ -66,6 +66,7 @@ export default function Nav() {
     <>
       <Snowfall />
       <motion.nav
+        className={`site-nav${scrolled ? ' nav-scrolled' : ''}`}
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -75,7 +76,7 @@ export default function Nav() {
         <div style={{
           maxWidth: scrolled ? 1040 : 1240, margin: '0 auto', padding: '0 10px 0 22px', pointerEvents: 'auto',
           borderRadius: 999, transition: 'max-width .6s cubic-bezier(.22,1,.36,1), background .4s ease, border-color .4s ease, box-shadow .4s ease',
-          background: scrolled ? 'rgba(14, 15, 18, 0.62)' : 'rgba(14, 15, 18, 0.0)',
+          background: scrolled ? 'var(--nav-bg-scrolled, rgba(14, 15, 18, 0.62))' : 'rgba(14, 15, 18, 0.0)',
           backdropFilter: 'blur(20px) saturate(160%)', WebkitBackdropFilter: 'blur(20px) saturate(160%)',
           border: `1px solid ${scrolled ? 'rgba(255,255,255,0.10)' : 'transparent'}`,
           boxShadow: scrolled ? '0 20px 50px -20px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.06)' : 'none',
