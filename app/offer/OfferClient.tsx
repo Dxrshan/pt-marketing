@@ -29,6 +29,16 @@ const FEATURES: { name: string; detail: string; icon: keyof typeof FEATURE_ICONS
 ]
 
 
+// What's in the plan, as outcomes rather than a feature dump. Shown on the proposal line item.
+const INCLUDED: { t: string; d: string }[] = [
+  { t: 'Hours of admin back every week', d: 'Bookings, calendar and reminders' },
+  { t: 'Get paid on time', d: 'Card payments and overdue alerts' },
+  { t: 'Turn enquiries into clients', d: 'Every lead tracked and followed up' },
+  { t: 'Keep clients for longer', d: 'Your own branded client app' },
+  { t: 'An AI assistant on the team', d: 'Books sessions, chases payments' },
+  { t: 'Grow without the bill growing', d: 'Unlimited trainers, no per-seat fees' },
+]
+
 // Feedback credit: £1 off the next bill per fix or new feature suggested, capped per month.
 const FEEDBACK_CREDIT = 1
 const FEEDBACK_CREDIT_CAP = 10
@@ -415,10 +425,10 @@ export default function OfferClient({ bank }: { bank: BankDetails }) {
                   <div className="l-main">DNI Studios PT Portal + Client Portal</div>
                   <div className="l-sub num">{`${plan.months} ${plan.months === 1 ? 'month' : 'months'} at ${gbp(plan.rate)} · Recurring`}</div>
                   <ul className="l-incl" aria-label="Included">
-                    {[...FEATURES.map(f => f.name), ...EXTRAS].map(name => (
-                      <li key={name}>
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
-                        {name}
+                    {INCLUDED.map(f => (
+                      <li key={f.t}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+                        <span><b>{f.t}</b><span className="l-incl-d">{f.d}</span></span>
                       </li>
                     ))}
                   </ul>
@@ -965,8 +975,11 @@ body { background: #eceef1; }
 .lines th.amt { color: #c9cdd3; }
 .lines thead { background: linear-gradient(180deg, #23262c 0%, #16181c 55%, #0f1013 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.07), inset 0 -1px 0 rgba(0,0,0,.6);
   -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-.l-incl { list-style: none; margin: 12px 0 2px; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 18px; }
-.l-incl li { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--muted); }
+.l-incl { list-style: none; margin: 14px 0 2px; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; }
+.l-incl li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--muted); line-height: 1.35; }
+.l-incl li svg { margin-top: 3px; }
+.l-incl b { display: block; font-weight: 600; color: var(--ink); font-size: 13.5px; }
+.l-incl-d { display: block; font-size: 12.5px; color: var(--muted); margin-top: 1px; }
 .l-incl svg { color: #16a35a; flex-shrink: 0; }
 @media (max-width: 560px) { .l-incl { grid-template-columns: 1fr; } }
 .lines tbody tr.credits-toggle td { padding: 0; background: #fff; text-align: center; }
