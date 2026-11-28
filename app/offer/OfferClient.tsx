@@ -38,7 +38,6 @@ const INCLUDED: { t: string; d: string }[] = [
   { t: 'Lead Pipeline (CRM)', d: 'From enquiry to paying client' },
   { t: 'AI Studio Assistant', d: 'Books and chases for you' },
   { t: 'Branded Client App', d: 'Workouts, meal plans, chat' },
-  { t: 'Form-Check Video Review', d: 'Coach technique remotely' },
   { t: 'Community & Leaderboards', d: 'Streaks that build loyalty' },
   { t: 'Unlimited Trainers & Clients', d: 'No per-seat fees. Ever.' },
 ]
